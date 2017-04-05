@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
  * @author Kishore Narendran
  */
 public class OperatorStoreConstants {
-    public static final String TABLE_NAME = "operators";
+    public static final String TABLE_NAME = "operator";
 
     public static final Pattern VALID_OPERATOR_NAME = Pattern.compile("^[a-zA-Z]{1,}$");
 
@@ -28,7 +28,7 @@ public class OperatorStoreConstants {
     public static final Attribute PREDICATE_BEAN_ATTR = new Attribute(PREDICATE_BEAN, AttributeType.STRING);
     public static final Attribute OPERATOR_CONFIG_FILE_ATTR = new Attribute(OPERATOR_CONFIG_FILE, AttributeType.STRING);
 
-    public static final Attribute[] ATTRIBUTES_OPERATORS = {NAME_ATTR, DESCRIPTION_ATTR, PREDICATE_BEAN_ATTR,
+    public static final Attribute[] ATTRIBUTES_OPERATOR = {NAME_ATTR, DESCRIPTION_ATTR, PREDICATE_BEAN_ATTR,
             OPERATOR_CONFIG_FILE_ATTR};
-    public static final Schema SCHEMA_OPERATORS = new Schema(ATTRIBUTES_OPERATORS);
+    public static final Schema SCHEMA_OPERATOR = new Schema(ATTRIBUTES_OPERATORS);
 }
