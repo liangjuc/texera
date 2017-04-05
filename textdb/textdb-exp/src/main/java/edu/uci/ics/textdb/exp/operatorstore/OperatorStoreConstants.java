@@ -30,5 +30,5 @@ public class OperatorStoreConstants {
 
     public static final Attribute[] ATTRIBUTES_OPERATOR = {NAME_ATTR, DESCRIPTION_ATTR, PREDICATE_BEAN_ATTR,
             OPERATOR_CONFIG_FILE_ATTR};
-    public static final Schema SCHEMA_OPERATOR = new Schema(ATTRIBUTES_OPERATORS);
+    public static final Schema SCHEMA_OPERATOR = new Schema(ATTRIBUTES_OPERATOR);
 }
