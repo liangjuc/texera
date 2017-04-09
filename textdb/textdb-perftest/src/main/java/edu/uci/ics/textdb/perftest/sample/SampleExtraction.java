@@ -40,12 +40,14 @@ import java.util.Date;
 import java.util.Scanner;
 
 public class SampleExtraction {
-    
+
     public static final String PROMED_SAMPLE_TABLE = "promed";
-        
+
     public static String promedFilesDirectory;
     public static String promedIndexDirectory;
     public static String sampleDataFilesDirectory;
+    public static String legalFilesDirectory;
+    public static String legalIndexDirectory;
 
     static {
         try {
@@ -53,12 +55,11 @@ public class SampleExtraction {
 
             // Checking if the resource is in a jar
             String referencePath = SampleExtraction.class.getResource("").toURI().toString();
-            if(referencePath.substring(0, 3).equals("jar")) {
+            if (referencePath.substring(0, 3).equals("jar")) {
                 promedFilesDirectory = "../textdb-perftest/src/main/resources/sample-data-files/promed/";
                 promedIndexDirectory = "../textdb-perftest/src/main/resources/index/standard/promed/";
                 sampleDataFilesDirectory = "../textdb-perftest/src/main/resources/sample-data-files/";
-            }
-            else {
+            } else {
                 promedFilesDirectory = Paths.get(SampleExtraction.class.getResource("/sample-data-files/promed")
                         .toURI())
                         .toString();
@@ -68,12 +69,18 @@ public class SampleExtraction {
                 sampleDataFilesDirectory = Paths.get(SampleExtraction.class.getResource("/sample-data-files")
                         .toURI())
                         .toString();
+                legalFilesDirectory = Paths.get(SampleExtraction.class.getResource("/sample-data-files")
+                        .toURI())
+                        .toString();
+                legalIndexDirectory = Paths.get(SampleExtraction.class.getResource("/index/standard")
+                        .toURI())
+                        .toString() + "/legal";
             }
-        }
-        catch(URISyntaxException | FileSystemNotFoundException e) {
+        } catch (URISyntaxException | FileSystemNotFoundException e) {
             e.printStackTrace();
         }
     }
+
     public static void main(String[] args) throws Exception {
         // write the index of data files
         // index only needs to be written once, after the first run, this function can be commented out
@@ -110,14 +117,14 @@ public class SampleExtraction {
                 fileTuples.add(tuple);
             }
         }
-        
+
         // write tuples into the table
         RelationManager relationManager = RelationManager.getRelationManager();
-        
+
         relationManager.deleteTable(PROMED_SAMPLE_TABLE);
-        relationManager.createTable(PROMED_SAMPLE_TABLE, promedIndexDirectory, 
+        relationManager.createTable(PROMED_SAMPLE_TABLE, promedIndexDirectory,
                 PromedSchema.PROMED_SCHEMA, LuceneAnalyzerConstants.standardAnalyzerString());
-        
+
         DataWriter dataWriter = relationManager.getTableDataWriter(PROMED_SAMPLE_TABLE);
         dataWriter.open();
         for (Tuple tuple : fileTuples) {
@@ -128,33 +135,33 @@ public class SampleExtraction {
 
     /*
      * This is the DAG of this extraction plan.
-     * 
-     * 
+     *
+     *
      *              KeywordSource (zika)
      *                       ↓
      *              Projection (content)
      *                  ↓          ↓
      *       regex (a...man)      NLP (location)
-     *                  ↓          ↓     
+     *                  ↓          ↓
      *             Join (distance < 100)
      *                       ↓
      *              Projection (spanList)
      *                       ↓
      *                    FileSink
-     *                    
+     *
      */
     public static void extractPersonLocation() throws Exception {
-                
+
         String keywordZika = "zika";
         KeywordPredicate keywordPredicateZika = new KeywordPredicate(keywordZika, Arrays.asList(PromedSchema.CONTENT),
                 new StandardAnalyzer(), KeywordMatchingType.CONJUNCTION_INDEXBASED);
-        
+
         KeywordMatcherSourceOperator keywordSource = new KeywordMatcherSourceOperator(
                 keywordPredicateZika, PROMED_SAMPLE_TABLE);
-        
+
         ProjectionPredicate projectionPredicateIdAndContent = new ProjectionPredicate(
                 Arrays.asList(SchemaConstants._ID, PromedSchema.ID, PromedSchema.CONTENT));
-        
+
         ProjectionOperator projectionOperatorIdAndContent1 = new ProjectionOperator(projectionPredicateIdAndContent);
         ProjectionOperator projectionOperatorIdAndContent2 = new ProjectionOperator(projectionPredicateIdAndContent);
 
@@ -162,21 +169,21 @@ public class SampleExtraction {
         RegexPredicate regexPredicatePerson = new RegexPredicate(regexPerson, Arrays.asList(PromedSchema.CONTENT),
                 LuceneAnalyzerConstants.getNGramAnalyzer(3));
         RegexMatcher regexMatcherPerson = new RegexMatcher(regexPredicatePerson);
-        
+
         NlpPredicate nlpPredicateLocation = new NlpPredicate(NlpPredicate.NlpTokenType.Location, Arrays.asList(PromedSchema.CONTENT));
         NlpExtractor nlpExtractorLocation = new NlpExtractor(nlpPredicateLocation);
 
         IJoinPredicate joinPredicatePersonLocation = new JoinDistancePredicate(PromedSchema.CONTENT, 100);
         Join joinPersonLocation = new Join(joinPredicatePersonLocation);
-        
+
         ProjectionPredicate projectionPredicateIdAndSpan = new ProjectionPredicate(
                 Arrays.asList(SchemaConstants._ID, PromedSchema.ID, SchemaConstants.SPAN_LIST));
         ProjectionOperator projectionOperatorIdAndSpan = new ProjectionOperator(projectionPredicateIdAndSpan);
-         
+
         SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy-HH-mm-ss");
-        FileSink fileSink = new FileSink( 
+        FileSink fileSink = new FileSink(
                 new File(sampleDataFilesDirectory + "/person-location-result-"
-                		+ sdf.format(new Date(System.currentTimeMillis())).toString() + ".txt"));
+                        + sdf.format(new Date(System.currentTimeMillis())).toString() + ".txt"));
 
         fileSink.setToStringFunction((tuple -> DataflowUtils.getTupleString(tuple)));
 
@@ -190,7 +197,7 @@ public class SampleExtraction {
 
         joinPersonLocation.setInnerInputOperator(regexMatcherPerson);
         joinPersonLocation.setOuterInputOperator(nlpExtractorLocation);
-                      
+
         projectionOperatorIdAndSpan.setInputOperator(joinPersonLocation);
         fileSink.setInputOperator(projectionOperatorIdAndSpan);
 
