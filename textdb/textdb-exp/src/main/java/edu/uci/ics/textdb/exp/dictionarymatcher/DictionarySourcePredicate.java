@@ -44,7 +44,7 @@ public class DictionarySourcePredicate extends DictionaryPredicate {
     }
     
     @Override
-    public IOperator getOperator() {
+    public IOperator newOperator() {
         return new DictionaryMatcherSourceOperator(this);
     }
     

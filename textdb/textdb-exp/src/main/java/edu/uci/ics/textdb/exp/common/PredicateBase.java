@@ -84,6 +84,6 @@ public abstract class PredicateBase implements IPredicate {
     }
     
     @JsonIgnore
-    public abstract IOperator getOperator();
+    public abstract IOperator newOperator();
     
 }

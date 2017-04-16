@@ -254,7 +254,7 @@ public class SimilarityJoinPredicate extends PredicateBase implements IJoinPredi
     }
     
     @Override
-    public IOperator getOperator() {
+    public IOperator newOperator() {
         return new Join(this);
     }
 

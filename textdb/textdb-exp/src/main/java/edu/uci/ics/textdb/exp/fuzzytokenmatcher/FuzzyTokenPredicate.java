@@ -93,7 +93,7 @@ public class FuzzyTokenPredicate extends PredicateBase {
     }
     
     @Override
-    public IOperator getOperator() {
+    public IOperator newOperator() {
         return new FuzzyTokenMatcher(this);
     }
 

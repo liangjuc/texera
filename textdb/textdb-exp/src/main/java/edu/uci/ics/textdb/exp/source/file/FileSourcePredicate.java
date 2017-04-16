@@ -112,7 +112,7 @@ public class FileSourcePredicate extends PredicateBase {
     }
     
     @Override
-    public IOperator getOperator() {
+    public IOperator newOperator() {
         return new FileSourceOperator(this);
     }
 

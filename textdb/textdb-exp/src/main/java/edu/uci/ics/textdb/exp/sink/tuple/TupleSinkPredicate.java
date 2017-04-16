@@ -11,7 +11,7 @@ public class TupleSinkPredicate extends PredicateBase {
     public TupleSinkPredicate() {}
     
     @Override
-    public IOperator getOperator() {
+    public IOperator newOperator() {
         return new TupleSink(this);
     }
 

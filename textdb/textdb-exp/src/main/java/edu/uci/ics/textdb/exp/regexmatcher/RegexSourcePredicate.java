@@ -64,7 +64,7 @@ public class RegexSourcePredicate extends RegexPredicate {
     }
     
     @Override
-    public IOperator getOperator() {
+    public IOperator newOperator() {
         return new RegexMatcherSourceOperator(this);
     }
 

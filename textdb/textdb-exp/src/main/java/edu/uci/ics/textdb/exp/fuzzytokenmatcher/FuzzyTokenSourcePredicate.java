@@ -32,7 +32,7 @@ public class FuzzyTokenSourcePredicate extends FuzzyTokenPredicate {
     }
     
     @Override
-    public IOperator getOperator() {
+    public IOperator newOperator() {
         return new FuzzyTokenMatcherSourceOperator(this);
     }
 

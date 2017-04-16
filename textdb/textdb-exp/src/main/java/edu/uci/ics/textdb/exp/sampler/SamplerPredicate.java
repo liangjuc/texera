@@ -59,7 +59,7 @@ public class SamplerPredicate extends PredicateBase {
     }
     
     @Override
-    public IOperator getOperator() {
+    public IOperator newOperator() {
         return new Sampler(this);
     }
     

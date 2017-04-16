@@ -299,7 +299,7 @@ public class JoinDistancePredicate extends PredicateBase implements IJoinPredica
 	}
 	
     @Override
-    public IOperator getOperator() {
+    public IOperator newOperator() {
         return new Join(this);
     }
 

@@ -74,7 +74,7 @@ public class RegexSplitPredicate extends PredicateBase {
     }
     
     @Override
-    public IOperator getOperator() {
+    public IOperator newOperator() {
         return new RegexSplitOperator(this);
     }
     

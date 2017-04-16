@@ -36,7 +36,7 @@ public class NlpEntityPredicate extends PredicateBase {
     }
     
     @Override
-    public IOperator getOperator() {
+    public IOperator newOperator() {
         return new NlpEntityOperator(this);
     }
     

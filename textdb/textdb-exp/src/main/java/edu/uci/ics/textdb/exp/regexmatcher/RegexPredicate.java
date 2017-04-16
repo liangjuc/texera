@@ -72,7 +72,7 @@ public class RegexPredicate extends PredicateBase {
     }
     
     @Override
-    public IOperator getOperator() {
+    public IOperator newOperator() {
         return new RegexMatcher(this);
     }
 

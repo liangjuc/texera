@@ -151,7 +151,7 @@ public class LogicalPlan {
     private HashMap<String, IOperator> buildOperators() throws PlanGenException {
         HashMap<String, IOperator> operatorObjectMap = new HashMap<>();
         for (String operatorID : operatorPredicateMap.keySet()) {
-            IOperator operator = operatorPredicateMap.get(operatorID).getOperator();
+            IOperator operator = operatorPredicateMap.get(operatorID).newOperator();
             operatorObjectMap.put(operatorID, operator);
         }
         return operatorObjectMap;

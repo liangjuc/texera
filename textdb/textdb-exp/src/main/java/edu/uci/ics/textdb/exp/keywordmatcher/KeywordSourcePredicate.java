@@ -59,7 +59,7 @@ public class KeywordSourcePredicate extends KeywordPredicate {
     }
     
     @Override
-    public IOperator getOperator() {
+    public IOperator newOperator() {
         return new KeywordMatcherSourceOperator(this);
     }
 

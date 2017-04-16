@@ -28,7 +28,7 @@ public class ProjectionPredicate extends PredicateBase {
     }
     
     @Override
-    public IOperator getOperator() {
+    public IOperator newOperator() {
         return new ProjectionOperator(this);
     }
 }

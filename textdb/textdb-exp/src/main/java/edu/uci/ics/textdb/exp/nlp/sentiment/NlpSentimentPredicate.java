@@ -32,7 +32,7 @@ public class NlpSentimentPredicate extends PredicateBase {
     }
     
     @Override
-    public IOperator getOperator() {
+    public IOperator newOperator() {
         return new NlpSentimentOperator(this);
     }
 
