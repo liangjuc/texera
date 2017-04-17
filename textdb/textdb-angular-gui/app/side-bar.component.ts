@@ -25,7 +25,7 @@ export class SideBarComponent {
 
     tempSubmitted = false;
 
-    hiddenList : string[] = ["operatorType","limit","offset"];
+    hiddenList : string[] = ["operatorType","offset"];
     selectorList : string[] = ["matchingType","nlpEntityType","splitType","sampleType"].concat(this.hiddenList);
     matcherList : string[] = ["conjunction","phrase","substring"];
     nlpEntityList : string[] = ["noun","verb","adjective","adverb","ne_all","number","location","person","organization","money","percent","date","time"];

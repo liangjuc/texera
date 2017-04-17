@@ -301,7 +301,9 @@ let keywordSource = {
         "attributes": ["attr1", "attr2"],
         "luceneAnalyzer": "standard",
         "matchingType": "conjunction",
-        "tableName": "tableName"
+        "tableName": "tableName",
+        "limit": 2147483647,
+        "offset": null
     }
   }
 }
