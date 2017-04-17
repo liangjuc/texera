@@ -82,7 +82,7 @@ public class LogicalPlan {
      * Order is NOT guaranteed to be the same as insertion order.
      * @return a list of operator links
      */
-    @JsonProperty(value = PropertyNameConstants.OPERATOR_LIST)
+    @JsonProperty(value = PropertyNameConstants.OPERATOR_LINK_LIST)
     public List<OperatorLink> getOperatorLinkList() {
         ArrayList<OperatorLink> linkList = new ArrayList<>();
         for (String origin : adjacencyList.keySet()) {
