@@ -302,8 +302,7 @@ let keywordSource = {
         "luceneAnalyzer": "standard",
         "matchingType": "conjunction",
         "tableName": "tableName",
-        "limit": 2147483647,
-        "offset": null
+        "limit": 2147483647
     }
   }
 }
@@ -461,7 +460,9 @@ let result = {
       }
     },
     attributes : {
-        "operatorType": "ViewResults"
+        "operatorType": "ViewResults",
+        "limit": 2147483647,
+        "offset": 0
     }
   }
 }
