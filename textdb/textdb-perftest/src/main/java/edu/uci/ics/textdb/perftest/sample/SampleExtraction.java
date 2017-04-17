@@ -19,6 +19,7 @@ import edu.uci.ics.textdb.dataflow.projection.ProjectionOperator;
 import edu.uci.ics.textdb.dataflow.projection.ProjectionPredicate;
 import edu.uci.ics.textdb.dataflow.regexmatch.RegexMatcher;
 import edu.uci.ics.textdb.dataflow.sink.FileSink;
+import edu.uci.ics.textdb.dataflow.sink.TupleStreamSink;
 import edu.uci.ics.textdb.dataflow.utils.DataflowUtils;
 import edu.uci.ics.textdb.perftest.promed.PromedSchema;
 import edu.uci.ics.textdb.storage.DataWriter;
@@ -34,10 +35,7 @@ import java.net.URISyntaxException;
 import java.nio.file.FileSystemNotFoundException;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Scanner;
+import java.util.*;
 
 public class SampleExtraction {
 
@@ -69,9 +67,7 @@ public class SampleExtraction {
                 sampleDataFilesDirectory = Paths.get(SampleExtraction.class.getResource("/sample-data-files")
                         .toURI())
                         .toString();
-                legalFilesDirectory = Paths.get(SampleExtraction.class.getResource("/sample-data-files")
-                        .toURI())
-                        .toString();
+
                 legalIndexDirectory = Paths.get(SampleExtraction.class.getResource("/index/standard")
                         .toURI())
                         .toString() + "/legal";
@@ -203,6 +199,12 @@ public class SampleExtraction {
 
         Plan extractPersonPlan = new Plan(fileSink);
         Engine.getEngine().evaluate(extractPersonPlan);
+
+//        TupleStreamSink tupleStreamSink = new TupleStreamSink();
+//        tupleStreamSink.setInputOperator(projectionOperatorIdAndSpan);
+//        tupleStreamSink.open();
+//        List<Tuple> results = tupleStreamSink.collectAllTuples();
+//        System.out.println("result "+ DataflowUtils.getTupleListString(results));
     }
 
 }

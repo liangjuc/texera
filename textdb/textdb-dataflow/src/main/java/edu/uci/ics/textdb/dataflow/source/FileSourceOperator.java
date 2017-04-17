@@ -22,7 +22,6 @@ public class FileSourceOperator implements ISourceOperator {
     public static interface ToTuple {
         Tuple convertToTuple(String str) throws Exception;
     }
-
     private File file;
     private Scanner scanner;
     private ToTuple toTupleFunc;

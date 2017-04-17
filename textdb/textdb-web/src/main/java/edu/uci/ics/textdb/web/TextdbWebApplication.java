@@ -7,6 +7,7 @@ import edu.uci.ics.textdb.api.engine.Plan;
 import edu.uci.ics.textdb.api.exception.TextDBException;
 import edu.uci.ics.textdb.api.tuple.Tuple;
 import edu.uci.ics.textdb.dataflow.sink.TupleStreamSink;
+import edu.uci.ics.textdb.perftest.sample.LegalExtraction;
 import edu.uci.ics.textdb.perftest.sample.SampleExtraction;
 import edu.uci.ics.textdb.plangen.LogicalPlan;
 import edu.uci.ics.textdb.web.healthcheck.SampleHealthCheck;
@@ -102,7 +103,8 @@ public class TextdbWebApplication extends Application<TextdbWebConfiguration> {
 
     public static void main(String args[]) throws Exception {
         System.out.println("Writing Sample Index");
-        SampleExtraction.writeSampleIndex();
+//        SampleExtraction.writeSampleIndex();
+        LegalExtraction.writeSampleIndex();
         System.out.println("Completed Writing Sample Index");
         System.out.println("Started Loading Stanford NLP");
         loadStanfordNLP();
