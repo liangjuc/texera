@@ -67,11 +67,11 @@ export class SideBarComponent {
                 console.log(data);
                 this.submitted = false;
                 
-                if (data.status === 200) {
+                if (data.code === 0) {
                   // this.tempSubmitted = true;
                   var node = new PrettyJSON.view.Node({
                     el: jQuery("#elem"),
-                    data: data.message
+                    data: JSON.parse(data.message)
                   });
                 } else {
                   // this.tempSubmitted = true;
