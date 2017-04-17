@@ -58,12 +58,11 @@ let keywordMatcher = {
             }
         },
         attributes: {
-            operator_type: "KeywordMatcher",
-            keyword : "zika",
-            matching_type : "conjunction",
-            attributes : "content",
-            limit : "1000000",
-            offset : "0"
+            "operatorType": "KeywordMatcher",
+            "query": "keyword",
+            "attributes": ["attr1", "attr2"],
+            "luceneAnalyzer": "standard",
+            "matchingType": "conjunction"
         }
     }
 };
@@ -84,11 +83,10 @@ let regexMatcher = {
       }
     },
     attributes : {
-      operator_type : "RegexMatcher",
-      regex : "\\b(A|a|(an)|(An))[^,.]{0,40} ((woman)|(man))\\b",
-      limit : "1000000",
-      attributes : "content",
-      offset : "0"
+        "operatorType": "RegexMatcher",
+        "regex": "regex",
+        "attributes": ["attr1", "attr2"],
+        "regexIgnoreCase": false
     }
   }
 };
@@ -109,12 +107,13 @@ let dictionaryMatcher = {
       }
     },
     attributes :  {
-      operator_type : "DictionaryMatcher",
-      dictionary : "SampleDict1.txt",
-      matching_type : "conjunction",
-      attributes : "firstname, lastname",
-      limit : "1000000",
-      offset : "0"
+        "operatorType": "DictionaryMatcher",
+        "dictionary": {
+            "dictionaryEntries": ["entry1", "entry2"]
+        },
+        "attributes": ["attr1", "attr2"],
+        "luceneAnalyzer": "standard",
+        "matchingType": "conjunction"
     }
   }
 }
@@ -135,21 +134,20 @@ let FuzzyMatcher = {
       }
     },
     attributes : {
-      operator_type : "FuzzyTokenMatcher",
-      query : "FuzzyWuzzy",
-      threshold_ratio : "0.8",
-      attributes : "firstname, lastname",
-      limit : "1000000",
-      offset : "0",
+        "operatorType": "FuzzyTokenMatcher",
+        "query": "token1 token2 token3",
+        "attributes": ["attr1", "attr2"],
+        "luceneAnalyzer": "standard",
+        "thresholdRatio": 0.8
     }
   }
 }
 
-let nlpMatcher = {
+let nlpEntity = {
   top : 20,
   left : 20,
   properties : {
-    title : 'NlpExtractor',
+    title : 'NlpEntity',
     inputs : {
       input_1 : {
         label : 'Input(:i)',
@@ -161,11 +159,79 @@ let nlpMatcher = {
       }
     },
     attributes : {
-      operator_type : "NlpExtractor",
-      nlp_type : "location",
-      attributes : "content",
-      limit : "1000000",
-      offset : "0"
+        "operatorType": "NlpEntity",
+        "nlpEntityType": "location",
+        "attributes": ["attr1", "attr2"]
+    }
+  }
+}
+
+let nlpSentiment = {
+  top : 20,
+  left : 20,
+  properties : {
+    title : 'nlpSentiment',
+    inputs : {
+      input_1 : {
+        label : 'Input(:i)',
+      }
+    },
+    outputs : {
+      output_1 : {
+        label : "Output (:i)",
+      }
+    },
+    attributes : {
+        "operatorType": "NlpSentiment",
+        "attribute": "inputAttr",
+        "resultAttribute": "resultAttr"
+    }
+  }
+}
+
+let regexSplit = {
+  top : 20,
+  left : 20,
+  properties : {
+    title : 'RegexSplit',
+    inputs : {
+      input_1 : {
+        label : "Input (:i)",
+      }
+    },
+    outputs : {
+      output_1 : {
+        label : "Output (:i)",
+      }
+    },
+    attributes : {
+        "operatorType": "RegexSplit",
+        "splitRegex": "regex",
+        "splitAttribute": "attr1",
+        "splitType": "standalone"
+    }
+  }
+}
+
+let sampler = {
+  top : 20,
+  left : 20,
+  properties : {
+    title : 'RegexSplit',
+    inputs : {
+      input_1 : {
+        label : "Input (:i)",
+      }
+    },
+    outputs : {
+      output_1 : {
+        label : "Output (:i)",
+      }
+    },
+    attributes : {
+        "operatorType": "Sampler",
+        "sampleSize": 10,
+        "sampleType": "firstk"
     }
   }
 }
@@ -186,10 +252,30 @@ let Projection = {
       }
     },
     attributes : {
-      operator_type : "Projection",
-      attributes : "_id, content",
-      limit : "1000000",
-      offset : "0",
+        "operatorType": "Projection",
+        "attributes": ["attr1", "attr2"]
+    }
+  }
+}
+
+let scanSource = {
+  top : 20,
+  left : 20,
+  properties : {
+    title : 'ScanSource',
+    inputs : {
+      input_1 : {
+        label : "Input (:i)",
+      }
+    },
+    outputs : {
+      output_1 : {
+        label : "Output (:i)",
+      }
+    },
+    attributes : {
+        "operatorType": "ScanSource",
+        "tableName": "promed"
     }
   }
 }
@@ -210,13 +296,12 @@ let keywordSource = {
       }
     },
     attributes : {
-      operator_type : "KeywordSource",
-      keyword : "zika",
-      matching_type : "conjunction",
-      data_source: "promed",
-      attributes : "content",
-      limit : "1000000",
-      offset : "0",
+        "operatorType": "KeywordSource",
+        "query": "keyword",
+        "attributes": ["attr1", "attr2"],
+        "luceneAnalyzer": "standard",
+        "matchingType": "conjunction",
+        "tableName": "tableName"
     }
   }
 }
@@ -238,14 +323,14 @@ let DictionarySource = {
       }
     },
     attributes : {
-      operator_type : "DictionarySource",
-      dictionary : "SampleDict1.txt",
-      matching_type : "conjunction",
-      data_source: "promed",
-      attributes : "content",
-      limit : "1000000",
-      offset : "0",
-
+        "operatorType": "DictionarySource",
+        "dictionary": {
+            "dictionaryEntries": ["entry1", "entry2"]
+        },
+        "attributes": ["attr1", "attr2"],
+        "luceneAnalyzer": "standard",
+        "matchingType": "conjunction",
+        "tableName": "tableName"
     }
   }
 }
@@ -266,13 +351,13 @@ let RegexSource = {
       }
     },
     attributes : {
-      operator_type : "RegexSource",
-      data_source: "promed",
-      regex : "\\b(A|a|(an)|(An))[^,.]{0,40} ((woman)|(man))\\b",
-      attributes : "content",
-      limit : "1000000",
-      offset : "0",
-    }
+        "operatorType": "RegexSource",
+        "regex": "regex",
+        "attributes": ["attr1", "attr2"],
+        "regexIgnoreCase": false,
+        "tableName": "tableName",
+        "regexUseIndex": true
+    } 
   }
 }
 
@@ -292,20 +377,44 @@ let FuzzyTokenSource = {
       }
     },
     attributes : {
-      operator_type : "FuzzyTokenSource",
-      data_source: "promed",
-      query : "FuzzyWuzzy",
-	    threshold_ratio : "0.8",
-      attributes : "content",
-      limit : "1000000",
-      offset : "0",
+        "operatorType": "FuzzyTokenSource",
+        "query": "token1 token2 token3",
+        "attributes": ["attr1", "attr2"],
+        "luceneAnalyzer": "standard",
+        "thresholdRatio": 0.8,
+        "tableName": "tableName"
     }
   }
 }
 
+let characterDistanceJoin = {
+  top : 20,
+  left : 20,
+  properties : {
+    title : 'CharacterDistanceJoin',
+    inputs : {
+      input_1 : {
+        label : 'Input (:i)',
+      },
+      input_2 : {
+        label : "Input 2",
+      }
+    },
+    outputs : {
+      output_1 : {
+        label : "Output (:i)",
+      }
+    },
+    attributes : {
+        "operatorType": "JoinDistance",
+        "innerAttribute": "attr1",
+        "outerAttribute": "attr1",
+        "spanDistance": 100
+    }
+  }
+}
 
-
-let Join = {
+let similarityJoin = {
   top : 20,
   left : 20,
   properties : {
@@ -324,22 +433,21 @@ let Join = {
       }
     },
     attributes : {
-      operator_type : "Join",
-      predicate_type : "CharacterDistance",
-      threshold : "100",
-      inner_attribute : "content",
-      outer_attribute : "content",
-      limit : "1000000",
-      offset : "0"
+        "operatorType": "SimilarityJoin",
+        "innerAttribute": "attr1",
+        "outerAttribute": "attr1",
+        "similarityThreshold": 0.8
     }
   }
 }
 
-let fileOutput = {
+
+
+let result = {
   top : 20,
   left : 20,
   properties : {
-    title : 'FileSink',
+    title : 'View Results',
     inputs : {
       input_1 : {
         label : "Input (:i)",
@@ -351,35 +459,7 @@ let fileOutput = {
       }
     },
     attributes : {
-      operator_type : "FileSink",
-      file_path : "output.txt",
-      attributes : "firstname, lastname",
-      limit : "1000000",
-      offset : "0",
-    }
-  }
-}
-
-let Result = {
-  top : 20,
-  left : 20,
-  properties : {
-    title : 'TupleStreamSink',
-    inputs : {
-      input_1 : {
-        label : "Input (:i)",
-      }
-    },
-    outputs : {
-      output_1 : {
-        label : "Output (:i)",
-      }
-    },
-    attributes : {
-      operator_type : "TupleStreamSink",
-      attributes : "content",
-      limit : "1000000",
-      offset : "0"
+        "operatorType": "ViewResults"
     }
   }
 }
@@ -394,13 +474,17 @@ export const DEFAULT_MATCHERS: Data[] = [
     {id: 1, jsonData: keywordMatcher},
     {id: 2, jsonData: dictionaryMatcher},
     {id: 3, jsonData: FuzzyMatcher},
-    {id: 4, jsonData: nlpMatcher},
-    {id: 5, jsonData: Projection},
-    {id: 6, jsonData: keywordSource},
-    {id: 7, jsonData: DictionarySource},
-    {id: 8, jsonData: RegexSource},
-    {id: 9, jsonData: FuzzyTokenSource},
-    {id: 10, jsonData: Join},
-    {id: 11, jsonData: fileOutput},
-    {id: 12, jsonData: Result}
+    {id: 4, jsonData: nlpEntity},
+    {id: 5, jsonData: nlpSentiment},
+    {id: 6, jsonData: regexSplit},
+    {id: 7, jsonData: sampler},
+    {id: 8, jsonData: Projection},
+    {id: 9, jsonData: scanSource},
+    {id: 10, jsonData: keywordSource},
+    {id: 11, jsonData: DictionarySource},
+    {id: 12, jsonData: RegexSource},
+    {id: 13, jsonData: FuzzyTokenSource},
+    {id: 14, jsonData: characterDistanceJoin},
+    {id: 15, jsonData: similarityJoin},
+    {id: 16, jsonData: result},
 ];

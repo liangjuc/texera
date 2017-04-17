@@ -24,16 +24,13 @@ export class SideBarComponent {
 
 
     tempSubmitted = false;
-    tempData: any;
-    tempDataFormatted : any;
-    tempDataBeautify: any;
-    tempArrayOfData: any;
 
-    hiddenList : string[] = ["operator_type","limit","offset"];
-    selectorList : string[] = ["matching_type","nlp_type","predicate_type","operator_type","limit","offset"];
+    hiddenList : string[] = ["operatorType","limit","offset"];
+    selectorList : string[] = ["matchingType","nlpEntityType","splitType","sampleType"].concat(this.hiddenList);
     matcherList : string[] = ["conjunction","phrase","substring"];
-    nlpList : string[] = ["noun","verb","adjective","adverb","ne_all","number","location","person","organization","money","percent","date","time"];
-    predicateList : string[] = ["CharacterDistance", "SimilarityJoin"];
+    nlpEntityList : string[] = ["noun","verb","adjective","adverb","ne_all","number","location","person","organization","money","percent","date","time"];
+    regexSplitList : string[] = ["left", "right", "standalone"];
+    samplerList : string[] = ["random", "firstk"];
 
     @ViewChild('MyModal')
     modal: ModalComponent;
@@ -67,59 +64,25 @@ export class SideBarComponent {
 
         currentDataService.checkPressed$.subscribe(
             data => {
-                this.tempArrayOfData = [];
+                console.log(data);
                 this.submitted = false;
-                // this.tempSubmitted = true;
-                this.tempData = data.returnedData;
-                this.formatData();
-                console.log(JSON.stringify(this.tempData));
-                // console.log("checkPressed log = " + this.tempData.jsonData);
-                // this.tempArrayOfData = Object.keys(this.tempData);
+                
+                if (data.status === 200) {
+                  // this.tempSubmitted = true;
+                  var node = new PrettyJSON.view.Node({
+                    el: jQuery("#elem"),
+                    data: data.message
+                  });
+                } else {
+                  // this.tempSubmitted = true;
+                  var node = new PrettyJSON.view.Node({
+                    el: jQuery("#elem"),
+                    data: data.message
+                  });
+                }
+
+                this.ModalOpen();
             });
-    }
-
-    formatData() : void {
-      // console.log(typeof (this.tempData["_body"]["message"]));
-      this.tempDataFormatted = JSON.stringify(this.tempData);
-      if (this.tempDataFormatted.charAt(0) === "\""){
-        this.tempDataFormatted = this.tempDataFormatted.slice(1,-1);
-      }
-
-
-      console.log(this.tempDataFormatted);
-
-
-      this.tempDataFormatted = this.tempDataFormatted.replace(/\\\"/g,"\"");
-
-      this.tempDataFormatted = this.tempDataFormatted.replace(/\\\\\"/g,"\"");
-      this.tempDataFormatted = this.tempDataFormatted.replace(/\\\"/g,"\"");
-      this.tempDataFormatted = this.tempDataFormatted.replace(/\\\\\\\\/g,"\\\"");
-
-      console.log(this.tempDataFormatted);
-
-
-      this.tempDataFormatted = this.tempDataFormatted.replace(/\"{\"/g,"{\"");
-      this.tempDataFormatted = this.tempDataFormatted.replace(/\"\[{\"/g,"\[{\"");
-      this.tempDataFormatted = this.tempDataFormatted.replace(/\"}\"/g,"}");
-
-      this.tempDataFormatted = this.tempDataFormatted.replace(/\"\[\]/g,"\[\]");
-      console.log(this.tempDataFormatted);
-
-
-
-      this.tempData = JSON.parse(this.tempDataFormatted);
-      this.tempDataBeautify = JSON.stringify(this.tempData, null, 4); // beautifying the JSON
-      console.log(this.tempDataBeautify);
-
-
-      var node = new PrettyJSON.view.Node({
-        el: jQuery("#elem"),
-        data: this.tempData
-      });
-
-
-      this.ModalOpen();
-
     }
 
     humanize(name: string): string{

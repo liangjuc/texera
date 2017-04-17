@@ -1,26 +1,24 @@
 <div id="sidebar-wrapper">
 
-    <!-- <div [hidden]="!tempSubmitted" class="temp-result">
-        <h3 class="sidebar-brand">Returned Data</h3>
-        <div>{{tempDataFormatted}}</div>
-    </div> -->
-
     <div [hidden]="submitted">
-    <!-- <div [hidden]="submitted || tempSubmitted"> -->
         <h3 *ngIf="attributes.length === 0" class="sidebar-brand">Edit Operator</h3>
         <h3 *ngIf="attributes.length !== 0" class="sidebar-brand">{{operator}}</h3>
         <form [hidden]="attributes.length === 0" (ngSubmit)="onSubmit()" #editOperatorForm="ngForm">
             <div class="form-group" *ngFor="let attribute of attributes">
                 <label *ngIf="checkInHidden(attribute) === -1" for="{{attribute}}">{{humanize(attribute)}}</label>
-                <select *ngIf="attribute === 'matching_type'" class="form-control" id="{{attribute}}" required  [(ngModel)]="data.properties.attributes[attribute]" name="{{attribute}}" #{{attribute}}="ngModel">
+                <select *ngIf="attribute === 'matchingType'" class="form-control" id="{{attribute}}" required  [(ngModel)]="data.properties.attributes[attribute]" name="{{attribute}}" #{{attribute}}="ngModel">
                   <option *ngFor="let matcher of matcherList" [value] = "matcher">{{matcher}}</option>
                 </select>
-                <select *ngIf="attribute === 'nlp_type'" class="form-control" id="{{attribute}}" required  [(ngModel)]="data.properties.attributes[attribute]" name="{{attribute}}" #{{attribute}}="ngModel">
-                  <option *ngFor="let nlp of nlpList" [value] = "nlp">{{nlp}}</option>
+                <select *ngIf="attribute === 'nlpEntityType'" class="form-control" id="{{attribute}}" required  [(ngModel)]="data.properties.attributes[attribute]" name="{{attribute}}" #{{attribute}}="ngModel">
+                  <option *ngFor="let nlp of nlpEntityList" [value] = "nlp">{{nlp}}</option>
                 </select>
-                <select *ngIf="attribute === 'predicate_type'" class="form-control" id="{{attribute}}" required  [(ngModel)]="data.properties.attributes[attribute]" name="{{attribute}}" #{{attribute}}="ngModel">
-                  <option *ngFor="let predicate of predicateList" [value] = "predicate">{{predicate}}</option>
+                <select *ngIf="attribute === 'splitType'" class="form-control" id="{{attribute}}" required  [(ngModel)]="data.properties.attributes[attribute]" name="{{attribute}}" #{{attribute}}="ngModel">
+                  <option *ngFor="let split of regexSplitList" [value] = "split">{{split}}</option>
                 </select>
+                <select *ngIf="attribute === 'sampleType'" class="form-control" id="{{attribute}}" required  [(ngModel)]="data.properties.attributes[attribute]" name="{{attribute}}" #{{attribute}}="ngModel">
+                  <option *ngFor="let sample of samplerList" [value] = "sample">{{sample}}</option>
+                </select>
+
                 <input *ngIf="checkInSelector(attribute) === -1" [(ngModel)]="data.properties.attributes[attribute]" name="{{attribute}}" type="text" class="form-control" id="{{attribute}}" value="{{data.properties.attributes[attribute]}}" #{{attribute}}="ngModel" required>
             </div>
             <button type="submit" class="btn btn-success" [disabled]="!editOperatorForm.form.valid">Save</button>
@@ -46,7 +44,6 @@
 	</modal-header>
 	<modal-body class="search-result">
     <div id="elem"></div>
-		<!-- <pre>{{tempDataBeautify}}</pre> -->
 	</modal-body>
 	<modal-footer>
 		<button type="button" (click)="ModalClose()" class="btn btn-default navbar-btn">X</button>
