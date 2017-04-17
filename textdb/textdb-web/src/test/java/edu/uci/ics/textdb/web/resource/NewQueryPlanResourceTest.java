@@ -24,7 +24,6 @@ import edu.uci.ics.textdb.exp.join.JoinDistancePredicate;
 import edu.uci.ics.textdb.exp.keywordmatcher.KeywordMatchingType;
 import edu.uci.ics.textdb.exp.keywordmatcher.KeywordSourcePredicate;
 import edu.uci.ics.textdb.exp.plangen.LogicalPlan;
-import edu.uci.ics.textdb.exp.plangen.LogicalPlanTest;
 import edu.uci.ics.textdb.exp.plangen.OperatorLink;
 import edu.uci.ics.textdb.exp.regexmatcher.RegexPredicate;
 import edu.uci.ics.textdb.exp.sink.tuple.TupleSinkPredicate;
