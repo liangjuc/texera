@@ -55,8 +55,9 @@ public class NewQueryPlanResource {
                 return new TextdbWebResponse(0, "plan sucessfully executed");
             }
             
-        } catch (TextDBException | IOException e) {
-            e.printStackTrace();
+        } catch (TextDBException | IOException | RuntimeException e) {
+            // TODO remove RuntimeException after the exception refactor
+            System.out.println(e.getMessage());
             throw new TextdbWebException(e.getMessage());
         }   
     }
