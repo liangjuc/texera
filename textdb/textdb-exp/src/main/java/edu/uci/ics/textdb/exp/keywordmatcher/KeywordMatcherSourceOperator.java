@@ -70,7 +70,7 @@ public class KeywordMatcherSourceOperator extends AbstractSingleInputOperator im
             // generate KeywordMatcher
             KeywordPredicate keywordPredicate = new KeywordPredicate(
                     predicate.getQuery(), predicate.getAttributeNames(), predicate.getLuceneAnalyzerString(), predicate.getMatchingType(),
-                    null, null);
+                    null, null, null);
             keywordMatcher = new KeywordMatcher(keywordPredicate);
             keywordMatcher.setInputOperator(dataReader);
             

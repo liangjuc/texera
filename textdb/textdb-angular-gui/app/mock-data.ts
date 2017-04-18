@@ -62,7 +62,8 @@ let keywordMatcher = {
             "query": "keyword",
             "attributes": ["attr1", "attr2"],
             "luceneAnalyzer": "standard",
-            "matchingType": "conjunction"
+            "matchingType": "conjunction",
+            "addSpans": true
         }
     }
 };
@@ -302,7 +303,7 @@ let keywordSource = {
         "luceneAnalyzer": "standard",
         "matchingType": "conjunction",
         "tableName": "tableName",
-        "limit": 2147483647
+        "addSpans": false
     }
   }
 }
