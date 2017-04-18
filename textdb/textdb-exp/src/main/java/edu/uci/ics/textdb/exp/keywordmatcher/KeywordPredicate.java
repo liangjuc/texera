@@ -160,7 +160,7 @@ public class KeywordPredicate extends PredicateBase {
         }
         
         if (addSpans == null) {
-            this.addSpans = false;
+            this.addSpans = true;
         } else {
             this.addSpans = addSpans;
         }

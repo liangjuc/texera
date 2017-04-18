@@ -68,7 +68,7 @@ export class CurrentDataService {
         var operators = [];
         var links = [];
         
-        var listAttributes : string[] = ["attributes"]
+        var listAttributes : string[] = ["attributes", "dictionaryEntries"]
 
         for (var operatorIndex in this.currentData.jsonData.operators) {
             var currentOperator = this.currentData.jsonData['operators'];

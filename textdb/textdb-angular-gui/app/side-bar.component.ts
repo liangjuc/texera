@@ -77,7 +77,7 @@ export class SideBarComponent {
                   // this.tempSubmitted = true;
                   var node = new PrettyJSON.view.Node({
                     el: jQuery("#elem"),
-                    data: data.message
+                    data: JSON.parse(data.message)
                   });
                 }
 

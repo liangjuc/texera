@@ -109,9 +109,7 @@ let dictionaryMatcher = {
     },
     attributes :  {
         "operatorType": "DictionaryMatcher",
-        "dictionary": {
-            "dictionaryEntries": ["entry1", "entry2"]
-        },
+        "dictionaryEntries": ["entry1", "entry2"],
         "attributes": ["attr1", "attr2"],
         "luceneAnalyzer": "standard",
         "matchingType": "conjunction"
@@ -326,9 +324,7 @@ let DictionarySource = {
     },
     attributes : {
         "operatorType": "DictionarySource",
-        "dictionary": {
-            "dictionaryEntries": ["entry1", "entry2"]
-        },
+        "dictionaryEntries": ["entry1", "entry2"],
         "attributes": ["attr1", "attr2"],
         "luceneAnalyzer": "standard",
         "matchingType": "conjunction",
