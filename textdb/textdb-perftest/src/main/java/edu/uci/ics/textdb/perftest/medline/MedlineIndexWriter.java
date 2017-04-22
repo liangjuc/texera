@@ -59,7 +59,7 @@ public class MedlineIndexWriter {
 
     public static final Schema SCHEMA_MEDLINE = new Schema(ATTRIBUTES_MEDLINE);
 
-    private static Tuple recordToTuple(String record) throws JSONException, ParseException {
+    public static Tuple recordToTuple(String record) throws JSONException, ParseException {
         JSONObject json = new JSONObject(record);
         ArrayList<IField> fieldList = new ArrayList<IField>();
         for (Attribute attr : ATTRIBUTES_MEDLINE) {
@@ -69,7 +69,7 @@ public class MedlineIndexWriter {
         Tuple tuple = new Tuple(SCHEMA_MEDLINE, fieldList.toArray(fieldArray));
         return tuple;
     }
-
+    
     /**
      * This function generates a plan that reads a file using
      * FileSourceOperator, then writes index to the table using IndexSink.
