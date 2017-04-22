@@ -20,6 +20,7 @@ import edu.uci.ics.textdb.dataflow.projection.ProjectionPredicate;
 import edu.uci.ics.textdb.dataflow.regexmatch.RegexMatcher;
 import edu.uci.ics.textdb.dataflow.sink.FileSink;
 import edu.uci.ics.textdb.dataflow.utils.DataflowUtils;
+import edu.uci.ics.textdb.perftest.medline.MedlineIndexWriter;
 import edu.uci.ics.textdb.perftest.promed.PromedSchema;
 import edu.uci.ics.textdb.storage.DataWriter;
 import edu.uci.ics.textdb.storage.RelationManager;
@@ -41,10 +42,10 @@ import java.util.Scanner;
 
 public class SampleExtraction {
     
-    public static final String PROMED_SAMPLE_TABLE = "promed";
+    public static final String MEDLINE_SAMPLE_TABLE = "medline";
         
-    public static String promedFilesDirectory;
-    public static String promedIndexDirectory;
+    public static String medlineFilesDirectory;
+    public static String medlineIndexDirectory;
     public static String sampleDataFilesDirectory;
 
     static {
@@ -54,17 +55,18 @@ public class SampleExtraction {
             // Checking if the resource is in a jar
             String referencePath = SampleExtraction.class.getResource("").toURI().toString();
             if(referencePath.substring(0, 3).equals("jar")) {
-                promedFilesDirectory = "../textdb-perftest/src/main/resources/sample-data-files/promed/";
-                promedIndexDirectory = "../textdb-perftest/src/main/resources/index/standard/promed/";
+                medlineFilesDirectory = "../textdb-perftest/src/main/resources/sample-data-files/medline/";
+                medlineIndexDirectory = "../textdb-perftest/src/main/resources/index/standard/medline/";
                 sampleDataFilesDirectory = "../textdb-perftest/src/main/resources/sample-data-files/";
             }
             else {
-                promedFilesDirectory = Paths.get(SampleExtraction.class.getResource("/sample-data-files/promed")
+                medlineFilesDirectory = Paths.get(SampleExtraction.class.getResource("/sample-data-files/medline")
                         .toURI())
                         .toString();
-                promedIndexDirectory = Paths.get(SampleExtraction.class.getResource("/index/standard")
+                medlineIndexDirectory = Paths.get(SampleExtraction.class.getResource("/index/standard")
                         .toURI())
-                        .toString() + "/promed";
+                        .toString() + "/medline";
+                System.out.println(medlineIndexDirectory);
                 sampleDataFilesDirectory = Paths.get(SampleExtraction.class.getResource("/sample-data-files")
                         .toURI())
                         .toString();
@@ -80,7 +82,6 @@ public class SampleExtraction {
         writeSampleIndex();
 
         // perform the extraction task
-        extractPersonLocation();
     }
 
     public static Tuple parsePromedHTML(String fileName, String content) {
@@ -96,29 +97,28 @@ public class SampleExtraction {
 
     public static void writeSampleIndex() throws Exception {
         // parse the original file
-        File sourceFileFolder = new File(promedFilesDirectory);
+        File sourceFileFolder = new File(medlineFilesDirectory);
         ArrayList<Tuple> fileTuples = new ArrayList<>();
         for (File htmlFile : sourceFileFolder.listFiles()) {
             StringBuilder sb = new StringBuilder();
             Scanner scanner = new Scanner(htmlFile);
             while (scanner.hasNext()) {
-                sb.append(scanner.nextLine());
+				Tuple tuple = MedlineIndexWriter.recordToTuple(scanner.nextLine());
+				if (tuple != null) {
+                        fileTuples.add(tuple);
+                }
             }
             scanner.close();
-            Tuple tuple = parsePromedHTML(htmlFile.getName(), sb.toString());
-            if (tuple != null) {
-                fileTuples.add(tuple);
-            }
         }
         
         // write tuples into the table
         RelationManager relationManager = RelationManager.getRelationManager();
         
-        relationManager.deleteTable(PROMED_SAMPLE_TABLE);
-        relationManager.createTable(PROMED_SAMPLE_TABLE, promedIndexDirectory, 
-                PromedSchema.PROMED_SCHEMA, LuceneAnalyzerConstants.standardAnalyzerString());
+        relationManager.deleteTable(MEDLINE_SAMPLE_TABLE);
+        relationManager.createTable(MEDLINE_SAMPLE_TABLE, medlineIndexDirectory, 
+                MedlineIndexWriter.SCHEMA_MEDLINE, LuceneAnalyzerConstants.standardAnalyzerString());
         
-        DataWriter dataWriter = relationManager.getTableDataWriter(PROMED_SAMPLE_TABLE);
+        DataWriter dataWriter = relationManager.getTableDataWriter(MEDLINE_SAMPLE_TABLE);
         dataWriter.open();
         for (Tuple tuple : fileTuples) {
             dataWriter.insertTuple(tuple);
@@ -126,76 +126,6 @@ public class SampleExtraction {
         dataWriter.close();
     }
 
-    /*
-     * This is the DAG of this extraction plan.
-     * 
-     * 
-     *              KeywordSource (zika)
-     *                       ↓
-     *              Projection (content)
-     *                  ↓          ↓
-     *       regex (a...man)      NLP (location)
-     *                  ↓          ↓     
-     *             Join (distance < 100)
-     *                       ↓
-     *              Projection (spanList)
-     *                       ↓
-     *                    FileSink
-     *                    
-     */
-    public static void extractPersonLocation() throws Exception {
-                
-        String keywordZika = "zika";
-        KeywordPredicate keywordPredicateZika = new KeywordPredicate(keywordZika, Arrays.asList(PromedSchema.CONTENT),
-                new StandardAnalyzer(), KeywordMatchingType.CONJUNCTION_INDEXBASED);
-        
-        KeywordMatcherSourceOperator keywordSource = new KeywordMatcherSourceOperator(
-                keywordPredicateZika, PROMED_SAMPLE_TABLE);
-        
-        ProjectionPredicate projectionPredicateIdAndContent = new ProjectionPredicate(
-                Arrays.asList(SchemaConstants._ID, PromedSchema.ID, PromedSchema.CONTENT));
-        
-        ProjectionOperator projectionOperatorIdAndContent1 = new ProjectionOperator(projectionPredicateIdAndContent);
-        ProjectionOperator projectionOperatorIdAndContent2 = new ProjectionOperator(projectionPredicateIdAndContent);
 
-        String regexPerson = "\\b(A|a|(an)|(An)) .{1,40} ((woman)|(man))\\b";
-        RegexPredicate regexPredicatePerson = new RegexPredicate(regexPerson, Arrays.asList(PromedSchema.CONTENT),
-                LuceneAnalyzerConstants.getNGramAnalyzer(3));
-        RegexMatcher regexMatcherPerson = new RegexMatcher(regexPredicatePerson);
-        
-        NlpPredicate nlpPredicateLocation = new NlpPredicate(NlpPredicate.NlpTokenType.Location, Arrays.asList(PromedSchema.CONTENT));
-        NlpExtractor nlpExtractorLocation = new NlpExtractor(nlpPredicateLocation);
-
-        IJoinPredicate joinPredicatePersonLocation = new JoinDistancePredicate(PromedSchema.CONTENT, 100);
-        Join joinPersonLocation = new Join(joinPredicatePersonLocation);
-        
-        ProjectionPredicate projectionPredicateIdAndSpan = new ProjectionPredicate(
-                Arrays.asList(SchemaConstants._ID, PromedSchema.ID, SchemaConstants.SPAN_LIST));
-        ProjectionOperator projectionOperatorIdAndSpan = new ProjectionOperator(projectionPredicateIdAndSpan);
-         
-        SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy-HH-mm-ss");
-        FileSink fileSink = new FileSink( 
-                new File(sampleDataFilesDirectory + "/person-location-result-"
-                		+ sdf.format(new Date(System.currentTimeMillis())).toString() + ".txt"));
-
-        fileSink.setToStringFunction((tuple -> DataflowUtils.getTupleString(tuple)));
-
-
-        projectionOperatorIdAndContent1.setInputOperator(keywordSource);
-
-        regexMatcherPerson.setInputOperator(projectionOperatorIdAndContent1);
-
-        projectionOperatorIdAndContent2.setInputOperator(regexMatcherPerson);
-        nlpExtractorLocation.setInputOperator(projectionOperatorIdAndContent2);
-
-        joinPersonLocation.setInnerInputOperator(regexMatcherPerson);
-        joinPersonLocation.setOuterInputOperator(nlpExtractorLocation);
-                      
-        projectionOperatorIdAndSpan.setInputOperator(joinPersonLocation);
-        fileSink.setInputOperator(projectionOperatorIdAndSpan);
-
-        Plan extractPersonPlan = new Plan(fileSink);
-        Engine.getEngine().evaluate(extractPersonPlan);
-    }
 
 }
