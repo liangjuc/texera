@@ -8,6 +8,10 @@ import org.junit.Test;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import edu.uci.ics.textdb.exp.aggregation.AggregationPredicate;
+import edu.uci.ics.textdb.exp.aggregation.AggregationType;
+import edu.uci.ics.textdb.exp.comparablematcher.ComparablePredicate;
+import edu.uci.ics.textdb.exp.comparablematcher.NumberMatchingType;
 import edu.uci.ics.textdb.exp.dictionarymatcher.Dictionary;
 import edu.uci.ics.textdb.exp.dictionarymatcher.DictionaryPredicate;
 import edu.uci.ics.textdb.exp.dictionarymatcher.DictionarySourcePredicate;
@@ -28,6 +32,7 @@ import edu.uci.ics.textdb.exp.regexsplit.RegexSplitPredicate;
 import edu.uci.ics.textdb.exp.regexsplit.RegexSplitPredicate.SplitType;
 import edu.uci.ics.textdb.exp.sampler.SamplerPredicate;
 import edu.uci.ics.textdb.exp.sampler.SamplerPredicate.SampleType;
+import edu.uci.ics.textdb.exp.sink.json.JsonSinkPredicate;
 import edu.uci.ics.textdb.exp.sink.tuple.TupleSinkPredicate;
 import edu.uci.ics.textdb.exp.source.file.FileSourcePredicate;
 import edu.uci.ics.textdb.exp.source.scan.ScanSourcePredicate;
@@ -198,6 +203,26 @@ public class PredicateBaseTest {
     public void testTupleSink() throws Exception {
         TupleSinkPredicate tupleSinkPredicate = new TupleSinkPredicate();
         testPredicate(tupleSinkPredicate);
+    }
+    
+    @Test
+    public void testJsonSink() throws Exception {
+        JsonSinkPredicate jsonSinkPredicate = new JsonSinkPredicate("./result.json");
+        testPredicate(jsonSinkPredicate);
+    }
+    
+    @Test
+    public void testComparable() throws Exception {
+        ComparablePredicate comparablePredicate = new ComparablePredicate(
+                "intAttr", NumberMatchingType.GREATER_THAN, 2);
+        testPredicate(comparablePredicate);
+    }
+    
+    @Test
+    public void testAggregation() throws Exception {
+        AggregationPredicate aggregationPredicate = new AggregationPredicate(
+                "intAttr", AggregationType.COUNT, "agg");
+        testPredicate(aggregationPredicate);
     }
 
 }

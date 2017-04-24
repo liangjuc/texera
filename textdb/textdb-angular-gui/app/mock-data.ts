@@ -416,7 +416,7 @@ let similarityJoin = {
   top : 20,
   left : 20,
   properties : {
-    title : 'Join',
+    title : 'Similarity Join',
     inputs : {
       input_1 : {
         label : 'Input (:i)',
@@ -439,7 +439,53 @@ let similarityJoin = {
   }
 }
 
+let compareNumber = {
+  top : 20,
+  left : 20,
+  properties : {
+    title : 'compareNumber',
+    inputs : {
+      input_1 : {
+        label : "Input (:i)",
+      }
+    },
+    outputs : {
+      output_1 : {
+        label : "Output (:i)",
+      }
+    },
+    attributes : {
+        "operatorType": "CompareNumber",
+        "attribute": "attribute",
+        "compareNumber": "=",
+        "threshold": 0,
+    }
+  }
+}
 
+let aggregation = {
+  top : 20,
+  left : 20,
+  properties : {
+    title : 'Aggregation',
+    inputs : {
+      input_1 : {
+        label : "Input (:i)",
+      }
+    },
+    outputs : {
+      output_1 : {
+        label : "Output (:i)",
+      }
+    },
+    attributes : {
+        "operatorType": "Aggregation",
+        "attribute": "attribute",
+        "aggregationType": "count",
+        "resultAttribute": "result attribute",
+    }
+  }
+}
 
 let result = {
   top : 20,
@@ -460,6 +506,25 @@ let result = {
         "operatorType": "ViewResults",
         "limit": 2147483647,
         "offset": 0
+    }
+  }
+}
+
+let jsonSink = {
+  top : 20,
+  left : 20,
+  properties : {
+    title : 'Save as Json',
+    inputs : {
+      input_1 : {
+        label : "Input (:i)",
+      }
+    },
+    outputs : {
+    },
+    attributes : {
+        "operatorType": "JsonSink",
+        "filePath": "jsonFilePath"
     }
   }
 }
@@ -486,5 +551,9 @@ export const DEFAULT_MATCHERS: Data[] = [
     {id: 13, jsonData: FuzzyTokenSource},
     {id: 14, jsonData: characterDistanceJoin},
     {id: 15, jsonData: similarityJoin},
-    {id: 16, jsonData: result},
+    {id: 16, jsonData: compareNumber},
+    {id: 17, jsonData: aggregation},
+    {id: 18, jsonData: jsonSink},
+    {id: 19, jsonData: result},
+
 ];

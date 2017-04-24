@@ -1,9 +1,10 @@
 package edu.uci.ics.textdb.exp.comparablematcher;
 
-import edu.uci.ics.textdb.api.constants.DataConstants;
+import java.math.BigDecimal;
+
 import edu.uci.ics.textdb.api.exception.DataFlowException;
 import edu.uci.ics.textdb.api.exception.TextDBException;
-import edu.uci.ics.textdb.api.schema.Attribute;
+import edu.uci.ics.textdb.api.schema.AttributeType;
 import edu.uci.ics.textdb.api.schema.Schema;
 import edu.uci.ics.textdb.api.tuple.*;
 import edu.uci.ics.textdb.exp.common.AbstractSingleInputOperator;
@@ -13,12 +14,13 @@ import edu.uci.ics.textdb.exp.common.AbstractSingleInputOperator;
  *
  * @author Adrian Seungjin Lee
  */
-public class ComparableMatcher<T extends Comparable<T>> extends AbstractSingleInputOperator {
-    private ComparablePredicate<T> predicate;
+public class ComparableMatcher extends AbstractSingleInputOperator {
+    private ComparablePredicate predicate;
+    private AttributeType inputAttrType;
 
     private Schema inputSchema;
 
-    public ComparableMatcher(ComparablePredicate<T> predicate) {
+    public ComparableMatcher(ComparablePredicate predicate) {
         this.predicate = predicate;
     }
 
@@ -26,6 +28,18 @@ public class ComparableMatcher<T extends Comparable<T>> extends AbstractSingleIn
     protected void setUp() throws DataFlowException {
         inputSchema = inputOperator.getOutputSchema();
         outputSchema = inputSchema;
+        if (! inputSchema.containsField(predicate.getAttributeName())) {
+            throw new DataFlowException(String.format(
+                    "attribute %s not contained in input schema %s", 
+                    predicate.getAttributeName(),
+                    inputSchema.getAttributeNames()));
+        }
+        inputAttrType = inputOperator.getOutputSchema().getAttribute(predicate.getAttributeName()).getAttributeType();
+        if (inputAttrType != AttributeType.INTEGER && inputAttrType != AttributeType.DOUBLE) {
+            throw new DataFlowException(String.format(
+                    "attribute type %s is not supported. Must be Integer or Double.", 
+                    inputAttrType));
+        }
     }
 
     @Override
@@ -43,21 +57,28 @@ public class ComparableMatcher<T extends Comparable<T>> extends AbstractSingleIn
         return resultTuple;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public Tuple processOneInputTuple(Tuple inputTuple) throws TextDBException {
         Tuple resultTuple = null;
 
-        Attribute attribute = predicate.getAttribute();
-        DataConstants.NumberMatchingType operatorType = predicate.getMatchingType();
-
-        String attributeName = attribute.getAttributeName();
-
-        T value;
-        T threshold;
+        String attributeName = predicate.getAttributeName();
+        NumberMatchingType operatorType = predicate.getMatchingType();
+        
+        BigDecimal value;
+        BigDecimal threshold;
         try {
-            value = (T) inputTuple.getField(attributeName).getValue();
-            threshold = (T) predicate.getThreshold();
+            if (inputAttrType.equals(AttributeType.INTEGER)) {
+                value = new BigDecimal((int) inputTuple.getField(attributeName).getValue());
+                Number thresholdNum = predicate.getThreshold();
+                if (thresholdNum.getClass().equals(Integer.class)) {
+                    threshold = new BigDecimal((Integer) predicate.getThreshold()); 
+                } else {
+                    threshold = new BigDecimal((Double) predicate.getThreshold()); 
+                }
+            } else {
+                value = new BigDecimal((double) inputTuple.getField(attributeName).getValue());
+                threshold = new BigDecimal((double) predicate.getThreshold()); 
+            }
         } catch (ClassCastException e) {
             return null;
         }
@@ -68,7 +89,7 @@ public class ComparableMatcher<T extends Comparable<T>> extends AbstractSingleIn
         return resultTuple;
     }
 
-    private boolean compareValues(T value, T threshold, DataConstants.NumberMatchingType operatorType) {
+    private <T extends Comparable<T>>boolean compareValues(T value, T threshold, NumberMatchingType operatorType) {
         int compareResult = value.compareTo(threshold);
         switch (operatorType) {
             case EQUAL_TO:

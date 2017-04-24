@@ -70,6 +70,12 @@ public class PropertyNameConstants {
     public static final String OUTER_ATTRIBUTE_NAME = "outerAttribute";
     public static final String SPAN_DISTANCE = "spanDistance";
     public static final String JOIN_SIMILARITY_THRESHOLD = "similarityThreshold";
-
+    
+    // related to comparable
+    public static final String NUMBER_MATCHING_TYPE = "compareNumber";
+    public static final String NUMBER_THRESHOLD = "threshold";
+    
+    // related to aggregation
+    public static final String AGGREGATION_TYPE = "aggregationType";
     
 }

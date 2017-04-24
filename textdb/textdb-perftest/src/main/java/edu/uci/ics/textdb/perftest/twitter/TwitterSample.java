@@ -16,7 +16,7 @@ import edu.uci.ics.textdb.storage.constants.LuceneAnalyzerConstants;
 public class TwitterSample {
     
     public static String twitterFilePath = "/Users/georgewang/Desktop/twitter_data/data/climate_change_tweets.json";
-    public static String twitterClimateTable = "twitter_climate";
+    public static String twitterClimateTable = "twitter";
     
     public static void main(String[] args) throws Exception {
         writeTwitterIndex();
@@ -25,7 +25,7 @@ public class TwitterSample {
     public static void writeTwitterIndex() throws Exception {
         RelationManager relationManager = RelationManager.getRelationManager();
         relationManager.deleteTable(twitterClimateTable);
-        relationManager.createTable(twitterClimateTable, "../index/twitter_climate/", TwitterSchema.TWITTER_SCHEMA, 
+        relationManager.createTable(twitterClimateTable, "../index/twitter/", TwitterSchema.TWITTER_SCHEMA, 
                 LuceneAnalyzerConstants.standardAnalyzerString());
         
         DataWriter dataWriter = relationManager.getTableDataWriter(twitterClimateTable);
@@ -35,15 +35,17 @@ public class TwitterSample {
         JsonNode jsonNode = new ObjectMapper().readTree(new File(twitterFilePath));
         for (JsonNode tweet : jsonNode) {
             try {
-                int id = tweet.get("id").asInt();
+                Long id = tweet.get("id").asLong();
+                System.out.println(id.toString());
                 String createAt = tweet.get("create_at").asText();
                 String userName = tweet.get("user").get("screen_name").asText();
                 String text = tweet.get("text").asText();
                 Tuple tuple = new Tuple(TwitterSchema.TWITTER_SCHEMA,
-                        new IntegerField(id),
+                        new StringField(id.toString()),
                         new StringField(createAt),
                         new StringField(userName),
                         new TextField(text));
+                System.out.println(tuple.getField("id").getValue());
                 dataWriter.insertTuple(tuple);
                 counter++;
             } catch (Exception e) {

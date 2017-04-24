@@ -7,7 +7,7 @@ import edu.uci.ics.textdb.api.schema.Schema;
 public class TwitterSchema {
     
     public static String ID = "id";
-    public static Attribute ID_ATTRIBUTE = new Attribute(ID, AttributeType.INTEGER);
+    public static Attribute ID_ATTRIBUTE = new Attribute(ID, AttributeType.STRING);
     
     public static String CREATE_AT = "create_at";
     public static Attribute CREATE_AT_ATTRIBUTE = new Attribute(CREATE_AT, AttributeType.STRING);

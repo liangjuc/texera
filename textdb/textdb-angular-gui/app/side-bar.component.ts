@@ -26,11 +26,18 @@ export class SideBarComponent {
     tempSubmitted = false;
 
     hiddenList : string[] = ["operatorType"];
-    selectorList : string[] = ["matchingType","nlpEntityType","splitType","sampleType"].concat(this.hiddenList);
+    
+    // selectorList : string[] = this.hiddenList;
+    selectorList : string[] = ["matchingType","nlpEntityType","splitType","sampleType","compareNumber","aggregationType"].concat(this.hiddenList);
+
     matcherList : string[] = ["conjunction","phrase","substring"];
     nlpEntityList : string[] = ["noun","verb","adjective","adverb","ne_all","number","location","person","organization","money","percent","date","time"];
     regexSplitList : string[] = ["left", "right", "standalone"];
     samplerList : string[] = ["random", "firstk"];
+    
+    compareList : string[] = ["=", ">", ">=", "<", "<=", "!="];
+    aggregationList : string[] = ["min", "max", "count", "sum", "average"];
+
 
     @ViewChild('MyModal')
     modal: ModalComponent;
@@ -77,7 +84,7 @@ export class SideBarComponent {
                   // this.tempSubmitted = true;
                   var node = new PrettyJSON.view.Node({
                     el: jQuery("#elem"),
-                    data: JSON.parse(data.message)
+                    data: data.message
                   });
                 }
 

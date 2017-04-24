@@ -6,6 +6,7 @@
         <form [hidden]="attributes.length === 0" (ngSubmit)="onSubmit()" #editOperatorForm="ngForm">
             <div class="form-group" *ngFor="let attribute of attributes">
                 <label *ngIf="checkInHidden(attribute) === -1" for="{{attribute}}">{{humanize(attribute)}}</label>
+                
                 <select *ngIf="attribute === 'matchingType'" class="form-control" id="{{attribute}}" required  [(ngModel)]="data.properties.attributes[attribute]" name="{{attribute}}" #{{attribute}}="ngModel">
                   <option *ngFor="let matcher of matcherList" [value] = "matcher">{{matcher}}</option>
                 </select>
@@ -18,6 +19,13 @@
                 <select *ngIf="attribute === 'sampleType'" class="form-control" id="{{attribute}}" required  [(ngModel)]="data.properties.attributes[attribute]" name="{{attribute}}" #{{attribute}}="ngModel">
                   <option *ngFor="let sample of samplerList" [value] = "sample">{{sample}}</option>
                 </select>
+                <select *ngIf="attribute === 'compareNumber'" class="form-control" id="{{attribute}}" required  [(ngModel)]="data.properties.attributes[attribute]" name="{{attribute}}" #{{attribute}}="ngModel">
+                  <option *ngFor="let compare of compareList" [value] = "compare">{{compare}}</option>
+                </select>
+                <select *ngIf="attribute === 'aggregationType'" class="form-control" id="{{attribute}}" required  [(ngModel)]="data.properties.attributes[attribute]" name="{{attribute}}" #{{attribute}}="ngModel">
+                  <option *ngFor="let agg of aggregationList" [value] = "agg">{{agg}}</option>
+                </select>
+
 
                 <input *ngIf="checkInSelector(attribute) === -1" [(ngModel)]="data.properties.attributes[attribute]" name="{{attribute}}" type="text" class="form-control" id="{{attribute}}" value="{{data.properties.attributes[attribute]}}" #{{attribute}}="ngModel" required>
             </div>
