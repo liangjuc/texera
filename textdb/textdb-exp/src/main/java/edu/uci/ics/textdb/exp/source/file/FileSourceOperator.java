@@ -5,9 +5,7 @@ import edu.uci.ics.textdb.api.field.IDField;
 import edu.uci.ics.textdb.api.field.TextField;
 import edu.uci.ics.textdb.api.tuple.Tuple;
 
-import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Iterator;
 import java.util.stream.Collectors;
 
 /**

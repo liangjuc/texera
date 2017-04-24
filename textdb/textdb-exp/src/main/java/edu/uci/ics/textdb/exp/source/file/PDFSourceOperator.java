@@ -4,17 +4,13 @@ import edu.uci.ics.textdb.api.exception.TextDBException;
 import edu.uci.ics.textdb.api.field.IDField;
 import edu.uci.ics.textdb.api.field.TextField;
 import edu.uci.ics.textdb.api.tuple.Tuple;
-import edu.uci.ics.textdb.exp.source.file.AbstractSourceOperator;
-import edu.uci.ics.textdb.exp.source.file.FileSourcePredicate;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
 import java.util.stream.Collectors;
 
 /**
