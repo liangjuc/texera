@@ -7,8 +7,7 @@ import edu.uci.ics.textdb.api.tuple.Tuple;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Arrays;
-import java.util.List;
+import java.util.Iterator;
 import java.util.stream.Collectors;
 
 /**
@@ -33,8 +32,6 @@ import java.util.stream.Collectors;
  */
 public class FileSourceOperator extends AbstractSourceOperator {
 
-    private List<String> allowedExtension = Arrays.asList("txt", "json", "xml", "csv", "html", "md");
-
     public FileSourceOperator(FileSourcePredicate predicate) {
         super(predicate);
         System.out.println(predicate.getAllowedExtensions());
@@ -48,8 +45,9 @@ public class FileSourceOperator extends AbstractSourceOperator {
             throw new RuntimeException(String.format(
                     "the filePath: %s doesn't contain any valid text files. " +
                             "File extension must be one of %s .",
-                    predicate.getFilePath(), allowedExtension));
+                    predicate.getFilePath(), predicate.getAllowedExtensions()));
         }
+        pathIterator = pathList.iterator();
     }
 
     @Override
@@ -57,20 +55,21 @@ public class FileSourceOperator extends AbstractSourceOperator {
         if (cursor == CLOSED || cursor >= pathList.size()) {
             return null;
         }
-        // keep iterating until 
+        // keep iterating until
         //   1) a file is converted to a tuple successfully
         //   2) the cursor reaches the end
-        while (cursor < pathList.size()) {
+        while (pathIterator.hasNext()) {
             try {
-                String content = new String(Files.readAllBytes(pathList.get(cursor)));
-                // create a tuple according to the string
+                String content = new String(Files.readAllBytes(pathIterator.next()));
                 // and assign a random ID to it
-                Tuple tuple = new Tuple(outputSchema, IDField.newRandomID(), new TextField(content));
+                Tuple tuple = null;
+                if (content != null) {
+                    tuple = new Tuple(outputSchema, IDField.newRandomID(), new TextField(content));
+                }
                 cursor++;
                 return tuple;
-            } catch (IOException e) {
-                // if reading the current path fails, increment the cursor and continue
-                e.printStackTrace();
+            } catch (Exception exp) {
+                exp.printStackTrace();
             }
         }
         return null;

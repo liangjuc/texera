@@ -38,15 +38,13 @@ import java.util.stream.Collectors;
  */
 public class PDFSourceOperator extends AbstractSourceOperator {
 
-    private List<String> allowedExtension = Arrays.asList("pdf");
-
     private Iterator<Path> pathIterator;
 
     public PDFSourceOperator(FileSourcePredicate predicate) {
         super(predicate);
 
         this.pathList = pathList.stream()
-                .filter(path -> isExtensionAllowed(allowedExtension, path))
+                .filter(path -> isExtensionAllowed(predicate.getAllowedExtensions(), path))
                 .collect(Collectors.toList());
 
         if (pathList.isEmpty()) {

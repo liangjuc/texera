@@ -12,6 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,6 +26,8 @@ public abstract class AbstractSourceOperator implements ISourceOperator {
     protected final Schema outputSchema;
     protected FileSourcePredicate predicate;
     protected List<Path> pathList;
+    protected Iterator<Path> pathIterator;
+
 
     public AbstractSourceOperator(FileSourcePredicate predicate) {
         this.predicate = predicate;
