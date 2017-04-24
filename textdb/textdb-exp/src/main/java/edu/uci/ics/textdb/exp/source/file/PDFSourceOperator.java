@@ -9,9 +9,6 @@ import org.apache.pdfbox.text.PDFTextStripper;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.util.Iterator;
-import java.util.stream.Collectors;
 
 /**
  * PDFSourceOperator reads a file or files under a directory and converts one file to one tuple.
@@ -34,23 +31,8 @@ import java.util.stream.Collectors;
  */
 public class PDFSourceOperator extends AbstractSourceOperator {
 
-    private Iterator<Path> pathIterator;
-
     public PDFSourceOperator(FileSourcePredicate predicate) {
         super(predicate);
-
-        this.pathList = pathList.stream()
-                .filter(path -> isExtensionAllowed(predicate.getAllowedExtensions(), path))
-                .collect(Collectors.toList());
-
-        if (pathList.isEmpty()) {
-            // TODO: change it to TextDB RuntimeException
-            throw new RuntimeException(String.format(
-                    "the filePath: %s doesn't contain any valid text files. " +
-                            "File extension must be one of %s .",
-                    predicate.getFilePath(), this.predicate.getAllowedExtensions()));
-        }
-        pathIterator = pathList.iterator();
     }
 
 

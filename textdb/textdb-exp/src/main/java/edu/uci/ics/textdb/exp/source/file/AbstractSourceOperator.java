@@ -58,7 +58,18 @@ public abstract class AbstractSourceOperator implements ISourceOperator {
         this.pathList = pathList.stream()
                 .filter(path -> !Files.isDirectory(path))
                 .filter(path -> !path.getFileName().startsWith("."))
+                .filter(path -> isExtensionAllowed(predicate.getAllowedExtensions(), path))
                 .collect(Collectors.toList());
+
+        // check if the path list is empty
+        if (pathList.isEmpty()) {
+            // TODO: change it to TextDB RuntimeException
+            throw new RuntimeException(String.format(
+                    "the filePath: %s doesn't contain any valid text files. " +
+                            "File extension must be one of %s .",
+                    filePath, predicate.getAllowedExtensions()));
+        }
+        pathIterator = pathList.iterator();
     }
 
     /*

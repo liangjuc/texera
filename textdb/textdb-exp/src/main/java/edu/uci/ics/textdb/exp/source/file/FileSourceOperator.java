@@ -6,7 +6,6 @@ import edu.uci.ics.textdb.api.field.TextField;
 import edu.uci.ics.textdb.api.tuple.Tuple;
 
 import java.nio.file.Files;
-import java.util.stream.Collectors;
 
 /**
  * FileSourceOperator reads a file or files under a directory and converts one file to one tuple.
@@ -32,20 +31,6 @@ public class FileSourceOperator extends AbstractSourceOperator {
 
     public FileSourceOperator(FileSourcePredicate predicate) {
         super(predicate);
-        System.out.println(predicate.getAllowedExtensions());
-        this.pathList = pathList.stream()
-                .filter(path -> isExtensionAllowed(predicate.getAllowedExtensions(), path))
-                .collect(Collectors.toList());
-
-        // check if the path list is empty
-        if (pathList.isEmpty()) {
-            // TODO: change it to TextDB RuntimeException
-            throw new RuntimeException(String.format(
-                    "the filePath: %s doesn't contain any valid text files. " +
-                            "File extension must be one of %s .",
-                    predicate.getFilePath(), predicate.getAllowedExtensions()));
-        }
-        pathIterator = pathList.iterator();
     }
 
     @Override
