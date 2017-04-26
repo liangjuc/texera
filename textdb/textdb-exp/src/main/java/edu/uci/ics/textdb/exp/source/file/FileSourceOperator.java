@@ -27,7 +27,7 @@ import java.nio.file.Files;
  * @author Zuozhi Wang
  * @author Jun Ma
  */
-public class FileSourceOperator extends AbstractSourceOperator {
+public class FileSourceOperator extends AbstractFileSourceOperator {
 
     public FileSourceOperator(FileSourcePredicate predicate) {
         super(predicate);

@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 /**
  * Created by junm5 on 4/24/17.
  */
-public abstract class AbstractSourceOperator implements ISourceOperator {
+public abstract class AbstractFileSourceOperator implements ISourceOperator {
 
     // cursor indicating the current position
     protected Integer cursor = CLOSED;
@@ -29,7 +29,7 @@ public abstract class AbstractSourceOperator implements ISourceOperator {
     protected Iterator<Path> pathIterator;
 
 
-    public AbstractSourceOperator(FileSourcePredicate predicate) {
+    public AbstractFileSourceOperator(FileSourcePredicate predicate) {
         this.predicate = predicate;
         this.outputSchema = new Schema(SchemaConstants._ID_ATTRIBUTE, new Attribute(predicate.getAttributeName(), AttributeType.TEXT));
         this.pathList = new ArrayList<>();

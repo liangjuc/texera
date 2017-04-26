@@ -11,16 +11,16 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * PDFSourceOperator reads a file or files under a directory and converts one file to one tuple.
+ * PDFFileSourceOperator reads a file or files under a directory and converts one file to one tuple.
  * <p>
  * The filePath in the predicate must be 1) a text file or 2) a directory
  * <p>
- * In case of a directory, PDFSourceOperator supports recursively reading files
+ * In case of a directory, PDFFileSourceOperator supports recursively reading files
  * and specifying a max recursive depth.
  * <p>
  * The files must have one of the supported extensions: {@code supportedExtensions}
  * <p>
- * PDFSourceOperator reads all content of one file and convert them to one tuple.
+ * PDFFileSourceOperator reads all content of one file and convert them to one tuple.
  * The tuple will have one column, the attributeName as defined in {@code PDFSourcePredicate},
  * with the attributeType as TEXT.
  * <p>
@@ -29,9 +29,9 @@ import java.io.IOException;
  *
  * @author Jun Ma
  */
-public class PDFSourceOperator extends AbstractSourceOperator {
+public class PDFFileSourceOperator extends AbstractFileSourceOperator {
 
-    public PDFSourceOperator(FileSourcePredicate predicate) {
+    public PDFFileSourceOperator(FileSourcePredicate predicate) {
         super(predicate);
     }
 
