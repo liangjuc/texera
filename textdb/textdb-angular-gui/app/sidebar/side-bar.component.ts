@@ -1,7 +1,9 @@
-import { Component, ViewChild} from '@angular/core';
+import {Component, ViewChild, OnInit} from '@angular/core';
 
 import { CurrentDataService } from '../services/current-data-service';
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
+import { IMultiSelectOption } from 'angular-2-dropdown-multiselect';
+import {TableMetadata} from "../services/table-metadata";
 
 declare var jQuery: any;
 declare var Backbone: any;
@@ -23,7 +25,6 @@ export class SideBarComponent {
 
   operatorId: number;
   operatorTitle: string;
-  //
 
   hiddenList: string[] = ["operatorType"];
 
@@ -36,6 +37,31 @@ export class SideBarComponent {
 
   compareList: string[] = ["=", ">", ">=", "<", "<=", "!="];
   aggregationList: string[] = ["min", "max", "count", "sum", "average"];
+
+  public attributeItems:Array<string> = [];
+  public tableNameItems:Array<string> = [];
+
+  private value:any = ['Athens'];
+
+  public attributeSelected(value:any):void {
+    console.log('Selected value is: ', value);
+  }
+
+  public tableNameSelected(value:any):void {
+    console.log('Selected value is: ', value);
+  }
+
+  public attributeRemoved(value:any):void {
+    console.log('Removed value is: ', value);
+  }
+
+  public tableNameRemoved(value:any):void {
+    console.log('Removed value is: ', value);
+  }
+
+  public refreshValue(value:any):void {
+    this.value = value;
+  }
 
   @ViewChild('MyModal')
   modal: ModalComponent;
@@ -87,6 +113,21 @@ export class SideBarComponent {
         this.ModalOpen();
 
       });
+
+    currentDataService.metadataRetrieved$.subscribe(
+        data => {
+          //TODO:: show attributes according to the source table.
+          // Currently, it only shows attributes of promed table.
+          let metadata: (Array<TableMetadata>) = data;
+          metadata.forEach(x => {
+            if (x.tableName === 'promed') {
+              this.tableNameItems.push((x.tableName));
+              x.attributes.forEach(
+                  y => this.attributeItems.push(y.attributeName));
+            }
+          });
+        }
+    )
   }
 
   humanize(name: string): string {
