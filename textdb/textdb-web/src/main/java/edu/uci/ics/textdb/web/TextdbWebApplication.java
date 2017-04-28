@@ -12,6 +12,7 @@ import edu.uci.ics.textdb.web.healthcheck.SampleHealthCheck;
 import edu.uci.ics.textdb.web.request.beans.KeywordSourceBean;
 import edu.uci.ics.textdb.web.request.beans.NlpExtractorBean;
 import edu.uci.ics.textdb.web.request.beans.TupleStreamSinkBean;
+import edu.uci.ics.textdb.web.resource.InitSystemResource;
 import edu.uci.ics.textdb.web.resource.NewQueryPlanResource;
 import edu.uci.ics.textdb.web.resource.PlanStoreResource;
 import edu.uci.ics.textdb.web.resource.QueryPlanResource;
@@ -65,6 +66,11 @@ public class TextdbWebApplication extends Application<TextdbWebConfiguration> {
         final SampleHealthCheck sampleHealthCheck = new SampleHealthCheck();
         // Registering the SampleHealthCheck with the environment
         environment.healthChecks().register("sample", sampleHealthCheck);
+
+        // Creates an instance of the InitSystemResource class to register with Jersey
+        final InitSystemResource initSystemResource = new InitSystemResource();
+        // Registers the InitSystemResource with Jersey
+        environment.jersey().register(initSystemResource);
 
         // Configuring the object mapper used by Dropwizard
         environment.getObjectMapper().configure(MapperFeature.USE_GETTERS_AS_SETTERS, false);
