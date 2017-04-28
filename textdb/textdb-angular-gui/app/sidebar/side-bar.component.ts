@@ -23,6 +23,7 @@ export class SideBarComponent {
 
   operatorId: number;
   operatorTitle: string;
+  //
 
   hiddenList: string[] = ["operatorType"];
 
