@@ -26,14 +26,19 @@
                   <option *ngFor="let agg of aggregationList" [value] = "agg">{{agg}}</option>
                 </select>
 
-                <ng-select *ngIf="attribute === 'attributes'"
-                           id="{{attribute}}" [(ngModel)]="selectedAttributes" name="{{attribute}}" #{{attribute}}="ngModel"
-                           [multiple]="true"
-                           [allowClear]="true"
-                           [items]="attributeItems"
-                           placeholder="No attribute selected"
-                           >
-                </ng-select>
+                <div *ngIf="attribute === 'attributes'">
+                    <ng-select
+                               id="{{attribute}}" [(ngModel)]="selectedAttributes" name="{{attribute}}" #{{attribute}}="ngModel"
+                               (typed)="onChangeCustomAttributes($event)"
+                               [multiple]="true"
+                               [allowClear]="true"
+                               [items]="attributeItems"
+                               placeholder="No attribute selected"
+                               >
+                    </ng-select>
+                    <button type="button" class="btn btn-xs" (click)="addCustomAttribute()">Add attribute</button>
+                </div>
+
 
                 <select *ngIf="attribute === 'tableName'" class="form-control" id="{{attribute}}" [(ngModel)]="data.properties.attributes[attribute]" name="{{attribute}}" #{{attribute}}="ngModel">
                     <option *ngFor="let tableName of tableNameItems" [value] = "tableName">{{tableName}}</option>

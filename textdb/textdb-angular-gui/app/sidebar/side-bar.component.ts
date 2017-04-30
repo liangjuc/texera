@@ -41,6 +41,7 @@ export class SideBarComponent {
   attributeItems:Array<string> = [];
   tableNameItems:Array<string> = [];
   selectedAttributes:Array<SelectItem> = [];
+  customAttribute:string = "";
 
   @ViewChild('MyModal')
   modal: ModalComponent;
@@ -103,7 +104,11 @@ export class SideBarComponent {
             if (x.tableName === 'promed') {
               this.tableNameItems.push((x.tableName));
               x.attributes.forEach(
-                  y => this.attributeItems.push(y.attributeName));
+                  y => {
+                      if (!y.attributeName.startsWith("_")) {
+                          this.attributeItems.push(y.attributeName);
+                      }
+                  });
             }
           });
         }
@@ -133,6 +138,15 @@ export class SideBarComponent {
     this.attributes = [];
     jQuery("#the-flowchart").flowchart("deleteOperator", this.operatorId);
     this.currentDataService.setAllOperatorData(jQuery('#the-flowchart').flowchart('getData'));
+  }
+
+  onChangeCustomAttributes(value: string) {
+    this.customAttribute = value;
+  }
+
+  addCustomAttribute() {
+    this.selectedAttributes.push(new SelectItem(this.customAttribute));
+    this.customAttribute = "";
   }
 
   private itemsToStrings(value:Array<SelectItem> = []):Array<string> {
