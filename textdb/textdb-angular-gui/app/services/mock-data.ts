@@ -255,10 +255,10 @@ let keywordSource = {
     attributes : {
         "operatorType": "KeywordSource",
         "query": "keyword",
-        "attributes": ["attr1", "attr2"],
+        "attributes": [],
         "luceneAnalyzer": "standard",
         "matchingType": "conjunction",
-        "tableName": "tableName",
+        "tableName": "",
         "spanListName": ""
     }
   }
@@ -283,10 +283,10 @@ let dictionarySource = {
     attributes : {
         "operatorType": "DictionarySource",
         "dictionaryEntries": ["entry1", "entry2"],
-        "attributes": ["attr1", "attr2"],
+        "attributes": [],
         "luceneAnalyzer": "standard",
         "matchingType": "conjunction",
-        "tableName": "tableName"
+        "tableName": ""
     }
   }
 }

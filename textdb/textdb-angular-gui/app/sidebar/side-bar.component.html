@@ -7,7 +7,6 @@
             <div class="form-group" *ngFor="let attribute of attributes">
                 <label *ngIf="checkInHidden(attribute) === -1" for="{{attribute}}">{{humanize(attribute)}}</label>
 
-
                 <select *ngIf="attribute === 'matchingType'" class="form-control" id="{{attribute}}" required  [(ngModel)]="data.properties.attributes[attribute]" name="{{attribute}}" #{{attribute}}="ngModel">
                   <option *ngFor="let matcher of matcherList" [value] = "matcher">{{matcher}}</option>
                 </select>
@@ -28,28 +27,19 @@
                 </select>
 
                 <ng-select *ngIf="attribute === 'attributes'"
+                           id="{{attribute}}" [(ngModel)]="selectedAttributes" name="{{attribute}}" #{{attribute}}="ngModel"
                            [multiple]="true"
                            [allowClear]="true"
                            [items]="attributeItems"
-                           (data)="refreshValue($event)"
-                           (selected)="attributeSelected($event)"
-                           (removed)="attributeRemoved($event)"
                            placeholder="No attribute selected"
                            >
                 </ng-select>
 
-                <ng-select *ngIf="attribute === 'tableName'"
-                           [multiple]="true"
-                           [allowClear]="true"
-                           [items]="tableNameItems"
-                           (data)="refreshValue($event)"
-                           (selected)="tableNameSelected($event)"
-                           (removed)="tableNameRemoved($event)"
-                           placeholder="No attribute selected"
-                >
-                </ng-select>
+                <select *ngIf="attribute === 'tableName'" class="form-control" id="{{attribute}}" [(ngModel)]="data.properties.attributes[attribute]" name="{{attribute}}" #{{attribute}}="ngModel">
+                    <option *ngFor="let tableName of tableNameItems" [value] = "tableName">{{tableName}}</option>
+                </select>
 
-                <input *ngIf="checkInSelector(attribute) === -1 && attribute !== 'attributes' && attribute !== 'tableName'" [(ngModel)]="data.properties.attributes[attribute]" name="{{attribute}}" type="text" class="form-control" id="{{attribute}}" value="{{data.properties.attributes[attribute]}}" #{{attribute}}="ngModel" required>
+                <input *ngIf="checkInSelector(attribute) === -1" [(ngModel)]="data.properties.attributes[attribute]" name="{{attribute}}" type="text" class="form-control" id="{{attribute}}" value="{{data.properties.attributes[attribute]}}" #{{attribute}}="ngModel" required>
             </div>
             <button type="submit" class="btn btn-success" [disabled]="!editOperatorForm.form.valid">Save</button>
             <button type="button" class="btn btn-default" (click) = "onDelete()">Delete</button>

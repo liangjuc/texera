@@ -2,8 +2,8 @@ import {Component, ViewChild, OnInit} from '@angular/core';
 
 import { CurrentDataService } from '../services/current-data-service';
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
-import { IMultiSelectOption } from 'angular-2-dropdown-multiselect';
 import {TableMetadata} from "../services/table-metadata";
+import {SelectItem} from "ng2-select";
 
 declare var jQuery: any;
 declare var Backbone: any;
@@ -28,7 +28,7 @@ export class SideBarComponent {
 
   hiddenList: string[] = ["operatorType"];
 
-  selectorList: string[] = ["matchingType", "nlpEntityType", "splitType", "sampleType", "compareNumber", "aggregationType"].concat(this.hiddenList);
+  selectorList: string[] = ["matchingType", "nlpEntityType", "splitType", "sampleType", "compareNumber", "aggregationType", "attributes", "tableName"].concat(this.hiddenList);
 
   matcherList: string[] = ["conjunction", "phrase", "substring"];
   nlpEntityList: string[] = ["noun", "verb", "adjective", "adverb", "ne_all", "number", "location", "person", "organization", "money", "percent", "date", "time"];
@@ -38,30 +38,9 @@ export class SideBarComponent {
   compareList: string[] = ["=", ">", ">=", "<", "<=", "!="];
   aggregationList: string[] = ["min", "max", "count", "sum", "average"];
 
-  public attributeItems:Array<string> = [];
-  public tableNameItems:Array<string> = [];
-
-  private value:any = ['Athens'];
-
-  public attributeSelected(value:any):void {
-    console.log('Selected value is: ', value);
-  }
-
-  public tableNameSelected(value:any):void {
-    console.log('Selected value is: ', value);
-  }
-
-  public attributeRemoved(value:any):void {
-    console.log('Removed value is: ', value);
-  }
-
-  public tableNameRemoved(value:any):void {
-    console.log('Removed value is: ', value);
-  }
-
-  public refreshValue(value:any):void {
-    this.value = value;
-  }
+  attributeItems:Array<string> = [];
+  tableNameItems:Array<string> = [];
+  selectedAttributes:Array<SelectItem> = [];
 
   @ViewChild('MyModal')
   modal: ModalComponent;
@@ -91,6 +70,7 @@ export class SideBarComponent {
         for (var attribute in data.operatorData.properties.attributes) {
           this.attributes.push(attribute);
         }
+        this.selectedAttributes = this.stringsToItems(data.operatorData.properties.attributes.attributes);
       });
 
     currentDataService.checkPressed$.subscribe(
@@ -141,6 +121,7 @@ export class SideBarComponent {
   }
 
   onSubmit() {
+    this.data.properties.attributes.attributes = this.itemsToStrings(this.selectedAttributes);
     this.inSavedWindow = true;
     jQuery('#the-flowchart').flowchart('setOperatorData', this.operatorId, this.data);
     this.currentDataService.setAllOperatorData(jQuery('#the-flowchart').flowchart('getData'));
@@ -152,5 +133,20 @@ export class SideBarComponent {
     this.attributes = [];
     jQuery("#the-flowchart").flowchart("deleteOperator", this.operatorId);
     this.currentDataService.setAllOperatorData(jQuery('#the-flowchart').flowchart('getData'));
+  }
+
+  private itemsToStrings(value:Array<SelectItem> = []):Array<string> {
+    return value
+        .map((item:SelectItem) => {
+          return item.text;
+        });
+  }
+
+  private stringsToItems(value:Array<string> = []):Array<SelectItem> {
+    return value
+        .map((item:string) => {
+          let selectItem: SelectItem = new SelectItem(item);
+          return selectItem;
+        });
   }
 }
