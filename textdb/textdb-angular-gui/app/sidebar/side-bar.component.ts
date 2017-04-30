@@ -96,22 +96,22 @@ export class SideBarComponent {
       });
 
     currentDataService.metadataRetrieved$.subscribe(
-        data => {
-          //TODO:: show attributes according to the source table.
-          // Currently, it only shows attributes of promed table.
-          let metadata: (Array<TableMetadata>) = data;
-          metadata.forEach(x => {
-            if (x.tableName === 'promed') {
-              this.tableNameItems.push((x.tableName));
-              x.attributes.forEach(
-                  y => {
-                      if (!y.attributeName.startsWith("_")) {
-                          this.attributeItems.push(y.attributeName);
-                      }
-                  });
-            }
-          });
-        }
+      data => {
+        //TODO:: show attributes according to the source table.
+        // Currently, it only shows attributes of promed table.
+        let metadata: (Array<TableMetadata>) = data;
+        metadata.forEach(x => {
+          if (x.tableName === 'promed') {
+            this.tableNameItems.push((x.tableName));
+            x.attributes.forEach(
+              y => {
+                if (!y.attributeName.startsWith("_")) {
+                  this.attributeItems.push(y.attributeName);
+                }
+              });
+          }
+        });
+      }
     )
   }
 
@@ -145,8 +145,10 @@ export class SideBarComponent {
   }
 
   addCustomAttribute() {
-    this.selectedAttributes.push(new SelectItem(this.customAttribute));
-    this.customAttribute = "";
+    if (this.customAttribute.length !== 0) {
+      this.selectedAttributes.push(new SelectItem(this.customAttribute));
+      this.customAttribute = "";
+    }
   }
 
   private itemsToStrings(value:Array<SelectItem> = []):Array<string> {
