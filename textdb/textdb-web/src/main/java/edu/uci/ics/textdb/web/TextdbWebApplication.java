@@ -108,12 +108,12 @@ public class TextdbWebApplication extends Application<TextdbWebConfiguration> {
     }
 
     public static void main(String args[]) throws Exception {
-//        System.out.println("Writing Sample Index");
-//        SampleExtraction.writeSampleIndex();
-//        System.out.println("Completed Writing Sample Index");
-//        System.out.println("Started Loading Stanford NLP");
-//        loadStanfordNLP();
-//        System.out.println("Finished Loading Stanford NLP");
+        System.out.println("Writing Sample Index");
+        SampleExtraction.writeSampleIndex();
+        System.out.println("Completed Writing Sample Index");
+        System.out.println("Started Loading Stanford NLP");
+        loadStanfordNLP();
+        System.out.println("Finished Loading Stanford NLP");
         new TextdbWebApplication().run(args);
     }
 }
