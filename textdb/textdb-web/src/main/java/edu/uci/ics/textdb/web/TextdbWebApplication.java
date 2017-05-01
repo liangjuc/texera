@@ -2,6 +2,7 @@ package edu.uci.ics.textdb.web;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
+import com.github.dirkraft.dropwizard.fileassets.FileAssetsBundle;
 
 import edu.uci.ics.textdb.api.engine.Plan;
 import edu.uci.ics.textdb.api.exception.TextDBException;
@@ -16,6 +17,7 @@ import edu.uci.ics.textdb.web.resource.NewQueryPlanResource;
 import edu.uci.ics.textdb.web.resource.PlanStoreResource;
 import edu.uci.ics.textdb.web.resource.QueryPlanResource;
 import io.dropwizard.Application;
+import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.eclipse.jetty.servlets.CrossOriginFilter;
@@ -43,11 +45,14 @@ public class TextdbWebApplication extends Application<TextdbWebConfiguration> {
 
     @Override
     public void initialize(Bootstrap<TextdbWebConfiguration> bootstrap) {
-        // Will have some initialization information here
+        // serve static frontend GUI files
+        bootstrap.addBundle(new FileAssetsBundle("./textdb-angular-gui/", "/", "index.html"));
     }
 
     @Override
     public void run(TextdbWebConfiguration textdbWebConfiguration, Environment environment) throws Exception {
+        // serve backend at /api
+        environment.jersey().setUrlPattern("/api/*");
         // Creates an instance of the QueryPlanResource class to register with Jersey
         final QueryPlanResource queryPlanResource = new QueryPlanResource();
         // Registers the QueryPlanResource with Jersey
@@ -103,12 +108,12 @@ public class TextdbWebApplication extends Application<TextdbWebConfiguration> {
     }
 
     public static void main(String args[]) throws Exception {
-        System.out.println("Writing Sample Index");
-        SampleExtraction.writeSampleIndex();
-        System.out.println("Completed Writing Sample Index");
-        System.out.println("Started Loading Stanford NLP");
-        loadStanfordNLP();
-        System.out.println("Finished Loading Stanford NLP");
+//        System.out.println("Writing Sample Index");
+//        SampleExtraction.writeSampleIndex();
+//        System.out.println("Completed Writing Sample Index");
+//        System.out.println("Started Loading Stanford NLP");
+//        loadStanfordNLP();
+//        System.out.println("Finished Loading Stanford NLP");
         new TextdbWebApplication().run(args);
     }
 }
