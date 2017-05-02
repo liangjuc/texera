@@ -1,4 +1,3 @@
+cd $TEXTDB_HOME
 mvn clean install -DskipTests
-cd textdb-angular-gui
-npm install
-npm run compile
+./textdb-scripts/gui.sh
