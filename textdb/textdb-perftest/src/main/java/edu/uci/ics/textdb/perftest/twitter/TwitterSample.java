@@ -36,7 +36,6 @@ public class TwitterSample {
         for (JsonNode tweet : jsonNode) {
             try {
                 Long id = tweet.get("id").asLong();
-                System.out.println(id.toString());
                 String createAt = tweet.get("create_at").asText();
                 String userName = tweet.get("user").get("screen_name").asText();
                 String text = tweet.get("text").asText();
