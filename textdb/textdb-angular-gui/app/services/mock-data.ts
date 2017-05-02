@@ -21,7 +21,7 @@ let keywordMatcher = {
             "attributes": ["text"],
             "luceneAnalyzer": "standard",
             "matchingType": "phrase",
-            "spanListName": " "
+            "spanListName": " ",
         }
     }
 };
@@ -71,6 +71,7 @@ let dictionaryMatcher = {
         "attributes": ["attr1", "attr2"],
         "luceneAnalyzer": "standard",
         "matchingType": "phrase",
+        "spanListName": " ",
     }
   }
 }
@@ -259,7 +260,7 @@ let keywordSource = {
         "luceneAnalyzer": "standard",
         "matchingType": "phrase",
         "tableName": "tableName",
-        "spanListName": " "
+        "spanListName": " ",
     }
   }
 }
@@ -286,7 +287,8 @@ let dictionarySource = {
         "attributes": ["attr1", "attr2"],
         "luceneAnalyzer": "standard",
         "matchingType": "phrase",
-        "tableName": "tableName"
+        "tableName": "tableName",
+        "spanListName": " ",
     }
   }
 }
