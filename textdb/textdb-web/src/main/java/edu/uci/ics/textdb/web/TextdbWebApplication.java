@@ -8,6 +8,7 @@ import edu.uci.ics.textdb.api.engine.Plan;
 import edu.uci.ics.textdb.api.exception.TextDBException;
 import edu.uci.ics.textdb.dataflow.sink.TupleStreamSink;
 import edu.uci.ics.textdb.perftest.sample.SampleExtraction;
+import edu.uci.ics.textdb.perftest.twitter.TwitterSample;
 import edu.uci.ics.textdb.plangen.LogicalPlan;
 import edu.uci.ics.textdb.web.healthcheck.SampleHealthCheck;
 import edu.uci.ics.textdb.web.request.beans.KeywordSourceBean;
@@ -114,6 +115,9 @@ public class TextdbWebApplication extends Application<TextdbWebConfiguration> {
         System.out.println("Started Loading Stanford NLP");
         loadStanfordNLP();
         System.out.println("Finished Loading Stanford NLP");
+        System.out.println("Writing twitter index");
+        TwitterSample.writeTwitterIndex();
+        System.out.println("Finished writing twitter index");
         new TextdbWebApplication().run(args);
     }
 }
