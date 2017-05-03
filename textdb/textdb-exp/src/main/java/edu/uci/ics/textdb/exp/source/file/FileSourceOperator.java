@@ -1,11 +1,13 @@
 package edu.uci.ics.textdb.exp.source.file;
 
+import com.google.common.collect.Sets;
 import edu.uci.ics.textdb.api.exception.TextDBException;
 import edu.uci.ics.textdb.api.field.IDField;
 import edu.uci.ics.textdb.api.field.TextField;
 import edu.uci.ics.textdb.api.tuple.Tuple;
 
-import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Set;
 
 /**
  * FileSourceOperator reads a file or files under a directory and converts one file to one tuple.
@@ -33,6 +35,10 @@ public class FileSourceOperator extends AbstractFileSourceOperator {
         super(predicate);
     }
 
+    private Set<String> commonFiles = Sets.newHashSet("txt", "json", "xml", "csv", "html", "md");
+    private Set<String> pptFiles = Sets.newHashSet("ppt", "pptx");
+    private Set<String> pdfFiles = Sets.newHashSet("pdf");
+
     @Override
     public Tuple getNextTuple() throws TextDBException {
         if (cursor == CLOSED || cursor >= pathList.size()) {
@@ -43,7 +49,15 @@ public class FileSourceOperator extends AbstractFileSourceOperator {
         //   2) the cursor reaches the end
         while (pathIterator.hasNext()) {
             try {
-                String content = new String(Files.readAllBytes(pathIterator.next()));
+                Path path = pathIterator.next();
+                String extension = getExtension(path);
+                String content = null;
+                if (commonFiles.contains(extension)) {
+                    content = TextExtractor.extractCommonFile(path);
+                } else if (pdfFiles.contains(extension)) {
+                    content = TextExtractor.extractPDFFile(path);
+                }else if(pptFiles.contains(extension)){
+                }
                 // and assign a random ID to it
                 Tuple tuple = null;
                 if (content != null) {
@@ -56,5 +70,11 @@ public class FileSourceOperator extends AbstractFileSourceOperator {
             }
         }
         return null;
+    }
+
+    private String getExtension(Path path) {
+        String filePath = path.toString();
+        int indexOf = filePath.lastIndexOf(".");
+        return filePath.substring(indexOf + 1);
     }
 }

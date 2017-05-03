@@ -18,7 +18,7 @@ import edu.uci.ics.textdb.exp.common.PropertyNameConstants;
 public class FileSourcePredicate extends PredicateBase {
 
     public static final List<String> defaultAllowedExtensions = Arrays.asList(
-            "txt", "json", "xml", "csv", "html", "md", "pdf");
+            "txt", "json", "xml", "csv", "html", "md", "pdf", "pptx", "ppt");
 
     private final String filePath;
     private final String attributeName;
