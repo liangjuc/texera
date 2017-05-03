@@ -1,13 +1,28 @@
 package edu.uci.ics.textdb.exp.source.file;
 
 import com.google.common.collect.Sets;
+import edu.uci.ics.textdb.api.constants.SchemaConstants;
+import edu.uci.ics.textdb.api.dataflow.ISourceOperator;
 import edu.uci.ics.textdb.api.exception.TextDBException;
 import edu.uci.ics.textdb.api.field.IDField;
 import edu.uci.ics.textdb.api.field.TextField;
+import edu.uci.ics.textdb.api.schema.Attribute;
+import edu.uci.ics.textdb.api.schema.AttributeType;
+import edu.uci.ics.textdb.api.schema.Schema;
 import edu.uci.ics.textdb.api.tuple.Tuple;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+
+import static edu.uci.ics.textdb.api.dataflow.IOperator.CLOSED;
+import static edu.uci.ics.textdb.api.dataflow.IOperator.OPENED;
 
 /**
  * FileSourceOperator reads a file or files under a directory and converts one file to one tuple.
@@ -29,15 +44,61 @@ import java.util.Set;
  * @author Zuozhi Wang
  * @author Jun Ma
  */
-public class FileSourceOperator extends AbstractFileSourceOperator {
-
-    public FileSourceOperator(FileSourcePredicate predicate) {
-        super(predicate);
-    }
+public class FileSourceOperator implements ISourceOperator {
+    // cursor indicating the current position
+    protected Integer cursor = CLOSED;
+    protected final Schema outputSchema;
+    protected FileSourcePredicate predicate;
+    protected List<Path> pathList;
+    protected Iterator<Path> pathIterator;
 
     private Set<String> commonFiles = Sets.newHashSet("txt", "json", "xml", "csv", "html", "md");
     private Set<String> pptFiles = Sets.newHashSet("ppt", "pptx");
     private Set<String> pdfFiles = Sets.newHashSet("pdf");
+
+
+    public FileSourceOperator(FileSourcePredicate predicate) {
+        this.predicate = predicate;
+        this.outputSchema = new Schema(SchemaConstants._ID_ATTRIBUTE, new Attribute(predicate.getAttributeName(), AttributeType.TEXT));
+        this.pathList = new ArrayList<>();
+
+        Path filePath = Paths.get(predicate.getFilePath());
+        if (!Files.exists(filePath)) {
+            throw new RuntimeException(String.format("file %s doesn't exist", filePath));
+        }
+
+        if (Files.isDirectory(filePath)) {
+            try {
+                if (this.predicate.isRecursive()) {
+                    pathList.addAll(Files.walk(filePath, this.predicate.getMaxDepth()).collect(Collectors.toList()));
+                } else {
+                    pathList.addAll(Files.list(filePath).collect(Collectors.toList()));
+                }
+
+            } catch (IOException e) {
+                throw new RuntimeException(String.format(
+                        "opening directory %s failed: " + e.getMessage(), filePath));
+            }
+        } else {
+            pathList.add(filePath);
+        }
+
+        this.pathList = pathList.stream()
+                .filter(path -> !Files.isDirectory(path))
+                .filter(path -> !path.getFileName().startsWith("."))
+                .filter(path -> isExtensionAllowed(predicate.getAllowedExtensions(), path))
+                .collect(Collectors.toList());
+
+        // check if the path list is empty
+        if (pathList.isEmpty()) {
+            // TODO: change it to TextDB RuntimeException
+            throw new RuntimeException(String.format(
+                    "the filePath: %s doesn't contain any valid text files. " +
+                            "File extension must be one of %s .",
+                    filePath, predicate.getAllowedExtensions()));
+        }
+        pathIterator = pathList.iterator();
+    }
 
     @Override
     public Tuple getNextTuple() throws TextDBException {
@@ -56,7 +117,7 @@ public class FileSourceOperator extends AbstractFileSourceOperator {
                     content = TextExtractor.extractCommonFile(path);
                 } else if (pdfFiles.contains(extension)) {
                     content = TextExtractor.extractPDFFile(path);
-                }else if(pptFiles.contains(extension)){
+                } else if (pptFiles.contains(extension)) {
                 }
                 // and assign a random ID to it
                 Tuple tuple = null;
@@ -76,5 +137,42 @@ public class FileSourceOperator extends AbstractFileSourceOperator {
         String filePath = path.toString();
         int indexOf = filePath.lastIndexOf(".");
         return filePath.substring(indexOf + 1);
+    }
+
+    /*
+     * A helper function that returns if the file's extension is supported.
+     * The extensions are expected to NOT have the dot "." in the string.
+     * For example, extensions may contain "txt", but not ".txt"
+     */
+    protected static boolean isExtensionAllowed(List<String> allowedExtensions, Path path) {
+        return allowedExtensions.stream()
+                .map(ext -> "." + ext)
+                .filter(ext -> path.getFileName().toString().toLowerCase().endsWith(ext))
+                .findAny().isPresent();
+    }
+
+    @Override
+    public void open() throws TextDBException {
+        if (cursor != CLOSED) {
+            return;
+        }
+        cursor = OPENED;
+    }
+
+    @Override
+    public void close() throws TextDBException {
+        if (cursor == CLOSED) {
+            return;
+        }
+        cursor = CLOSED;
+    }
+
+    @Override
+    public Schema getOutputSchema() {
+        return outputSchema;
+    }
+
+    public FileSourcePredicate getPredicate() {
+        return this.predicate;
     }
 }
