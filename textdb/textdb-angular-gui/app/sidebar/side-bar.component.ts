@@ -40,8 +40,8 @@ export class SideBarComponent {
 
   attributeItems:Array<string> = [];
   tableNameItems:Array<string> = [];
-  selectedAttributes:Array<SelectItem> = [];
-  customAttribute:string = "";
+  selectedAttributesList:Array<string> = [];
+  selectedAttribute:string = "";
 
   @ViewChild('MyModal')
   modal: ModalComponent;
@@ -71,7 +71,8 @@ export class SideBarComponent {
         for (var attribute in data.operatorData.properties.attributes) {
           this.attributes.push(attribute);
         }
-        this.selectedAttributes = this.stringsToItems(data.operatorData.properties.attributes.attributes);
+        this.selectedAttributesList = data.operatorData.properties.attributes.attributes;
+        this.selectedAttribute = "-";
       });
 
     currentDataService.checkPressed$.subscribe(
@@ -126,7 +127,7 @@ export class SideBarComponent {
   }
 
   onSubmit() {
-    this.data.properties.attributes.attributes = this.itemsToStrings(this.selectedAttributes);
+    this.data.properties.attributes.attributes = this.selectedAttributesList;
     this.inSavedWindow = true;
     jQuery('#the-flowchart').flowchart('setOperatorData', this.operatorId, this.data);
     this.currentDataService.setAllOperatorData(jQuery('#the-flowchart').flowchart('getData'));
@@ -140,29 +141,16 @@ export class SideBarComponent {
     this.currentDataService.setAllOperatorData(jQuery('#the-flowchart').flowchart('getData'));
   }
 
-  onChangeCustomAttributes(value: string) {
-    this.customAttribute = value;
+  selected (event:string) {
+    this.selectedAttributesList.push(event);
   }
 
-  addCustomAttribute() {
-    if (this.customAttribute.length !== 0) {
-      this.selectedAttributes.push(new SelectItem(this.customAttribute));
-      this.customAttribute = "";
+  manuallyAdded (event:string) {
+    if (event.length === 0) {
+      // removed all attributes
+      this.selectedAttributesList = [];
+    } else {
+      this.selectedAttributesList = event.split(",");
     }
-  }
-
-  private itemsToStrings(value:Array<SelectItem> = []):Array<string> {
-    return value
-        .map((item:SelectItem) => {
-          return item.text;
-        });
-  }
-
-  private stringsToItems(value:Array<string> = []):Array<SelectItem> {
-    return value
-        .map((item:string) => {
-          let selectItem: SelectItem = new SelectItem(item);
-          return selectItem;
-        });
   }
 }

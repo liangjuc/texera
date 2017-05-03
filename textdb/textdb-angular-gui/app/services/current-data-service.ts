@@ -10,7 +10,7 @@ import any = jasmine.any;
 declare var jQuery: any;
 
 const textdbUrl = 'http://localhost:8080/newqueryplan/execute';
-const metadataUrl = 'http://localhost:8080/init/metadata';
+const metadataUrl = 'http://localhost:8080/metadata';
 
 const defaultData = {
     top: 20,
@@ -123,7 +123,7 @@ export class CurrentDataService {
                     this.metadataRetrieved.next(metadata);
                 },
                 err => {
-                    this.checkPressed.next(err.json());
+                    console.log("Error at getMetadata() in current-data-service.ts \n Error: "+err);
                 }
             );
     }

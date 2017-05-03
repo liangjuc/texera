@@ -27,16 +27,11 @@
                 </select>
 
                 <div *ngIf="attribute === 'attributes'">
-                    <ng-select
-                               id="{{attribute}}" [(ngModel)]="selectedAttributes" name="{{attribute}}" #{{attribute}}="ngModel"
-                               (typed)="onChangeCustomAttributes($event)"
-                               [multiple]="true"
-                               [allowClear]="true"
-                               [items]="attributeItems"
-                               placeholder="No attribute selected"
-                               >
-                    </ng-select>
-                    <button type="button" class="btn btn-xs" (click)="addCustomAttribute()">Add attribute</button>
+                    <select class="form-control" name="{{attribute}}+Selector" [(ngModel)]="selectedAttribute" (ngModelChange)="selected($event)">
+                        <option selected hidden value="-">Select attributes</option>
+                        <option *ngFor="let attritute of attributeItems" [value] = "attritute">{{attritute}}</option>
+                    </select>
+                    <input class="form-control" id="{{attribute}}" placeholder="Enter attributes" [ngModel]="selectedAttributesList.toString()" (ngModelChange)="manuallyAdded($event)" name="{{attribute}}" #{{attribute}}="ngModel">
                 </div>
 
 

@@ -11,7 +11,6 @@ import { SideBarComponent }   from './sidebar/side-bar.component';
 
 import { BsDropdownModule } from 'ng2-bootstrap/';
 import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
-import { SelectModule } from 'ng2-select';
 
 @NgModule({
   imports:      [ BsDropdownModule.forRoot(),
@@ -19,7 +18,6 @@ import { SelectModule } from 'ng2-select';
       FormsModule,
       HttpModule,
       Ng2Bs3ModalModule,
-      SelectModule
 	],
   declarations: [ AppComponent,
     TheFlowchartComponent,

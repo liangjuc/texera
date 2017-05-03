@@ -17,11 +17,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
-@Path("/init")
+@Path("/metadata")
 @Produces(MediaType.APPLICATION_JSON)
-public class InitSystemResource {
+public class SystemResource {
     @GET
-    @Path("/metadata")
     public Response getMetadata() throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
 
