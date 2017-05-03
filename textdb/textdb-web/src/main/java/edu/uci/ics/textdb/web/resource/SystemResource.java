@@ -21,13 +21,10 @@ import java.util.List;
 @Produces(MediaType.APPLICATION_JSON)
 public class SystemResource {
     @GET
-    public Response getMetadata() throws Exception {
+    public TextdbWebResponse getMetadata() throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
 
         List<TableMetadata> tableMetadata = RelationManager.getRelationManager().getMetaData();
-        TextdbWebResponse textdbWebResponse = new TextdbWebResponse(0, DataflowUtils.getMetadataJSON(tableMetadata).toString());
-        return Response.status(200)
-                .entity(objectMapper.writeValueAsString(textdbWebResponse))
-                .build();
+        return new TextdbWebResponse(0, DataflowUtils.getMetadataJSON(tableMetadata).toString());
     }
 }
