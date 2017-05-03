@@ -21,9 +21,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static edu.uci.ics.textdb.api.dataflow.IOperator.CLOSED;
-import static edu.uci.ics.textdb.api.dataflow.IOperator.OPENED;
-
 /**
  * FileSourceOperator reads a file or files under a directory and converts one file to one tuple.
  * <p>
