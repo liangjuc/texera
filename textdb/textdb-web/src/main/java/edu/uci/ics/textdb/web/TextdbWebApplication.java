@@ -4,18 +4,12 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.github.dirkraft.dropwizard.fileassets.FileAssetsBundle;
 
-import edu.uci.ics.textdb.api.engine.Plan;
-import edu.uci.ics.textdb.api.exception.TextDBException;
-import edu.uci.ics.textdb.dataflow.sink.TupleStreamSink;
 import edu.uci.ics.textdb.perftest.sample.SampleExtraction;
 import edu.uci.ics.textdb.perftest.twitter.TwitterSample;
-import edu.uci.ics.textdb.plangen.LogicalPlan;
 import edu.uci.ics.textdb.storage.RelationManager;
 import edu.uci.ics.textdb.web.healthcheck.SampleHealthCheck;
-import edu.uci.ics.textdb.web.request.beans.KeywordSourceBean;
-import edu.uci.ics.textdb.web.request.beans.NlpExtractorBean;
-import edu.uci.ics.textdb.web.request.beans.TupleStreamSinkBean;
 import edu.uci.ics.textdb.web.resource.DownloadFileResource;
+import edu.uci.ics.textdb.web.resource.SystemResource;
 import edu.uci.ics.textdb.web.resource.NewQueryPlanResource;
 import edu.uci.ics.textdb.web.resource.PlanStoreResource;
 import edu.uci.ics.textdb.web.resource.QueryPlanResource;
@@ -34,16 +28,6 @@ import java.util.EnumSet;
  * Created by kishore on 10/4/16.
  */
 public class TextdbWebApplication extends Application<TextdbWebConfiguration> {
-
-
-    // Defining some simple operators for a simple query plan to trigger Stanford NLP loading
-    private static final KeywordSourceBean KEYWORD_SOURCE_BEAN = new KeywordSourceBean("KeywordSource_0", "KeywordSource",
-            "content", "100", "0", "Cleide Moreira, Director of Epidemiological Surveillance of SESAU", "conjunction",
-            "promed");
-    private static final NlpExtractorBean NLP_EXTRACTOR_BEAN = new NlpExtractorBean("NlpExtractor_0", "NlpExtractor",
-            "content", "100", "0", "location");
-    private static final TupleStreamSinkBean TUPLE_STREAM_SINK_BEAN = new TupleStreamSinkBean("TupleStreamSink_0",
-            "TupleStreamSink", "content", "100", "0");
 
     @Override
     public void initialize(Bootstrap<TextdbWebConfiguration> bootstrap) {
@@ -75,6 +59,11 @@ public class TextdbWebApplication extends Application<TextdbWebConfiguration> {
         final SampleHealthCheck sampleHealthCheck = new SampleHealthCheck();
         // Registering the SampleHealthCheck with the environment
         environment.healthChecks().register("sample", sampleHealthCheck);
+
+        // Creates an instance of the InitSystemResource class to register with Jersey
+        final SystemResource systemResource = new SystemResource();
+        // Registers the systemResource with Jersey
+        environment.jersey().register(systemResource);
 
         // Configuring the object mapper used by Dropwizard
         environment.getObjectMapper().configure(MapperFeature.USE_GETTERS_AS_SETTERS, false);
