@@ -53,7 +53,7 @@ export class SideBarComponent {
       console.log("currentResultTimeStamp is empty")
     } else {
       console.log("proceed to http request")
-      let downloadUrl = "http://localhost:8080/api/download/" + this.currentResultTimeStamp;
+      let downloadUrl = "http://34.209.162.47/api/download/" + this.currentResultTimeStamp;
       console.log(downloadUrl)
       this.http.get(downloadUrl).toPromise().then(function(data) {
         window.location.href = downloadUrl;

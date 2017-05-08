@@ -9,7 +9,7 @@ import { Data } from './data';
 
 declare var jQuery: any;
 
-const textdbUrl = 'http://localhost:8080/api/newqueryplan/execute';
+const textdbUrl = 'http://34.209.162.47/api/newqueryplan/execute';
 
 const defaultData = {
     top: 20,
