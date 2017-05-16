@@ -12,7 +12,6 @@ import edu.uci.ics.textdb.web.resource.DownloadFileResource;
 import edu.uci.ics.textdb.web.resource.SystemResource;
 import edu.uci.ics.textdb.web.resource.NewQueryPlanResource;
 import edu.uci.ics.textdb.web.resource.PlanStoreResource;
-import edu.uci.ics.textdb.web.resource.QueryPlanResource;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
@@ -39,10 +38,6 @@ public class TextdbWebApplication extends Application<TextdbWebConfiguration> {
     public void run(TextdbWebConfiguration textdbWebConfiguration, Environment environment) throws Exception {
         // serve backend at /api
         environment.jersey().setUrlPattern("/api/*");
-        // Creates an instance of the QueryPlanResource class to register with Jersey
-        final QueryPlanResource queryPlanResource = new QueryPlanResource();
-        // Registers the QueryPlanResource with Jersey
-        environment.jersey().register(queryPlanResource);
         
         final NewQueryPlanResource newQueryPlanResource = new NewQueryPlanResource();
         environment.jersey().register(newQueryPlanResource);
