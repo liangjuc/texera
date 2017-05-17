@@ -86,7 +86,7 @@ public class RegexMatcher extends AbstractSingleInputOperator {
      * [Span(name, 0, 6, "g[^\s]*", "george watson"), Span(position, 0, 8,
      * "g[^\s]*", "graduate student")]
      * 
-     * @param tuple
+     * @param inputTuple
      *            document in which search is performed
      * @return a list of spans describing the occurrence of a matching sequence
      *         in the document
@@ -188,6 +188,10 @@ public class RegexMatcher extends AbstractSingleInputOperator {
         return this.predicate;
     }
     
+    /**
+     * Compile regex pattern
+     * @param regex
+     */
     private void compileRegexPattern(String regex) {
         // try Java Regex first
         try {
@@ -219,8 +223,13 @@ public class RegexMatcher extends AbstractSingleInputOperator {
         }
     }
 
-    
-    private String extractLabels(String generalRegexPattern, HashMap<Integer, HashSet<String>> idLabelMapping) {
+    /**
+     * Extracts labels from regex if present
+     * @param generalRegexPattern
+     * @param idLabelMapping
+     * @return modified regex haveing id instead of labels
+     */
+    private static String extractLabels(String generalRegexPattern, HashMap<Integer, HashSet<String>> idLabelMapping) {
     	java.util.regex.Pattern patt = java.util.regex.Pattern.compile(labelSyntax, 
                 java.util.regex.Pattern.CASE_INSENSITIVE);
     	java.util.regex.Matcher match = patt.matcher(generalRegexPattern);
@@ -230,6 +239,9 @@ public class RegexMatcher extends AbstractSingleInputOperator {
     	while(match.find()) {
             int start = match.start();
             int end = match.end();
+
+            if(start>0 && generalRegexPattern.charAt(start-1)=='\\' && generalRegexPattern.charAt(end-2)=='\\')
+                continue;
 
             String substr = generalRegexPattern.substring(start+1, end-1);
             String substrWithoutSpace = substr.replaceAll("\\s+", "");
@@ -250,6 +262,12 @@ public class RegexMatcher extends AbstractSingleInputOperator {
     	return regexMod;
     }
     
+    /**
+     * Regex matcher function for labelled regex
+     * @param inputTuple
+     * @return Return list of span
+     * @throws DataFlowException
+     */
     private List<Span> labelledRegexMatcher(Tuple inputTuple) throws DataFlowException {
         if (inputTuple == null) {
             return null;
@@ -278,6 +296,12 @@ public class RegexMatcher extends AbstractSingleInputOperator {
         return matchingResults;
     }
     
+    /**
+     * Generates all possible combinations of labels for this tuple.
+     * @param genericRegex
+     * @param labelSpanList
+     * @return List of regex patterns 
+     */
 	private ArrayList<String> generateAllCombinationsOfRegex(String genericRegex, HashMap<Integer, HashSet<String>> labelSpanList) {
     	ArrayList<String> allRegexCombinations = new ArrayList<String>();
     	String regEx = "<([0-9]+)>";
@@ -303,6 +327,11 @@ public class RegexMatcher extends AbstractSingleInputOperator {
     	return allRegexCombinations;
     }
 
+	/**
+	 * Finds the Cartesian product of all sets of label values
+	 * @param lists
+	 * @return
+	 */
     public static List<List<String>> cartesianProduct(List<HashSet<String>> lists) {
 	    List<List<String>> resultLists = new ArrayList<List<String>>();
 	    if (lists.size() == 0) {
@@ -324,6 +353,15 @@ public class RegexMatcher extends AbstractSingleInputOperator {
 	    return resultLists;
 	}
 
+    /**
+     * Takes all the combinations across the labels and makes a universal
+     * list of all the regexs that will have to be compiled and tested 
+     * for one tuple.
+     * @param regex
+     * @param labelSpanList
+     * @param stringReplacements
+     * @return List of all the valid regex patterns for this tuple
+     */
 	public static ArrayList<String> getRegexCombinations(String regex, HashMap<Integer, HashSet<String>> labelSpanList, List<List<String>> stringReplacements) {
 		ArrayList<String> resultArray = new ArrayList<String>();
 
@@ -344,7 +382,13 @@ public class RegexMatcher extends AbstractSingleInputOperator {
 		
 	}
     
-    
+    /**
+     * Extracts the values for the required span lists and returns a map of 
+     * each label to all its possible values.
+     * @param inputTuple
+     * @param idLabelMapping
+     * @return Map of label id to all values
+     */
     private HashMap<Integer, HashSet<String>> createLabelledSpanList(Tuple inputTuple, HashMap<Integer, HashSet<String>> idLabelMapping) {
     	HashMap<Integer, HashSet<String>> labelSpanList = new HashMap<Integer, HashSet<String>>();
         for (int id : idLabelMapping.keySet()) {
@@ -361,4 +405,5 @@ public class RegexMatcher extends AbstractSingleInputOperator {
         }
         return labelSpanList;
     }
+
 }

@@ -3,6 +3,7 @@ package edu.uci.ics.textdb.api.utils;
 import java.util.List;
 
 import edu.uci.ics.textdb.api.constants.SchemaConstants;
+import edu.uci.ics.textdb.api.span.Span;
 import edu.uci.ics.textdb.api.tuple.Tuple;
 
 /**
@@ -65,5 +66,22 @@ public class TestUtils {
         
         return expectedResults.containsAll(exactResults) && exactResults.containsAll(expectedResults);
     }
+    
+	public static boolean equals(List<Tuple> expectedResults, List<Tuple> exactResults, List<String> spanListNames) {
+        if(expectedResults.size()!=exactResults.size())
+            return false;
+
+        for(int i = 0; i<expectedResults.size(); i++) {
+            for (String spanListName : spanListNames) {
+    			List<Span> expectedSpanList = (List<Span>) expectedResults.get(i).getField(spanListName).getValue();
+                List<Span> exactSpanList = (List<Span>) exactResults.get(i).getField(spanListName).getValue();
+
+                if (!(expectedSpanList.containsAll(exactSpanList) && exactSpanList.containsAll(expectedSpanList)))
+                    return false;
+            }
+        }
+        return true;
+    }
+    
     
 }

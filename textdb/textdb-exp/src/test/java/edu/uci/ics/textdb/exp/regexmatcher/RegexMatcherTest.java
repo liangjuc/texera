@@ -386,6 +386,38 @@ public class RegexMatcherTest {
         Assert.assertEquals(expectedResults.size(), 3);
         Assert.assertEquals(exactResultsWithLimitOffset.size(), 2);
     }
+    
+    @Test
+    public void testGetNextTupleFirstNameLabeledRegexMatcher() throws Exception {
+        String query = "<name>";
+        String keywordQuery = "george lin lin";
+        List<Tuple> exactResults = RegexMatcherTestHelper.getQueryResults(
+                PEOPLE_TABLE, query, keywordQuery, Arrays.asList(TestConstants.FIRST_NAME), "name", false, Integer.MAX_VALUE, 0);
+
+        List<Tuple> expectedResults = new ArrayList<Tuple>();
+
+        // expected to match "george lin lin"
+        List<Tuple> data = TestConstants.getSamplePeopleTuples();
+        Schema spanSchema = Utils.addAttributeToSchema(TestConstants.SCHEMA_PEOPLE, SchemaConstants.SPAN_LIST_ATTRIBUTE);
+        List<Span> spans = new ArrayList<Span>();
+        spans.add(new Span(TestConstants.FIRST_NAME, 0, 14, query, "george lin lin"));
+        IField spanField = new ListField<Span>(new ArrayList<Span>(spans));
+        List<IField> fields = new ArrayList<IField>(data.get(3).getFields());
+        fields.add(spanField);
+        expectedResults.add(new Tuple(spanSchema, fields.toArray(new IField[fields.size()])));
+        
+        spans.clear();
+        spans.add(new Span(TestConstants.FIRST_NAME, 0, 14, query, "george lin lin"));
+
+        List<String> spanListNames = new ArrayList<String>();
+        spanListNames.add(SchemaConstants.SPAN_LIST);
+
+        Assert.assertTrue(TestUtils.equals(expectedResults, exactResults, spanListNames));
+    }
+    
+    
+    
+
 
     // @Test
     // public void testRegexWithLimitProblem() throws Exception {

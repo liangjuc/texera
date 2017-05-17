@@ -8,6 +8,11 @@ import edu.uci.ics.textdb.api.exception.DataFlowException;
 import edu.uci.ics.textdb.api.exception.TextDBException;
 import edu.uci.ics.textdb.api.tuple.Tuple;
 import edu.uci.ics.textdb.api.utils.TestUtils;
+import edu.uci.ics.textdb.exp.keywordmatcher.KeywordMatcher;
+import edu.uci.ics.textdb.exp.keywordmatcher.KeywordMatcherSourceOperator;
+import edu.uci.ics.textdb.exp.keywordmatcher.KeywordMatchingType;
+import edu.uci.ics.textdb.exp.keywordmatcher.KeywordPredicate;
+import edu.uci.ics.textdb.exp.keywordmatcher.KeywordSourcePredicate;
 import edu.uci.ics.textdb.exp.source.scan.ScanBasedSourceOperator;
 import edu.uci.ics.textdb.exp.source.scan.ScanSourcePredicate;
 import edu.uci.ics.textdb.storage.DataWriter;
@@ -171,6 +176,104 @@ public class RegexMatcherTestHelper {
         
         return results;
     }
+    
+    
+    public static List<Tuple> getQueryResults(String tableName, String regex, String keywordQuery, List<String> attributeNames, String spanListName,
+    		boolean useTranslator, int limit, int offset) throws Exception {
+    	// results from a scan on the table followed by a regex match
+        List<Tuple> scanSourceResults = getScanSourceResults(tableName, keywordQuery, regex, attributeNames,
+        		KeywordMatchingType.CONJUNCTION_INDEXBASED, spanListName, limit, offset);
+        
+        List<Tuple> regexSourceResults = getRegexSourceResults(tableName, keywordQuery, regex, attributeNames, 
+        		KeywordMatchingType.CONJUNCTION_INDEXBASED, spanListName, limit, offset);	
+                
+        if (limit == Integer.MAX_VALUE && offset == 0) {
+            if (TestUtils.equals(scanSourceResults, regexSourceResults)) {
+                return scanSourceResults;
+            } else {
+                throw new DataFlowException("results from scanSource and keywordSource are inconsistent");
+            }
+        } else {
+            // if limit and offset are relevant, then the results can be different (since the order doesn't matter)
+            // in this case, we get all the results and test if the whole result set contains both results
+            List<Tuple> allResults = getScanSourceResults(tableName, regex, attributeNames, Integer.MAX_VALUE, 0);
+            
+            if (scanSourceResults.size() == regexSourceResults.size() &&
+                    TestUtils.containsAll(allResults, scanSourceResults) && 
+                    TestUtils.containsAll(allResults, regexSourceResults)) {
+                return scanSourceResults;
+            } else {
+                throw new DataFlowException("results from regex matched scanSource and regex matched keywordSource are inconsistent");
+            }
+        }   
+    }
+
+
+
+
+    public static List<Tuple> getScanSourceResults(String tableName, String keywordQuery, String regex, List<String> attributeNames,
+    		KeywordMatchingType matchingType, String spanListName, int limit, int offset) throws TextDBException {
+    	RelationManager relationManager = RelationManager.getRelationManager();
+
+    	ScanBasedSourceOperator scanSource = new ScanBasedSourceOperator(new ScanSourcePredicate(tableName));
+
+    	KeywordPredicate keywordPredicate = new KeywordPredicate(keywordQuery, attributeNames, relationManager.getTableAnalyzerString(tableName), matchingType, 
+    			spanListName, limit, offset);
+    	KeywordMatcher keywordMatcher = new KeywordMatcher(keywordPredicate);
+
+    	keywordMatcher.setInputOperator(scanSource);
+    	RegexPredicate regexPredicate = new RegexPredicate(regex, attributeNames);
+    	RegexMatcher regexMatcher = new RegexMatcher(regexPredicate);
+
+    	regexMatcher.setLimit(limit);
+    	regexMatcher.setOffset(offset);
+
+    	regexMatcher.setInputOperator(keywordMatcher);
+
+    	Tuple tuple;
+    	List<Tuple> results = new ArrayList<>();
+
+    	regexMatcher.open();
+    	while ((tuple = regexMatcher.getNextTuple()) != null) {
+    		results.add(tuple);
+    	}  
+    	regexMatcher.close();
+
+    	return results;
+    }
+
+    public static List<Tuple> getRegexSourceResults(String tableName, String keywordQuery, String regex, List<String> attributeNames,
+    		KeywordMatchingType matchingType, String spanListName, int limit, int offset) throws TextDBException {
+
+    	RelationManager relationManager = RelationManager.getRelationManager();
+    	KeywordSourcePredicate keywordSourcePredicate = new KeywordSourcePredicate(
+    			keywordQuery, attributeNames, relationManager.getTableAnalyzerString(tableName), matchingType, 
+    			tableName, spanListName, limit, offset);
+    	KeywordMatcherSourceOperator keywordSource = new KeywordMatcherSourceOperator(
+    			keywordSourcePredicate);
+
+    	RegexPredicate regexPredicate = new RegexPredicate(regex, attributeNames);
+    	RegexMatcher regexMatcher = new RegexMatcher(regexPredicate);
+
+    	regexMatcher.setLimit(limit);
+    	regexMatcher.setOffset(offset);
+
+    	regexMatcher.setInputOperator(keywordSource);
+
+    	Tuple tuple;
+    	List<Tuple> results = new ArrayList<>();
+
+    	regexMatcher.open();
+    	while ((tuple = regexMatcher.getNextTuple()) != null) {
+    		results.add(tuple);
+    	}  
+    	regexMatcher.close();
+
+    	return results;
+    }
+
+
+    
 
 
 }
