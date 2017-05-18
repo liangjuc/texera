@@ -44,9 +44,6 @@ public class FileSourceOperatorTest {
     public static Path tempFile5Path = nested2FolderPath.resolve("test5.txt");
     public static String tempFile5String = "File Source Operator Test File 5. This file is in depth 3 nested folder.";
 
-    public static Path tempFile6Path = nested2FolderPath.resolve("test6.ppt");
-    public static String tempFile6String = "File Source Operator Test File 6. This file is in depth 3 nested folder.";
-
     public static Path emptyFolderPath = tempFolderPath.resolve("empty/");
 
 
@@ -291,19 +288,5 @@ public class FileSourceOperatorTest {
         FileSourcePredicate predicate = new FileSourcePredicate(
                 tempFolderPath.resolve("notexist").toString(), attrName);
         new FileSourceOperator(predicate);
-    }
-
-    @Test
-    public void testForReadAllFiles() throws Exception {
-        Path tempFolderPath = Paths.get("./index/test_tables/othersource");
-        String attrName = "content";
-
-        FileSourcePredicate predicate = new FileSourcePredicate(
-                tempFolderPath.toString(), attrName);
-
-        FileSourceOperator fileSource = new FileSourceOperator(predicate);
-        ArrayList<Tuple> exactResults = readAllTuples(fileSource);
-
-        Assert.assertTrue(exactResults.size() == 3);
     }
 }
