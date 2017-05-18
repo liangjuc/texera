@@ -62,7 +62,7 @@ public class TextExtractor {
 
     /**
      * use Tika to extract data from PPT file
-     *
+     * attention: tika may conflict with poi
      * @param path
      * @return
      */

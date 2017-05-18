@@ -92,7 +92,7 @@ public class FileSourceOperatorTest {
 
     }
 
-    //    @AfterClass
+    @AfterClass
     public static void cleanUp() throws StorageException {
         //delete temp folder
         if (Files.exists(tempFolderPath)) {
