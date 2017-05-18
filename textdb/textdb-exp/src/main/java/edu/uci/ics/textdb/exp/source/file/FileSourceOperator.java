@@ -49,7 +49,7 @@ public class FileSourceOperator implements ISourceOperator {
     protected List<Path> pathList;
     protected Iterator<Path> pathIterator;
 
-    private Set<String> commonFiles = Sets.newHashSet("txt", "json", "xml", "csv", "html", "md");
+    private Set<String> commonFiles = Sets.newHashSet("txt", "json", "xml", "csv", "html", "md", "tmp");
     private Set<String> pptFiles = Sets.newHashSet("ppt", "pptx");
     private Set<String> pdfFiles = Sets.newHashSet("pdf");
 
@@ -109,13 +109,14 @@ public class FileSourceOperator implements ISourceOperator {
             try {
                 Path path = pathIterator.next();
                 String extension = getExtension(path);
-                String content = null;
-                if (commonFiles.contains(extension)) {
-                    content = TextExtractor.extractCommonFile(path);
-                } else if (pdfFiles.contains(extension)) {
+                String content;
+                if (pdfFiles.contains(extension)) {
                     content = TextExtractor.extractPDFFile(path);
                 } else if (pptFiles.contains(extension)) {
                     content = TextExtractor.extractPPTFile(path);
+                } else {
+                    //common file
+                    content = TextExtractor.extractCommonFile(path);
                 }
                 // and assign a random ID to it
                 Tuple tuple = null;

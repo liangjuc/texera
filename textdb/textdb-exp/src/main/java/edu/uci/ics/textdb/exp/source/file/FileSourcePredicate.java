@@ -25,10 +25,10 @@ public class FileSourcePredicate extends PredicateBase {
     /**
      * FileSourcePredicate is used by FileSource Operator.
      *
-     * @param filePath, the path to a file or a directory
-     * @param attributeName, the name of the attribute that the file content will be put in
-     * @param recursive, optional, if recursively list files or not (in the case of a directory), default False
-     * @param maxDepth, optional, specify the max recursive depth (if recursive is True), default Integer.MAX_VALUE
+     * @param filePath,          the path to a file or a directory
+     * @param attributeName,     the name of the attribute that the file content will be put in
+     * @param recursive,         optional, if recursively list files or not (in the case of a directory), default False
+     * @param maxDepth,          optional, specify the max recursive depth (if recursive is True), default Integer.MAX_VALUE
      * @param allowedExtensions, optional, specify a list of allowed extensions, default {@code defaultSupportedExtensions}
      */
     public FileSourcePredicate(
@@ -64,8 +64,8 @@ public class FileSourcePredicate extends PredicateBase {
 
     /**
      * Constructs a FileSourcePredicate with minimal required parameters,
-     *   with all optional parameters are set to null.
-     *
+     * with all optional parameters are set to null.
+     * <p>
      * This is only for internal use, it's NOT an entry point for JSON data.
      *
      * @param filePath

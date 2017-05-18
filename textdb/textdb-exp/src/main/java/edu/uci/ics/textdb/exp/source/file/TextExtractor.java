@@ -6,6 +6,7 @@ import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.AutoDetectParser;
 import org.apache.tika.parser.ParseContext;
 import org.apache.tika.parser.Parser;
+import org.apache.tika.parser.microsoft.OfficeParser;
 import org.apache.tika.sax.WriteOutContentHandler;
 import org.xml.sax.ContentHandler;
 
@@ -31,7 +32,8 @@ public class TextExtractor {
     }
 
     /**
-     * use pdfbox to extract data from pdf document
+     * use pdfbox to extract data from pdf document.
+     * This also can be done using Tika lib.
      *
      * @param path
      * @return
@@ -68,9 +70,9 @@ public class TextExtractor {
         if (path == null) {
             return null;
         }
-        File file = new File(path.toString());
         try {
-            Parser autoDetectParser = new AutoDetectParser();
+            File file = new File(path.toString());
+            OfficeParser autoDetectParser = new OfficeParser();
             ContentHandler handler = new WriteOutContentHandler(new StringWriter());
             autoDetectParser.parse(new FileInputStream(file), handler, new Metadata(), new ParseContext());
             return handler.toString();
