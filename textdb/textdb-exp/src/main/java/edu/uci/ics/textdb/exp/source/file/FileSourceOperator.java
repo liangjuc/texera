@@ -115,6 +115,7 @@ public class FileSourceOperator implements ISourceOperator {
                 } else if (pdfFiles.contains(extension)) {
                     content = TextExtractor.extractPDFFile(path);
                 } else if (pptFiles.contains(extension)) {
+                    content = TextExtractor.extractPPTFile(path);
                 }
                 // and assign a random ID to it
                 Tuple tuple = null;
