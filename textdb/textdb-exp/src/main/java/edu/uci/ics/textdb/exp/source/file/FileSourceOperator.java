@@ -49,11 +49,6 @@ public class FileSourceOperator implements ISourceOperator {
     protected List<Path> pathList;
     protected Iterator<Path> pathIterator;
 
-    private Set<String> commonFiles = Sets.newHashSet("txt", "json", "xml", "csv", "html", "md", "tmp");
-    private Set<String> pptFiles = Sets.newHashSet("ppt", "pptx");
-    private Set<String> pdfFiles = Sets.newHashSet("pdf");
-
-
     public FileSourceOperator(FileSourcePredicate predicate) {
         this.predicate = predicate;
         this.outputSchema = new Schema(SchemaConstants._ID_ATTRIBUTE, new Attribute(predicate.getAttributeName(), AttributeType.TEXT));
@@ -110,9 +105,9 @@ public class FileSourceOperator implements ISourceOperator {
                 Path path = pathIterator.next();
                 String extension = getExtension(path);
                 String content;
-                if (pdfFiles.contains(extension)) {
+                if (extension.equals("pdf")) {
                     content = TextExtractor.extractPDFFile(path);
-                } else if (pptFiles.contains(extension)) {
+                } else if (extension.equals("ppt") || extension.equals("pptx")) {
                     content = TextExtractor.extractPPTFile(path);
                 } else {
                     //common file
