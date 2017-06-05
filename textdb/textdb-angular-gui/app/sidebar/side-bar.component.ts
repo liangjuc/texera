@@ -2,8 +2,7 @@ import {Component, ViewChild, OnInit} from '@angular/core';
 
 import { CurrentDataService } from '../services/current-data-service';
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
-import { TableMetadata } from "../services/table-metadata";
-import {log} from "util";
+import {TableMetadata} from "../services/table-metadata";
 
 declare var jQuery: any;
 declare var Backbone: any;

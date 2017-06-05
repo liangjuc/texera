@@ -1,16 +1,12 @@
 package edu.uci.ics.textdb.storage;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import edu.uci.ics.textdb.api.constants.DataConstants;
-import edu.uci.ics.textdb.api.field.IField;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.index.Term;
-import org.apache.lucene.search.MatchAllDocsQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
 import org.junit.Assert;
@@ -403,7 +399,7 @@ public class RelationManagerTest {
     }
 
     /*
-	  * Test on getMetaData() to see if it successfully get metadata from "relation_manager_test_table"
+	* Test on getMetaData() to see if it successfully get metadata from "relation_manager_test_table"
     */
     @Test
     public void test17() throws Exception {
