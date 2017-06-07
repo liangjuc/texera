@@ -9,11 +9,11 @@ import any = jasmine.any;
 
 declare var jQuery: any;
 
-const textdbUrl = 'http://localhost:8080/api/newqueryplan/execute';
-const metadataUrl = 'http://localhost:8080/api/resources/metadata';
-const uploadDictionaryUrl = "http://localhost:8080/api/upload/dictionary";
-const getDictionariesUrl = "http://localhost:8080/api/resources/dictionaries";
-const getDictionaryContentUrl = "http://localhost:8080/api/resources/dictionary/?name=";
+const textdbUrl = 'http://textdb.ics.uci.edu:1300/api/newqueryplan/execute';
+const metadataUrl = 'http://textdb.ics.uci.edu:1300/api/resources/metadata';
+const uploadDictionaryUrl = "http://textdb.ics.uci.edu:1300/api/upload/dictionary";
+const getDictionariesUrl = "http://textdb.ics.uci.edu:1300/api/resources/dictionaries";
+const getDictionaryContentUrl = "http://textdb.ics.uci.edu:1300/api/resources/dictionary/?name=";
 
 const defaultData = {
     top: 20,
@@ -127,9 +127,11 @@ export class CurrentDataService {
                 data => {
                     let result = (JSON.parse(data.json().message));
                     let metadata: Array<TableMetadata> = [];
-                    result.forEach((x, y) =>
-                        metadata.push(new TableMetadata(x.tableName, x.schema.attributes))
-                    );
+                    result.forEach((x, y) => {
+                        if (x.tableName === "twitter_climate" || x.tableName === "twitter_hpv") {
+                            metadata.push(new TableMetadata(x.tableName, x.schema.attributes))
+                        }
+                    });
                     this.metadataRetrieved.next(metadata);
                 },
                 err => {
