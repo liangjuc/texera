@@ -22,17 +22,20 @@ import edu.uci.ics.textdb.exp.keywordmatcher.KeywordPredicate;
 import edu.uci.ics.textdb.exp.keywordmatcher.KeywordSourcePredicate;
 import edu.uci.ics.textdb.exp.nlp.entity.NlpEntityPredicate;
 import edu.uci.ics.textdb.exp.nlp.entity.NlpEntityType;
+import edu.uci.ics.textdb.exp.nlp.sentiment.EmojiSentimentPredicate;
 import edu.uci.ics.textdb.exp.nlp.sentiment.NlpSentimentPredicate;
 import edu.uci.ics.textdb.exp.nlp.splitter.NLPOutputType;
 import edu.uci.ics.textdb.exp.nlp.splitter.NlpSplitPredicate;
 import edu.uci.ics.textdb.exp.projection.ProjectionPredicate;
 import edu.uci.ics.textdb.exp.regexmatcher.RegexPredicate;
 import edu.uci.ics.textdb.exp.regexmatcher.RegexSourcePredicate;
+import edu.uci.ics.textdb.exp.regexsplit.RegexOutputType;
 import edu.uci.ics.textdb.exp.regexsplit.RegexSplitPredicate;
 import edu.uci.ics.textdb.exp.regexsplit.RegexSplitPredicate.SplitType;
 import edu.uci.ics.textdb.exp.sampler.SamplerPredicate;
 import edu.uci.ics.textdb.exp.sampler.SamplerPredicate.SampleType;
 import edu.uci.ics.textdb.exp.sink.excel.ExcelSinkPredicate;
+import edu.uci.ics.textdb.exp.sink.mysql.MysqlSinkPredicate;
 import edu.uci.ics.textdb.exp.sink.tuple.TupleSinkPredicate;
 import edu.uci.ics.textdb.exp.source.file.FileSourcePredicate;
 import edu.uci.ics.textdb.exp.source.scan.ScanSourcePredicate;
@@ -172,9 +175,11 @@ public class PredicateBaseTest {
     @Test
     public void testRegexSplit() throws Exception {
         RegexSplitPredicate regexSplitPredicate = new RegexSplitPredicate(
+                RegexOutputType.ONE_TO_MANY,
                 "regex",
                 "attr1",
-                SplitType.STANDALONE);
+                SplitType.STANDALONE,
+                "resultAttr");
         testPredicate(regexSplitPredicate);
     }
     
@@ -231,8 +236,18 @@ public class PredicateBaseTest {
     }
     
     @Test
+    public void testEmojiSentiment() throws Exception {
+        testPredicate(new EmojiSentimentPredicate("inputAttr", "outputAttr"));
+    }
+
+    @Test
     public void tesNlpSplit() throws Exception {
         testPredicate(new NlpSplitPredicate(NLPOutputType.ONE_TO_MANY, "inputAttr", "resultAttr")) ;
+    }
+    
+    @Test
+    public void testMysqlSink() throws Exception {
+        testPredicate(new MysqlSinkPredicate("host", 1234, "db", "table", "user", "pass", null, null)) ;
     }
 
 }

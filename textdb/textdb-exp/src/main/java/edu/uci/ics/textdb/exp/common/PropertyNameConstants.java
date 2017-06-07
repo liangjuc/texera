@@ -57,9 +57,10 @@ public class PropertyNameConstants {
     public static final String NLP_SPLIT_KEY = "nlpSplit";
     
     // related to regex splitter
-    public static final String SPLIT_ATTRIBUTE = "splitAttribute";
     public static final String SPLIT_TYPE = "splitType";
     public static final String SPLIT_REGEX = "splitRegex";
+    public static final String REGEX_OUTPUT_TYPE = "splitOption";
+    public static final String REGEX_SPLIT_KEY = "regexSplit";
 
     // related to sampler
     public static final String SAMPLE_SIZE = "sampleSize";
@@ -79,5 +80,15 @@ public class PropertyNameConstants {
     // related to ComparableMatcher
     public static final String COMPARISON_TYPE = "comparisonType";
     public static final String COMPARE_TO_VALUE = "compareTo";
+    
+    // related to MysqlSink
+    public static final String MYSQL_HOST = "host";
+    public static final String MYSQL_PORT = "port";
+    public static final String MYSQL_DATABASE = "database";
+    public static final String MYSQL_TABLE = "table";
+    public static final String MYSQL_USERNAME = "username";
+    public static final String MYSQL_PASSWORD = "password";
+    public static final String MYSQL_LIMIT = "limit";
+    public static final String MYSQL_OFFSET = "offset";
     
 }

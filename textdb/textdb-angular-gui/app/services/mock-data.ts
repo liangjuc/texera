@@ -69,7 +69,7 @@ let dictionaryMatcher = {
     attributes :  {
         "operatorType": "DictionaryMatcher",
         "attributes": [],
-        "dictionaryEntries": ["entry1", "entry2"],
+        "dictionaryEntries": [],
         "luceneAnalyzer": "standard",
         "matchingType": "phrase",
         "spanListName": " "
@@ -150,6 +150,29 @@ let nlpSentiment = {
   }
 }
 
+let emojiSentiment = {
+  top : 20,
+  left : 20,
+  properties : {
+    title : 'Emoji Sentiment Analysis',
+    inputs : {
+      input_1 : {
+        label : 'Input(:i)',
+      }
+    },
+    outputs : {
+      output_1 : {
+        label : "Output (:i)",
+      }
+    },
+    attributes : {
+        "operatorType": "EmojiSentiment",
+        "attribute": "",
+        "resultAttribute": "resultAttr"
+    }
+  }
+}
+
 let regexSplit = {
   top : 20,
   left : 20,
@@ -167,9 +190,11 @@ let regexSplit = {
     },
     attributes : {
         "operatorType": "RegexSplit",
-        "splitAttribute": "attr1",
+        "attribute": "",
         "splitRegex": "regex",
-        "splitType": "standalone"
+        "resultAttribute": "splitText",
+        "splitType": "standalone",
+        "splitOption": "oneToMany"
     }
   }
 }
@@ -192,8 +217,8 @@ let nlpSplit = {
     attributes : {
         "operatorType": "NlpSplit",
         "attribute": "",
-        "resultAttribute": "resultAttribute",
-        "splitOption": "oneToOne"
+        "resultAttribute": "splitText",
+        "splitOption": "oneToMany",
     }
   }
 }
@@ -239,6 +264,29 @@ let projection = {
     attributes : {
         "operatorType": "Projection",
         "attributes": []
+    }
+  }
+}
+
+let fileSource = {
+  top : 20,
+  left : 20,
+  properties : {
+    title : 'Source: File',
+    inputs : {
+      input_1 : {
+        label : "Input (:i)",
+      }
+    },
+    outputs : {
+      output_1 : {
+        label : "Output (:i)",
+      }
+    },
+    attributes : {
+        "operatorType": "FileSource",
+        "filePath": "",
+        "resultAttribute": "",
     }
   }
 }
@@ -312,7 +360,7 @@ let dictionarySource = {
         "operatorType": "DictionarySource",
         "tableName": "",
         "attributes": [],
-        "dictionaryEntries": ["entry1", "entry2"],
+        "dictionaryEntries": [],
         "luceneAnalyzer": "standard",
         "matchingType": "phrase",
         "spanListName": " "
@@ -544,6 +592,33 @@ let excelSink = {
   }
 }
 
+let mysqlSink = {
+  top : 20,
+  left : 20,
+  properties : {
+    title : 'Write Mysql',
+    inputs : {
+      input_1 : {
+        label : "Input (:i)",
+      }
+    },
+    outputs : {
+      output_1 : {
+        label : "Output (:i)",
+      }
+    },
+    attributes : {
+        "operatorType": "MysqlSink",
+        "host": "localhost",
+        "port": 3306,
+        "database": "testDB",
+        "table": "testTable",
+        "username": "test",
+        "password": "test"
+    }
+  }
+}
+
 export const DEFAULT_MATCHERS: Data[] = [
     {id: 0, jsonData: regexMatcher},
     {id: 1, jsonData: keywordMatcher},
@@ -567,4 +642,7 @@ export const DEFAULT_MATCHERS: Data[] = [
     {id: 20, jsonData: excelSink},
     {id: 21, jsonData: comparison},
     {id: 22, jsonData: nlpSplit},
+    {id: 23, jsonData: emojiSentiment},
+    {id: 24, jsonData: fileSource},
+    {id: 25, jsonData: mysqlSink},
 ];
