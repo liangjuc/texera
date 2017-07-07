@@ -110,12 +110,12 @@ let nlpEntity = {
     title : 'Entity recognition',
     inputs : {
       input_1 : {
-        label : 'Input(:i)',
+        label : ' ',
       }
     },
     outputs : {
       output_1 : {
-        label : "Output (:i)",
+        label : " ",
       }
     },
     attributes : {
@@ -123,7 +123,8 @@ let nlpEntity = {
         "attributes": [],
         "nlpEntityType": "location",
         "spanListName": " "
-    }
+    },
+    image : '../thirdparty/images/entityRecognition.png',
   }
 }
 
@@ -134,19 +135,20 @@ let nlpSentiment = {
     title : 'Sentiment Analysis',
     inputs : {
       input_1 : {
-        label : 'Input(:i)',
+        label : ' ',
       }
     },
     outputs : {
       output_1 : {
-        label : "Output (:i)",
+        label : " ",
       }
     },
     attributes : {
         "operatorType": "NlpSentiment",
         "attribute": "",
         "resultAttribute": "resultAttr"
-    }
+    },
+    image : '../thirdparty/images/sentimentAnalysis.png',
   }
 }
 
@@ -157,19 +159,21 @@ let emojiSentiment = {
     title : 'Emoji Sentiment Analysis',
     inputs : {
       input_1 : {
-        label : 'Input(:i)',
+        label : ' ',
       }
     },
     outputs : {
       output_1 : {
-        label : "Output (:i)",
+        label : " ",
       }
     },
     attributes : {
         "operatorType": "EmojiSentiment",
         "attribute": "",
         "resultAttribute": "resultAttr"
-    }
+    },
+    image : '../thirdparty/images/emojiAnalysis.png',
+
   }
 }
 
@@ -180,12 +184,12 @@ let regexSplit = {
     title : 'Regex Split',
     inputs : {
       input_1 : {
-        label : "Input (:i)",
+        label : "",
       }
     },
     outputs : {
       output_1 : {
-        label : "Output (:i)",
+        label : "",
       }
     },
     attributes : {
@@ -195,7 +199,9 @@ let regexSplit = {
         "resultAttribute": "splitText",
         "splitType": "standalone",
         "splitOption": "oneToMany"
-    }
+    },
+    image : '../thirdparty/images/regex.png',
+
   }
 }
 
@@ -206,12 +212,12 @@ let nlpSplit = {
     title : 'Nlp Sentence Split',
     inputs : {
       input_1 : {
-        label : "Input (:i)",
+        label : " ",
       }
     },
     outputs : {
       output_1 : {
-        label : "Output (:i)",
+        label : " ",
       }
     },
     attributes : {
@@ -219,7 +225,8 @@ let nlpSplit = {
         "attribute": "",
         "resultAttribute": "splitText",
         "splitOption": "oneToMany",
-    }
+    },
+    image : '../thirdparty/images/sentencesplit.png',
   }
 }
 
@@ -230,19 +237,21 @@ let sampler = {
     title : 'Sampling',
     inputs : {
       input_1 : {
-        label : "Input (:i)",
+        label : "",
       }
     },
     outputs : {
       output_1 : {
-        label : "Output (:i)",
+        label : "",
       }
     },
     attributes : {
         "operatorType": "Sampler",
         "sampleSize": 10,
         "sampleType": "firstk"
-    }
+    },
+    image : '../thirdparty/images/sampling.png',
+
   }
 }
 
@@ -253,18 +262,20 @@ let projection = {
     title : 'Projection',
     inputs : {
       input_1 : {
-        label : "Input (:i)",
+        label : "",
       }
     },
     outputs : {
       output_1 : {
-        label : "Output (:i)",
+        label : "",
       }
     },
     attributes : {
         "operatorType": "Projection",
         "attributes": []
-    }
+    },
+    image : '../thirdparty/images/projection.png',
+
   }
 }
 
@@ -391,7 +402,7 @@ let regexSource = {
         "regexIgnoreCase": false,
         "regexUseIndex": true,
         "spanListName": " "
-    } 
+    }
   }
 }
 
@@ -452,19 +463,20 @@ let wordCount = {
     title : 'Word Count',
     inputs : {
       input_1 : {
-        label : "Input (:i)",
+        label : "",
       }
     },
     outputs : {
       output_1 : {
-        label : "Output (:i)",
+        label : "",
       }
     },
     attributes : {
         "operatorType": "WordCount",
         "attribute": "",
 	      "luceneAnalyzer": "standard",
-    }
+    },
+    image : '../thirdparty/images/counting.png',
   }
 }
 
@@ -475,12 +487,12 @@ let comparison = {
     title : 'Comparison',
     inputs : {
       input_1 : {
-        label : "Input (:i)",
+        label : " ",
       }
     },
     outputs : {
       output_1 : {
-        label : "Output (:i)",
+        label : " ",
       }
     },
     attributes : {
@@ -488,7 +500,8 @@ let comparison = {
         "attribute": "",
         "comparisonType": "=",
 	      "compareTo": "",
-    }
+    },
+    image : '../thirdparty/images/compare.png',
   }
 }
 
@@ -499,15 +512,15 @@ let characterDistanceJoin = {
     title : 'Join: Character Distance',
     inputs : {
       input_1 : {
-        label : 'Input (:i)',
+        label : '',
       },
       input_2 : {
-        label : "Input 2",
+        label : "",
       }
     },
     outputs : {
       output_1 : {
-        label : "Output (:i)",
+        label : "",
       }
     },
     attributes : {
@@ -515,7 +528,8 @@ let characterDistanceJoin = {
         "innerAttribute": "attr1",
         "outerAttribute": "attr1",
         "spanDistance": 100
-    }
+    },
+    image : '../thirdparty/images/characterjoin.png',
   }
 }
 
@@ -526,15 +540,15 @@ let similarityJoin = {
     title : 'Join: Similarity',
     inputs : {
       input_1 : {
-        label : 'Input (:i)',
+        label : ' ',
       },
       input_2 : {
-        label : "Input 2",
+        label : " ",
       }
     },
     outputs : {
       output_1 : {
-        label : "Output (:i)",
+        label : " ",
       }
     },
     attributes : {
@@ -542,7 +556,8 @@ let similarityJoin = {
         "innerAttribute": "attr1",
         "outerAttribute": "attr1",
         "similarityThreshold": 0.8
-    }
+    },
+    image : '../thirdparty/images/similarityjoin.png',
   }
 }
 
@@ -553,19 +568,21 @@ let result = {
     title : 'View Results',
     inputs : {
       input_1 : {
-        label : "Input (:i)",
+        // label : "Input (:i)",
+        label : "",
       }
     },
     outputs : {
       output_1 : {
-        label : "Output (:i)",
+        label : "",
       }
     },
     attributes : {
         "operatorType": "ViewResults",
         "limit": 10,
         "offset": 0,
-    }
+    },
+    image : '../thirdparty/images/view-result.png',
   }
 }
 
@@ -599,12 +616,12 @@ let mysqlSink = {
     title : 'Write Mysql',
     inputs : {
       input_1 : {
-        label : "Input (:i)",
+        label : "",
       }
     },
     outputs : {
       output_1 : {
-        label : "Output (:i)",
+        label : "",
       }
     },
     attributes : {
@@ -615,7 +632,8 @@ let mysqlSink = {
         "table": "testTable",
         "username": "test",
         "password": "test"
-    }
+    },
+    image : '../thirdparty/images/sql.jpg',
   }
 }
 
