@@ -7,12 +7,12 @@ let keywordMatcher = {
         title: 'Keyword Search',
         inputs: {
             input_1: {
-                label: 'Input (:i)',
+                label: '',
             }
         },
         outputs: {
             output_1: {
-                label: 'Output (:i)',
+                label: '',
             }
         },
         attributes: {
@@ -22,7 +22,9 @@ let keywordMatcher = {
             "luceneAnalyzer": "standard",
             "matchingType": "phrase",
             "spanListName": " "
-        }
+        },
+        image : '../thirdparty/images/keywordSearch.png',
+        color : '#80bfff',
     }
 };
 
@@ -33,12 +35,12 @@ let regexMatcher = {
     title : 'Regex Match',
     inputs : {
       input_1 : {
-        label : 'Input(:i)',
+        label : '',
       }
     },
     outputs : {
       output_1 : {
-        label : 'Output (:i)',
+        label : '',
       }
     },
     attributes : {
@@ -47,7 +49,9 @@ let regexMatcher = {
         "regex": "regex",
         "regexIgnoreCase": false,
         "spanListName": " "
-    }
+    },
+    image : '../thirdparty/images/regexMatch.png',
+    color : '#66b3ff',
   }
 };
 
@@ -58,12 +62,12 @@ let dictionaryMatcher = {
     title : 'Dictionary Search',
     inputs : {
       input_1 : {
-        label : "Input(:i)",
+        label : "",
       }
     },
     outputs :{
       output_1 : {
-        label : "Output(:i)",
+        label : "",
       }
     },
     attributes :  {
@@ -73,7 +77,10 @@ let dictionaryMatcher = {
         "luceneAnalyzer": "standard",
         "matchingType": "phrase",
         "spanListName": " "
-    }
+    },
+    image : '../thirdparty/images/dictionarySearch.png',
+    color : '#66b3ff',
+
   }
 }
 
@@ -84,12 +91,12 @@ let fuzzyMatcher = {
     title : "Fuzzy Token Match",
     inputs : {
       input_1 : {
-        label : "Input(:i)",
+        label : " ",
       }
     },
     outputs : {
       output_1 : {
-        label : "Output(:i)",
+        label : " ",
       }
     },
     attributes : {
@@ -99,7 +106,10 @@ let fuzzyMatcher = {
         "luceneAnalyzer": "standard",
         "thresholdRatio": 0.8,
         "spanListName": " ",
-    }
+    },
+    image : '../thirdparty/images/fuzzy.png',
+    color : '#66b3ff',
+
   }
 }
 
@@ -125,6 +135,7 @@ let nlpEntity = {
         "spanListName": " "
     },
     image : '../thirdparty/images/entityRecognition.png',
+    color : '#85e085',
   }
 }
 
@@ -149,6 +160,7 @@ let nlpSentiment = {
         "resultAttribute": "resultAttr"
     },
     image : '../thirdparty/images/sentimentAnalysis.png',
+    color : '#85e085',
   }
 }
 
@@ -173,7 +185,7 @@ let emojiSentiment = {
         "resultAttribute": "resultAttr"
     },
     image : '../thirdparty/images/emojiAnalysis.png',
-
+    color : '#85e085',
   }
 }
 
@@ -201,7 +213,7 @@ let regexSplit = {
         "splitOption": "oneToMany"
     },
     image : '../thirdparty/images/regex.png',
-
+    color : '#ffff4d',
   }
 }
 
@@ -227,6 +239,7 @@ let nlpSplit = {
         "splitOption": "oneToMany",
     },
     image : '../thirdparty/images/sentencesplit.png',
+    color : '#ffff4d',
   }
 }
 
@@ -251,7 +264,7 @@ let sampler = {
         "sampleType": "firstk"
     },
     image : '../thirdparty/images/sampling.png',
-
+    color : '#ffdb4d',
   }
 }
 
@@ -275,7 +288,7 @@ let projection = {
         "attributes": []
     },
     image : '../thirdparty/images/projection.png',
-
+    color : '#ffdb4d',
   }
 }
 
@@ -286,19 +299,21 @@ let fileSource = {
     title : 'Source: File',
     inputs : {
       input_1 : {
-        label : "Input (:i)",
+        label : " ",
       }
     },
     outputs : {
       output_1 : {
-        label : "Output (:i)",
+        label : " ",
       }
     },
     attributes : {
         "operatorType": "FileSource",
         "filePath": "",
         "resultAttribute": "",
-    }
+    },
+    image : '../thirdparty/images/fileSource.png',
+    color : '#cc99ff',
   }
 }
 
@@ -309,18 +324,21 @@ let scanSource = {
     title : 'Source: Scan',
     inputs : {
       input_1 : {
-        label : "Input (:i)",
+        label : " ",
       }
     },
     outputs : {
       output_1 : {
-        label : "Output (:i)",
+        label : " ",
       }
     },
     attributes : {
         "operatorType": "ScanSource",
         "tableName": ""
-    }
+    },
+    image : '../thirdparty/images/scan.png',
+    color : '#cc99ff',
+
   }
 }
 
@@ -331,12 +349,12 @@ let keywordSource = {
     title : 'Source: Keyword',
     inputs : {
       input_1 : {
-        label : "Input (:i)",
+        label : " ",
       }
     },
     outputs : {
       output_1 : {
-        label : "Output (:i)",
+        label : " ",
       }
     },
     attributes : {
@@ -347,7 +365,10 @@ let keywordSource = {
         "luceneAnalyzer": "standard",
         "matchingType": "phrase",
         "spanListName": " "
-    }
+    },
+    image : '../thirdparty/images/keywordSource.png',
+    color : '#cc99ff',
+
   }
 }
 
@@ -359,12 +380,12 @@ let dictionarySource = {
     title : 'Source: Dictionary',
     inputs : {
       input_1 : {
-        label : "Input (:i)",
+        label : " ",
       }
     },
     outputs : {
       output_1 : {
-        label : "Output (:i)",
+        label : " ",
       }
     },
     attributes : {
@@ -375,7 +396,10 @@ let dictionarySource = {
         "luceneAnalyzer": "standard",
         "matchingType": "phrase",
         "spanListName": " "
-    }
+    },
+    image : '../thirdparty/images/dictionary.png',
+    color : '#cc99ff',
+
   }
 }
 
@@ -386,12 +410,12 @@ let regexSource = {
     title : 'Source: Regex',
     inputs : {
       input_1 : {
-        label : "Input (:i)",
+        label : " ",
       }
     },
     outputs : {
       output_1 : {
-        label : "Output (:i)",
+        label : " ",
       }
     },
     attributes : {
@@ -402,7 +426,10 @@ let regexSource = {
         "regexIgnoreCase": false,
         "regexUseIndex": true,
         "spanListName": " "
-    }
+    },
+    image : '../thirdparty/images/regex.png',
+    color : '#cc99ff',
+
   }
 }
 
@@ -413,12 +440,12 @@ let fuzzyTokenSource = {
     title : 'Source: FuzzyToken',
     inputs : {
       input_1 : {
-        label : "Input (:i)",
+        label : "",
       }
     },
     outputs : {
       output_1 : {
-        label : "Output (:i)",
+        label : "",
       }
     },
     attributes : {
@@ -429,7 +456,10 @@ let fuzzyTokenSource = {
         "luceneAnalyzer": "standard",
         "thresholdRatio": 0.8,
         "spanListName": " ",
-    }
+    },
+    image : '../thirdparty/images/fuzzySource.png',
+    color : '#cc99ff',
+
   }
 }
 
@@ -440,19 +470,22 @@ let wordCountSource = {
     title : 'Source: Word Count',
     inputs : {
       input_1 : {
-        label : "Input (:i)",
+        label : " ",
       }
     },
     outputs : {
       output_1 : {
-        label : "Output (:i)",
+        label : " ",
       }
     },
     attributes : {
         "operatorType": "WordCountIndexSource",
         "tableName": "",
         "attribute": "",
-    }
+    },
+    image : '../thirdparty/images/countSource.svg',
+    color : '#cc99ff',
+
   }
 }
 
@@ -477,6 +510,7 @@ let wordCount = {
 	      "luceneAnalyzer": "standard",
     },
     image : '../thirdparty/images/counting.png',
+    color : '#ffdb4d',
   }
 }
 
@@ -502,6 +536,7 @@ let comparison = {
 	      "compareTo": "",
     },
     image : '../thirdparty/images/compare.png',
+    color : '#ffdb4d',
   }
 }
 
@@ -530,6 +565,7 @@ let characterDistanceJoin = {
         "spanDistance": 100
     },
     image : '../thirdparty/images/characterjoin.png',
+    color : '#ffa366',
   }
 }
 
@@ -558,6 +594,7 @@ let similarityJoin = {
         "similarityThreshold": 0.8
     },
     image : '../thirdparty/images/similarityjoin.png',
+    color : '#ffa366',
   }
 }
 
@@ -583,6 +620,7 @@ let result = {
         "offset": 0,
     },
     image : '../thirdparty/images/view-result.png',
+    color : '#d2a679',
   }
 }
 
@@ -634,6 +672,7 @@ let mysqlSink = {
         "password": "test"
     },
     image : '../thirdparty/images/sql.jpg',
+    color : '#ff8080',
   }
 }
 

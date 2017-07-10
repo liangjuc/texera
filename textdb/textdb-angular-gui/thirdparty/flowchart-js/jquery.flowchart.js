@@ -64,6 +64,8 @@ $(function () {
         positionRatio: 1,
         globalId: null,
 
+        previousInterval : null,
+
         // the constructor
         _create: function () {
             if (typeof document.__flowchartNumber == 'undefined') {
@@ -491,6 +493,11 @@ $(function () {
             var $operator_outputs = $('<div class="flowchart-operator-outputs"></div>');
             $operator_outputs.appendTo($operator_inputs_outputs);
 
+//
+            var $henry_stuff = $('<div id="empty"></div>')
+            $henry_stuff.appendTo($operator);
+//
+
             var self = this;
 
             var connectorArrows = {};
@@ -502,6 +509,7 @@ $(function () {
                 operator: $operator,
                 title: $operator_title,
                 input_output: $operator_inputs_outputs,
+                henry_stuff: $henry_stuff,
                 connectorSets: connectorSets,
                 connectors: connectors,
                 connectorArrows: connectorArrows,
@@ -512,6 +520,9 @@ $(function () {
               {"background" : "url(" + operatorData.properties.image + ")",
                "background-size" : "100% 100%"});
 
+            fullElement.title.css({
+              "background" : operatorData.properties.color,
+            });
 
             function addConnector(connectorKey, connectorInfos, $operator_container, connectorType) {
                 var $operator_connector_set = $('<div class="flowchart-operator-connector-set"></div>');
@@ -601,7 +612,29 @@ $(function () {
             fullElement.operator.appendTo(this.objs.layers.operators);
             fullElement.operator.css({top: operatorData.top, left: operatorData.left});
             fullElement.operator.data('operator_id', operatorId);
+            //
 
+            var $myBar = $('<div id="myBar'+ operatorId.toString() + '"></div>');
+            $myBar.css({
+              'width': '100%',
+              'height': '30px',
+              'display' : 'none',
+            });
+            $myBar.appendTo(fullElement.henry_stuff);
+
+
+            var $progressBar = $('<div id="myProgress' + operatorId.toString() + '">0%</div>');
+            $progressBar.css({
+              "width" : "0%",
+              "height" : "30px",
+              "background-color" : "#4CAF50",
+              "text-align" : "center",
+              "line-height" : "30px",
+              "color" : "white",
+            });
+            $progressBar.appendTo($myBar);
+
+            //
 
             this.data.operators[operatorId] = operatorData;
             this.data.operators[operatorId].internal.els = fullElement;
@@ -1038,6 +1071,35 @@ $(function () {
 
         _refreshInternalProperties: function (operatorData) {
             operatorData.internal.properties = this.getOperatorFullProperties(operatorData);
+        },
+
+        getHenryData: function (operatorId){
+
+
+          //clear the interval when new setInterval appears (when changing the status one by one)
+
+          // if (this.previousInterval != null) {
+          //   clearInterval(this.previousInterval);
+          // }
+
+          var outBar = document.getElementById("myBar" + operatorId.toString());
+          outBar.style.display = "inline";
+
+          var element = document.getElementById("myProgress" + operatorId.toString());
+          var width = 0;
+          var id = setInterval(frame,10);
+          this.previousInterval = id;
+          function frame() {
+            if (width >= 100) {
+                clearInterval(id);
+            } else {
+                width++;
+                element.style.width = width + '%';
+                element.innerHTML = width * 1  + '%';
+            }
+          }
         }
+
+
     });
 });

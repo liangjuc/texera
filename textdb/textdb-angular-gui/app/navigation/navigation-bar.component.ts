@@ -37,4 +37,9 @@ export class NavigationBarComponent {
     let fileList: FileList = event.target.files;
     this.currentDataService.uploadDictionary(fileList[0]);
   }
+
+  try() {
+    var id = jQuery("#the-flowchart").flowchart("getSelectedOperatorId");
+    jQuery("#the-flowchart").flowchart("getHenryData",id);
+  }
 }
