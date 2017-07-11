@@ -169,10 +169,12 @@ export class SideBarComponent {
   }
 
   onDelete() {
+    console.log("The operator id is = " + this.operatorId);
     this.operatorTitle = "Operator";
     this.attributes = [];
     this.dictionaryContent = [];
     jQuery("#the-flowchart").flowchart("deleteOperator", this.operatorId);
+    this.currentDataService.clearData();
     this.currentDataService.setAllOperatorData(jQuery('#the-flowchart').flowchart('getData'));
   }
 

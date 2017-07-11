@@ -97,7 +97,6 @@ export class TheFlowchartComponent {
           jQuery('#the-flowchart').flowchart('deleteSelected');
           current.currentDataService.clearData();
           current.currentDataService.setAllOperatorData(jQuery('#the-flowchart').flowchart('getData'));
-          console.log("HELLO");
         }
       } else if (e.keyCode === 46) { //delete
         var current_id = jQuery('#the-flowchart').flowchart('getSelectedOperatorId');
@@ -127,7 +126,7 @@ export class TheFlowchartComponent {
     this.initializePanzoom(jQuery('#the-flowchart').parent(), this.TheFlowChartWidth, this.TheFlowChartHeight);
 
   }
-  
+
   initializePanzoom(container: any, InitialWidth: number, InitialHeight: number) {
     // Panzoom initialization...
     jQuery('#the-flowchart').panzoom({
@@ -171,5 +170,5 @@ export class TheFlowchartComponent {
     });
     // panzoom end
   }
-  
+
 }

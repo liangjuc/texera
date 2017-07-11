@@ -58,7 +58,7 @@ export class CurrentDataService {
     }
 
     clearData() : void {
-      this.newAddition.next({operatorNum : 0, operatorData: defaultData});
+      this.newAddition.next({operatorNum : null, operatorData: defaultData});
     }
 
     processData(): void {

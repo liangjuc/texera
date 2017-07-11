@@ -28,6 +28,9 @@ export class NavigationBarComponent {
   }
 
 	deleteOperator() {
+        if (this.operatorId == null){
+          return;
+        }
         jQuery("#the-flowchart").flowchart("deleteOperator", this.operatorId);
         this.currentDataService.clearData();
         this.currentDataService.setAllOperatorData(jQuery('#the-flowchart').flowchart('getData'));
@@ -39,7 +42,6 @@ export class NavigationBarComponent {
   }
 
   try() {
-    var id = jQuery("#the-flowchart").flowchart("getSelectedOperatorId");
-    jQuery("#the-flowchart").flowchart("getHenryData",id);
+    jQuery("#the-flowchart").flowchart("getHenryData",this.operatorId);
   }
 }

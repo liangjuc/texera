@@ -477,12 +477,6 @@ $(function () {
             $operator_title.html(infos.title);
             $operator_title.appendTo($operator);
 
-
-//
-            // var $henry_stuff = $('<div class="henry-try"></div>')
-            // $henry_stuff.appendTo($operator);
-
-//
             var $operator_inputs_outputs = $('<div class="flowchart-operator-inputs-outputs"></div>');
 
             $operator_inputs_outputs.appendTo($operator);
@@ -494,9 +488,15 @@ $(function () {
             $operator_outputs.appendTo($operator_inputs_outputs);
 
 //
-            var $henry_stuff = $('<div id="empty"></div>')
-            $henry_stuff.appendTo($operator);
+
+            var $emptyDiv = $('<div id="empty"></div>');
+            $emptyDiv.appendTo($operator);
+
 //
+
+
+
+
 
             var self = this;
 
@@ -509,7 +509,7 @@ $(function () {
                 operator: $operator,
                 title: $operator_title,
                 input_output: $operator_inputs_outputs,
-                henry_stuff: $henry_stuff,
+                emptyDiv: $emptyDiv,
                 connectorSets: connectorSets,
                 connectors: connectors,
                 connectorArrows: connectorArrows,
@@ -620,8 +620,7 @@ $(function () {
               'height': '30px',
               'display' : 'none',
             });
-            $myBar.appendTo(fullElement.henry_stuff);
-
+            $myBar.appendTo(fullElement.emptyDiv);
 
             var $progressBar = $('<div id="myProgress' + operatorId.toString() + '">0%</div>');
             $progressBar.css({
