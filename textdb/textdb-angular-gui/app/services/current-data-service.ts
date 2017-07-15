@@ -128,7 +128,9 @@ export class CurrentDataService {
                     let result = (JSON.parse(data.json().message));
                     let metadata: Array<TableMetadata> = [];
                     result.forEach((x, y) => {
-                        if (x.tableName === "twitter_climate" || x.tableName === "twitter_hpv") {
+                        if (x.tableName === "twitter_climate" || x.tableName === "twitter_hpv" || 
+                                x.tableName === "twitter_police_all" || x.tableName === "twitter_press_all" || 
+                                x.tableName === "twitter_immigration_all") {
                             metadata.push(new TableMetadata(x.tableName, x.schema.attributes))
                         }
                     });
