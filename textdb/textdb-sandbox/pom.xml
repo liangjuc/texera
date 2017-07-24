@@ -30,5 +30,11 @@
             <artifactId>textdb-exp</artifactId>
             <version>${textdb.version}</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.systemml/systemml -->
+		<dependency>
+		    <groupId>org.apache.systemml</groupId>
+		    <artifactId>systemml</artifactId>
+		    <version>0.14.0-incubating</version>
+		</dependency>
     </dependencies>
 </project>
