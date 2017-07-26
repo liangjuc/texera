@@ -1,6 +1,7 @@
 package edu.uci.ics.textdb.sandbox.helloworldexamples;
 import java.util.Random;
 
+import org.apache.log4j.BasicConfigurator;
 import org.apache.sysml.api.jmlc.Connection;
 import org.apache.sysml.api.jmlc.PreparedScript;
 
@@ -11,45 +12,48 @@ import org.apache.sysml.api.jmlc.PreparedScript;
 public class DummyHelloWorld {
     public static void main(String[] args) throws Exception {
         // Bad comments
-        System.out.println("dfasdfasdf");
-
+        BasicConfigurator.configure();
+        System.out.println("SystemML test!\n");
+        
         Connection conn = new Connection();
         String dml = "print('hello world');";
-
-        System.out.print(dml);
+        
+ //       System.out.print(dml);
         PreparedScript script = conn.prepareScript(dml, new String[0], new String[0], false);
         script.executeScript();
+        testSystemMl();
     }
     
-    public  void testSystemMl() throws Exception {
+    public  static void testSystemMl() throws Exception {
         // TOBE deleted
-     // obtain connection to SystemML
+        // obtain connection to SystemML
         Connection conn = new Connection();
- 
+        
         // read in and precompile DML script, registering inputs and outputs
         String dml = conn.readScript("/tmp/scoring-example.dml");
         System.out.println(dml);
-        PreparedScript script = conn.prepareScript(dml, new String[] { "W", "X" }, new String[] { "predicted_y" }, false);
- 
+        PreparedScript script = conn.prepareScript(dml, new String[] { "W", "X" }, new String[] { "predicted_y" },
+                false);
+        
         double[][] mtx = matrix(4, 3, new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 });
         double[][] result = null;
- 
+        
         // set inputs, execute script, and obtain output
         script.setMatrix("W", mtx);
         script.setMatrix("X", randomMatrix(3, 3, -1, 1, 0.7));
         result = script.executeScript().getMatrix("predicted_y");
         displayMatrix(result);
- 
+        
         script.setMatrix("W", mtx);
         script.setMatrix("X", randomMatrix(3, 3, -1, 1, 0.7));
         result = script.executeScript().getMatrix("predicted_y");
         displayMatrix(result);
- 
+        
         script.setMatrix("W", mtx);
         script.setMatrix("X", randomMatrix(3, 3, -1, 1, 0.7));
         result = script.executeScript().getMatrix("predicted_y");
         displayMatrix(result);
- 
+        
         // close connection
         conn.close();
     }
