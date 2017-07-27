@@ -183,6 +183,8 @@ $(function () {
         },
 
         setData: function (data) {
+          console.log("setData function is called in the code");
+
             this._clearOperatorsLayer();
             this.data.operatorTypes = {};
             if (typeof data.operatorTypes != 'undefined') {
@@ -584,6 +586,8 @@ $(function () {
         },
 
         addOperator: function (operatorData) {
+          console.log("addOperator function is called in the code");
+
             while (typeof this.data.operators[this.operatorNum] != 'undefined') {
                 this.operatorNum++;
             }
@@ -593,6 +597,8 @@ $(function () {
         },
 
         createOperator: function (operatorId, operatorData) {
+
+            console.log("createOperator function is called in the code");
             operatorData.internal = {};
             this._refreshInternalProperties(operatorData);
 
@@ -1029,6 +1035,8 @@ $(function () {
         },
 
         setOperatorData: function (operatorId, operatorData) {
+          console.log("setOperatorData function is called in the code");
+
             var infos = this.getOperatorCompleteData(operatorData);
             for (var linkId in this.data.links) {
                 if (this.data.links.hasOwnProperty(linkId)) {
