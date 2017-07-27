@@ -146,8 +146,6 @@ export class SideBarComponent {
 
     currentDataService.dictionaryContent$.subscribe(
       data => {
-        console.log("dictionary content data services?   is called ");
-
         this.dictionaryContent = [];
         for(let entry of data){
           this.dictionaryContent.push(entry.trim());
@@ -170,7 +168,6 @@ export class SideBarComponent {
   }
 
   onFormChange (attribute: string) {
-    console.log("onFormChange() is called ");
     jQuery("#the-flowchart").flowchart("setOperatorData", this.operatorId, this.data);
   }
 
@@ -185,7 +182,6 @@ export class SideBarComponent {
   }
 
   attributeAdded (type: string) {
-    console.log("attributeAdded()   is called ");
 
     if (type === "multi") {
       this.selectedAttributesList.push(this.selectedAttributeMulti);
@@ -198,7 +194,6 @@ export class SideBarComponent {
   }
 
   manuallyAdded (event:string) {
-    console.log("manuallyAdded()   is called ");
 
     if (event.length === 0) {
       // removed all attributes
@@ -212,7 +207,6 @@ export class SideBarComponent {
   }
 
   getAttributesForTable (event:string) {
-    console.log("getAttributeForTable()   is called ");
 
     if (!event) {
       return;
@@ -239,7 +233,6 @@ export class SideBarComponent {
   }
 
   dictionaryManuallyAdded(event: string) {
-    console.log("dictionaryManuallyAdded()   is called ");
 
     if (event.length === 0) {
       this.dictionaryContent = [];

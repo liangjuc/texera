@@ -150,12 +150,28 @@ $(function () {
             });
 
             this.objs.layers.operators.on('click', '.flowchart-operator-connector', function () {
+              console.log("CONNECTOR iS CLICKED");
                 var $this = $(this);
                 if (self.options.canUserEditLinks) {
                     self._connectorClicked($this.closest('.flowchart-operator').data('operator_id'), $this.data('connector'), $this.data('sub_connector'), $this.closest('.flowchart-operator-connector-set').data('connector_type'));
                 }
             });
 
+// Henry
+            this.objs.layers.operators.on('mousedown', '.flowchart-operator-connector', function(){
+              var $this = $(this);
+              if (self.options.canUserEditLinks) {
+                  self._connectorClicked($this.closest('.flowchart-operator').data('operator_id'), $this.data('connector'), $this.data('sub_connector'), $this.closest('.flowchart-operator-connector-set').data('connector_type'));
+              }
+            })
+
+            this.objs.layers.operators.on('mouseup', '.flowchart-operator-connector', function(){
+              var $this = $(this);
+              if (self.options.canUserEditLinks) {
+                  self._connectorClicked($this.closest('.flowchart-operator').data('operator_id'), $this.data('connector'), $this.data('sub_connector'), $this.closest('.flowchart-operator-connector-set').data('connector_type'));
+              }
+            })
+/// HENRY
             this.objs.layers.links.on('mousedown touchstart', '.flowchart-link', function (e) {
                 e.stopImmediatePropagation();
             });
@@ -1105,7 +1121,9 @@ $(function () {
                 element.innerHTML = width * 1  + '%';
             }
           }
-        }
+        },
+
+
 
 
     });
