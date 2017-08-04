@@ -17,6 +17,7 @@ declare var jQuery: any;
 		<div id="wrapper">
         <side-bar-container class="container fill"></side-bar-container>
 		    <flowchart-container class="container fill" #theFlowchart></flowchart-container>
+        <result-container></result-container>
 		</div>
 	`,
     providers: [MockDataService, CurrentDataService],
@@ -35,7 +36,7 @@ export class AppComponent {
 
     ngAfterViewInit() {
         var current = this;
-        
+
         jQuery(document).ready(function() {
             current.theFlowchart.initialize({});
             current.theOperatorBar.initialize();

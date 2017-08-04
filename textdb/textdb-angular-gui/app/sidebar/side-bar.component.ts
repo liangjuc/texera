@@ -103,26 +103,28 @@ export class SideBarComponent {
 
     currentDataService.checkPressed$.subscribe(
       data => {
-        jQuery.hideLoading();
-        console.log(data);
-        if (data.code === 0) {
-          var node = new PrettyJSON.view.Node({
-            el: jQuery("#elem"),
-            data: JSON.parse(data.message)
-          });
-        } else {
-          var node = new PrettyJSON.view.Node({
-            el: jQuery("#elem"),
-            data: {"message": data.message}
-          });
-        }
+        // jQuery.hideLoading();
+        // console.log(data);
+        // // console.log("show message");
+        // // console.log(data.message);
+        // if (data.code === 0) {
+        //   var node = new PrettyJSON.view.Node({
+        //     el: jQuery("#elem"),
+        //     data: JSON.parse(data.message)
+        //   });
+        // } else {
+        //   var node = new PrettyJSON.view.Node({
+        //     el: jQuery("#elem"),
+        //     data: {"message": data.message}
+        //   });
+        // }
 
-        this.ModalOpen();
-
-        var newThing = jQuery('#the-flowchart').flowchart('getData');
-        for (var each in newThing.operators){
-          jQuery("#the-flowchart").flowchart("getHenryData",each);
-        }
+        // this.ModalOpen();
+        //
+        // var newThing = jQuery('#the-flowchart').flowchart('getData');
+        // for (var each in newThing.operators){
+        //   jQuery("#the-flowchart").flowchart("getHenryData",each);
+        // }
 
       });
 

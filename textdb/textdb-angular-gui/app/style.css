@@ -24,7 +24,7 @@ body {
 }
 
 .navigation-btn{
-	width: 100px;
+	width: 120px;
 	font-weight: bold;
 	font-size: 22px;
 	padding : 0px;
@@ -52,7 +52,7 @@ body {
 #wrapper {
     padding-left: 0px;
     width: 100%;
-    height: calc(100% - 104px);
+    height: calc(100% - 100px);
 }
 
 #sidebar-wrapper {
@@ -106,7 +106,7 @@ body {
 #flow-chart-container{
 	width: calc(100% - 240px);;
 	left: 240px;
-	height: calc(100%);
+	height: calc(100%- 35px);
 	position: relative;
 
 }
@@ -115,7 +115,7 @@ body {
 	width: 80px;
 	height: 80px;
 	right: 160px;
-	bottom: 80px;
+	bottom: 60px;
 	position: absolute;
 	z-index: 1;
 	border-radius: 50%;
@@ -128,7 +128,7 @@ body {
 	width: 80px;
 	height: 80px;
 	right: 60px;
-	bottom: 80px;
+	bottom: 60px;
 	position: absolute;
 	z-index: 1;
 	border-radius: 50%;
@@ -182,4 +182,52 @@ body {
 		color: white;
 		font-weight: bold;
 		font-size: 22px;
+}
+
+
+
+
+/*table style*/
+table {
+		width: calc(100%);
+		height: calc(100%);
+		font-family: arial, sans-serif;
+		border-collapse: collapse;
+		display: inline-block;
+}
+
+td, th {
+		border: 1px solid #dddddd;
+		text-align: left;
+		padding: 8px;
+}
+
+
+tr:nth-child(even) {
+		background-color: #dddddd;
+}
+
+.result-attribute-title{
+	background-color:  #b3b3ff;
+}
+
+#result-table-bar{
+	width: calc(100% - 240px);
+	margin-left: 240px;
+	height: 300px;
+	overflow-y: auto;
+	overflow-x: auto;
+	background-color: #ebfaeb;
+	display: none;
+}
+
+.result-bar-title{
+	background-color: #4d79ff;
+	color: white;
+	width: calc(100% - 240px);
+	height: 35px;
+	font-size: 25px;
+	padding-left: 10px;
+	margin-left: 240px;
+	cursor: pointer;
 }

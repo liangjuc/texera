@@ -9,6 +9,10 @@ import { NavigationBarComponent }   from './navigation/navigation-bar.component'
 import { OperatorBarComponent }   from './operatorbar/operator-bar.component';
 import { SideBarComponent }   from './sidebar/side-bar.component';
 
+
+import { ResultBarComponent } from './result/result-bar.component';
+
+
 import { BsDropdownModule } from 'ng2-bootstrap/';
 import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
 
@@ -24,6 +28,7 @@ import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
     NavigationBarComponent,
     OperatorBarComponent,
     SideBarComponent,
+    ResultBarComponent
 	],
   bootstrap:    [ AppComponent ]
 })

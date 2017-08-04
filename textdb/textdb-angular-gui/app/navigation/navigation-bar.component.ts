@@ -22,7 +22,8 @@ export class NavigationBarComponent {
 
 
   onClick(event) {
-        jQuery.showLoading({allowHide: true});
+        // jQuery.showLoading({allowHide: true});
+        jQuery('.navigation-btn').button('loading');
         this.currentDataService.setAllOperatorData(jQuery('#the-flowchart').flowchart('getData'));
         this.currentDataService.processData();
   }
