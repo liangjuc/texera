@@ -30,6 +30,7 @@ export class ResultBarComponent {
   constructor (private currentDataService: CurrentDataService){
     currentDataService.checkPressed$.subscribe(
       data => {
+        // jQuery.hideLoading();
         jQuery('.navigation-btn').button('reset');
         this.attribute = [];
         // check if the result is valid
@@ -39,7 +40,11 @@ export class ResultBarComponent {
           for (var each in this.result[0]){
             this.attribute.push(each);
           }
-          this.openResultBar()
+          this.openResultBar();
+          var newThing = jQuery('#the-flowchart').flowchart('getData');
+          for (var each in newThing.operators){
+            jQuery("#the-flowchart").flowchart("getHenryData",each);
+          }
         } else {
             var node = new PrettyJSON.view.Node({
               el: jQuery("#ResultElem"),
@@ -63,13 +68,13 @@ export class ResultBarComponent {
     jQuery("#result-table-bar").css({
       "display":"block",
     });
-    jQuery("#flow-chart-container").css({"height":"calc(100% - 335px);"});
+    jQuery("#flow-chart-container").css({"height":"calc(100% - 340px);"});
     this.resultBarStatus = "opened";
   }
 
   closeResultBar(){
     jQuery("#result-table-bar").css({"display":"none"});
-    jQuery("#flow-chart-container").css({"height":"calc(100% - 35px);"});
+    jQuery("#flow-chart-container").css({"height":"calc(100% - 40px);"});
     this.resultBarStatus = "closed";
   }
 

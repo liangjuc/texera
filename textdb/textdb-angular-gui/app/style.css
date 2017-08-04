@@ -106,7 +106,7 @@ body {
 #flow-chart-container{
 	width: calc(100% - 240px);;
 	left: 240px;
-	height: calc(100%- 35px);
+	height: calc(100%- 40px);
 	position: relative;
 
 }
@@ -225,9 +225,10 @@ tr:nth-child(even) {
 	background-color: #4d79ff;
 	color: white;
 	width: calc(100% - 240px);
-	height: 35px;
+	height: 40px;
 	font-size: 25px;
 	padding-left: 10px;
 	margin-left: 240px;
 	cursor: pointer;
+	vertical-align: middle;
 }

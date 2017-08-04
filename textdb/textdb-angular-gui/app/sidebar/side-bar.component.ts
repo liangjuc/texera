@@ -1,7 +1,6 @@
 import {Component, ViewChild, OnInit} from '@angular/core';
 
 import { CurrentDataService } from '../services/current-data-service';
-import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { TableMetadata } from "../services/table-metadata";
 import {log} from "util";
 
@@ -51,16 +50,6 @@ export class SideBarComponent {
   dictionaryContent: Array<string> = [];
   selectedDictionary:string = "";
 
-  @ViewChild('MyModal')
-  modal: ModalComponent;
-
-  ModalOpen() {
-    this.modal.open();
-  }
-  ModalClose() {
-    this.modal.close();
-  }
-
   checkInHidden(name: string) {
     return jQuery.inArray(name, this.hiddenList);
   }
@@ -98,33 +87,6 @@ export class SideBarComponent {
         if (data.operatorData.properties.attributes.dictionaryEntries) {
           this.dictionaryContent = data.operatorData.properties.attributes.dictionaryEntries;
         }
-
-      });
-
-    currentDataService.checkPressed$.subscribe(
-      data => {
-        // jQuery.hideLoading();
-        // console.log(data);
-        // // console.log("show message");
-        // // console.log(data.message);
-        // if (data.code === 0) {
-        //   var node = new PrettyJSON.view.Node({
-        //     el: jQuery("#elem"),
-        //     data: JSON.parse(data.message)
-        //   });
-        // } else {
-        //   var node = new PrettyJSON.view.Node({
-        //     el: jQuery("#elem"),
-        //     data: {"message": data.message}
-        //   });
-        // }
-
-        // this.ModalOpen();
-        //
-        // var newThing = jQuery('#the-flowchart').flowchart('getData');
-        // for (var each in newThing.operators){
-        //   jQuery("#the-flowchart").flowchart("getHenryData",each);
-        // }
 
       });
 
