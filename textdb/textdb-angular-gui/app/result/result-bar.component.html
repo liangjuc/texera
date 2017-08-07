@@ -1,21 +1,27 @@
-<div class="result-bar-title" (click)="resultBarClicked()"><b>Result Window</b></div>
-<div id="result-table-bar">
-  <table data-toggle="table">
-    <thead>
-      <!-- top row showing names/types of columns -->
-      <tr class="result-attribute-title">
-        <th *ngFor="let eachAttribute of attribute"><b>{{eachAttribute}}</b></th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- each row -->
-      <tr *ngFor="let eachResult of result">
-        <span *ngFor="let eachAttr of attribute">
-          <td>{{eachResult[eachAttr]}}</td>
-        </span>
-      </tr>
-    </tbody>
-  </table>
+<div id="resizable">
+  <div class="draggable ui-widget-content" id="ngrip"></div>
+  <div class="result-bar-title" (click)="resultBarClicked()">
+    <b>Result Window</b>
+  </div>
+  <div id="result-table-bar">
+    <table data-toggle="table">
+      <thead>
+        <!-- top row showing names/types of columns -->
+        <tr class="result-attribute-title">
+          <th *ngFor="let eachAttribute of attribute"><b>{{eachAttribute}}</b></th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- each row -->
+        <tr *ngFor="let eachResult of result">
+          <span *ngFor="let eachAttr of attribute">
+            <td>{{eachResult[eachAttr]}}</td>
+          </span>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
 </div>
 
 

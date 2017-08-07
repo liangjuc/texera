@@ -3,6 +3,7 @@ import { Component, ViewChild } from '@angular/core';
 import { MockDataService } from './services/mock-data-service';
 import { CurrentDataService } from './services/current-data-service';
 
+import { ResultBarComponent } from './result/result-bar.component';
 import { TheFlowchartComponent } from './flowchart/the-flowchart.component';
 import { OperatorBarComponent } from './operatorbar/operator-bar.component';
 
@@ -17,7 +18,7 @@ declare var jQuery: any;
 		<div id="wrapper">
         <side-bar-container class="container fill"></side-bar-container>
 		    <flowchart-container class="container fill" #theFlowchart></flowchart-container>
-        <result-container></result-container>
+        <result-container #theResultBar></result-container>
 		</div>
 	`,
     providers: [MockDataService, CurrentDataService],
@@ -33,6 +34,7 @@ export class AppComponent {
 
     @ViewChild('theFlowchart') theFlowchart: TheFlowchartComponent;
     @ViewChild('theOperatorBar') theOperatorBar: OperatorBarComponent;
+    @ViewChild('theResultBar') theResultBar: ResultBarComponent;
 
     ngAfterViewInit() {
         var current = this;
@@ -40,7 +42,7 @@ export class AppComponent {
         jQuery(document).ready(function() {
             current.theFlowchart.initialize({});
             current.theOperatorBar.initialize();
-
+            current.theResultBar.initializing();
         });
 
     }
