@@ -106,7 +106,7 @@ body {
 #flow-chart-container{
 	width: calc(100% - 240px);;
 	left: 240px;
-	height: calc(100%- 40px);
+	height: calc(100% - 40px);
 	position: relative;
 
 }

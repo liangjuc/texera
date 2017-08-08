@@ -14,9 +14,7 @@
       <tbody>
         <!-- each row -->
         <tr *ngFor="let eachResult of result">
-          <span *ngFor="let eachAttr of attribute">
-            <td>{{eachResult[eachAttr]}}</td>
-          </span>
+          <td *ngFor="let eachAttr of attribute">{{shortenString(eachResult[eachAttr])}}</td>
         </tr>
       </tbody>
     </table>

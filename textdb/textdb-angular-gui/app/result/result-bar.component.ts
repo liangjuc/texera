@@ -60,6 +60,21 @@ export class ResultBarComponent {
     );
   }
 
+  shortenString(longText: string){
+    longText = longText.toString();
+    var shortText = longText.substring(0, 25);
+    if (shortText.length > 24)
+    {
+      shortText = shortText + " ...";
+    }
+    return shortText;
+  }
+
+  // makeClickable(text: )
+  // {
+  //
+  // }
+
   resultBarClicked(){
     // check if the result bar is opened or closed
     var currentResultBarStatus = jQuery('#result-table-bar').css('display');
@@ -76,7 +91,7 @@ export class ResultBarComponent {
       "height" : "300px",
     });
     jQuery('#ngrip').css({"top":"-10px"});
-    jQuery("#flow-chart-container").css({"height":"calc(100% - 340px);"});
+    jQuery("#flow-chart-container").css({"height":"calc(100% - 340px)"});
     this.redrawDraggable();
   }
 
@@ -86,7 +101,7 @@ export class ResultBarComponent {
       "height" : "0px",
     });
     jQuery('#ngrip').css({"top":"-10px"});
-    jQuery("#flow-chart-container").css({"height":"calc(100% - 40px);"});
+    jQuery("#flow-chart-container").css({"height":"calc(100% - 40px)"});
     this.redrawDraggable();
   }
 
@@ -115,7 +130,7 @@ export class ResultBarComponent {
             "display":"block",
             "height" : "300px",
           });
-          jQuery("#flow-chart-container").css({"height":"calc(100% - 340px);"});
+          jQuery("#flow-chart-container").css({"height":"calc(100% - 340px)"});
         } else if (endPosition > -10){
           // if endPosition is lower than the minimum
           ui.position.top = -10;
@@ -123,13 +138,13 @@ export class ResultBarComponent {
             "display":"none",
             "height" : "0px",
           });
-          jQuery("#flow-chart-container").css({"height":"calc(100% - 40px);"});
+          jQuery("#flow-chart-container").css({"height":"calc(100% - 40px)"});
         } else {
           var new_height = -endPosition - 10; // include the drag button
           var new_height2 = new_height + 40; // include the drag button and the title bar
 
           // redraw 2 fields to resize
-          jQuery("#flow-chart-container").css({"height":"calc(100% - " + new_height2 + "px);"});
+          jQuery("#flow-chart-container").css({"height":"calc(100% - " + new_height2 + "px)"});
           jQuery("#result-table-bar").css({
             "display":"block",
             "height" : new_height + "px",
