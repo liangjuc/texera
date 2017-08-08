@@ -15,8 +15,8 @@ declare var PrettyJSON: any;
 export class ResultBarComponent {
   result: any;
   attribute: string[] = [];
-  resultBarStatus: string = "closed";
   previousResultHandleTop: number = -10;
+  checkErrorOrDetail: number = 0;
 
 
   @ViewChild('ResultModal')
@@ -50,6 +50,7 @@ export class ResultBarComponent {
           }
         } else {
           // pop the modal when not valid
+            this.checkErrorOrDetail = 0;
             var node = new PrettyJSON.view.Node({
               el: jQuery("#ResultElem"),
               data: {"message": data.message}
@@ -62,18 +63,17 @@ export class ResultBarComponent {
 
   shortenString(longText: string){
     longText = longText.toString();
-    var shortText = longText.substring(0, 25);
-    if (shortText.length > 24)
-    {
-      shortText = shortText + " ...";
+    if (longText.length < 25) {
+      return longText;
+    } else {
+      return longText.substring(0,25) + " ...";
     }
-    return shortText;
   }
 
-  // makeClickable(text: )
-  // {
-  //
-  // }
+  checkIfObject(eachAttribute: string){
+    return typeof eachAttribute === "object";
+  }
+
 
   resultBarClicked(){
     // check if the result bar is opened or closed
@@ -92,6 +92,7 @@ export class ResultBarComponent {
     });
     jQuery('#ngrip').css({"top":"-10px"});
     jQuery("#flow-chart-container").css({"height":"calc(100% - 340px)"});
+
     this.redrawDraggable();
   }
 
@@ -109,6 +110,17 @@ export class ResultBarComponent {
     this.previousResultHandleTop = -parseInt(jQuery('#result-table-bar').css('height'), 10) - 10;
     jQuery("#ngrip").draggable( "destroy" );
     this.initializeResizing(this.previousResultHandleTop);
+  }
+
+
+  displayRowDetail(singleResult: any){
+    this.checkErrorOrDetail = 1;
+    var node = new PrettyJSON.view.Node({
+      el: jQuery("#ResultElem"),
+      data: singleResult
+    });
+    this.ModalOpen();
+
   }
 
   // initialized the default draggable / resizable result bar

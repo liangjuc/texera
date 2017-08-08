@@ -4,28 +4,34 @@
     <b>Result Window</b>
   </div>
   <div id="result-table-bar">
-    <table data-toggle="table">
+    <table class="table table-hover" data-toggle="table">
       <thead>
         <!-- top row showing names/types of columns -->
         <tr class="result-attribute-title">
-          <th *ngFor="let eachAttribute of attribute"><b>{{eachAttribute}}</b></th>
+          <th *ngFor="let eachAttribute of attribute"><b>{{shortenString(eachAttribute)}}</b></th>
         </tr>
       </thead>
       <tbody>
         <!-- each row -->
-        <tr *ngFor="let eachResult of result">
-          <td *ngFor="let eachAttr of attribute">{{shortenString(eachResult[eachAttr])}}</td>
+        <tr class="resultRow" *ngFor="let eachResult of result" (click)="displayRowDetail(eachResult)">
+        <!-- <tr class="resultRow" *ngFor="let eachResult of result" > -->
+          <td *ngFor="let eachAttr of attribute">
+            <!-- <span *ngIf="checkIfObject(eachResult[eachAttr])"> <a (click)="displayRowDetail(eachResult[eachAttr])">{{shortenString(eachResult[eachAttr])}}</a></span>
+            <span *ngIf="!checkIfObject(eachResult[eachAttr])">{{shortenString(eachResult[eachAttr])}}</span> -->
+            <span>{{shortenString(eachResult[eachAttr])}}</span>
+          </td>
         </tr>
       </tbody>
     </table>
   </div>
-
 </div>
+
 
 
 <modal #ResultModal>
 	<modal-header>
-		<h3>Error</h3>
+    <h3 *ngIf="checkErrorOrDetail === 1">Row Detail</h3>
+		<h3 *ngIf="checkErrorOrDetail === 0">Error</h3>
 	</modal-header>
 	<modal-body class="search-result">
     <div id="ResultElem"></div>

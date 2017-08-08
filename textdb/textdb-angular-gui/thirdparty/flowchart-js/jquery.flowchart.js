@@ -644,6 +644,16 @@ $(function () {
             });
             $myBar.appendTo(fullElement.emptyDiv);
 
+            // var $progressButton = $('<div id="myProgressButton' + operatorId.toString() + '"> GO </div>');
+            // $progressButton.css({
+            //   "width" : "20%",
+            //   "height" : "30px",
+            //   "background-color" : "#4CAF50",
+            //   "text-align" : "center",
+            //   "line-height" : "30px",
+            // });
+            // $progressButton.appendTo
+
             var $progressBar = $('<div id="myProgress' + operatorId.toString() + '">0%</div>');
             $progressBar.css({
               "width" : "0%",

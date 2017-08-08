@@ -203,6 +203,10 @@ td, th {
 		padding: 8px;
 }
 
+th {
+	top: 0px;
+}
+
 
 tr:nth-child(even) {
 		background-color: #dddddd;
