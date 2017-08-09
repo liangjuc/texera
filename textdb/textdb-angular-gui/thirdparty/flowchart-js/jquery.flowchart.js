@@ -66,6 +66,9 @@ $(function () {
 
         previousInterval : null,
 
+
+        progressButtonStatus : {},
+
         // the constructor
         _create: function () {
             if (typeof document.__flowchartNumber == 'undefined') {
@@ -196,6 +199,25 @@ $(function () {
                 self._operatorMouseOut($(this).data('operator_id'));
             });
 
+            this.objs.layers.operators.on('click','.progressButton',function(e){
+              var $this = $(this);
+              var operatorID = $this.closest('.flowchart-operator').data('operator_id');
+              console.log("ProgessBar BUtton is clicked!");
+              self.changeProgressButton(operatorID);
+            })
+
+        },
+
+        changeProgressButton: function(operatorID){
+          var element = document.getElementById("myProgressButton" + operatorID);
+          console.log(this.progressButtonStatus);
+          if (this.progressButtonStatus[operatorID] === "running"){
+            element.innerHTML = '<i class="fa fa-play-circle" aria-hidden="true"></i>';
+            this.progressButtonStatus[operatorID]= "stopped";
+          } else {
+            element.innerHTML = '<i class="fa fa-pause-circle" aria-hidden="true"></i>';
+            this.progressButtonStatus[operatorID]= "running";
+          }
         },
 
         setData: function (data) {
@@ -639,29 +661,32 @@ $(function () {
             var $myBar = $('<div id="myBar'+ operatorId.toString() + '"></div>');
             $myBar.css({
               'width': '100%',
-              'height': '30px',
               'display' : 'none',
+              'background-color' : 'yellow',
+              "white-space": "nowrap",
+              "height" : "30px",
+              "line-height" : "30px",
             });
             $myBar.appendTo(fullElement.emptyDiv);
 
-            // var $progressButton = $('<div id="myProgressButton' + operatorId.toString() + '"> GO </div>');
-            // $progressButton.css({
-            //   "width" : "20%",
-            //   "height" : "30px",
-            //   "background-color" : "#4CAF50",
-            //   "text-align" : "center",
-            //   "line-height" : "30px",
-            // });
-            // $progressButton.appendTo
+            var $progressButton = $('<span class="progressButton" id="myProgressButton' + operatorId.toString() + '"><i class="fa fa-pause-circle" aria-hidden="true"></i></span>');
+            $progressButton.css({
+              "width" : "20%",
+              "color" : "red",
+              "text-align" : "center",
+              "float" : "left",
+              "border" : "0px",
+              "font-size" : "20px",
+            });
+            $progressButton.appendTo($myBar);
 
-            var $progressBar = $('<div id="myProgress' + operatorId.toString() + '">0%</div>');
+            var $progressBar = $('<span id="myProgress' + operatorId.toString() + '">0%</span>');
             $progressBar.css({
-              "width" : "0%",
-              "height" : "30px",
+              "width" : "80%",
               "background-color" : "#4CAF50",
               "text-align" : "center",
-              "line-height" : "30px",
               "color" : "white",
+              "float" : "left",
             });
             $progressBar.appendTo($myBar);
 
@@ -1115,6 +1140,8 @@ $(function () {
           //   clearInterval(this.previousInterval);
           // }
 
+          this.progressButtonStatus[operatorId] = "running";
+          console.log(this.progressButtonStatus);
           var outBar = document.getElementById("myBar" + operatorId.toString());
           outBar.style.display = "inline";
 
@@ -1123,12 +1150,12 @@ $(function () {
           var id = setInterval(frame,10);
           this.previousInterval = id;
           function frame() {
-            if (width >= 100) {
+            if (width >= 80) {
                 clearInterval(id);
             } else {
                 width++;
                 element.style.width = width + '%';
-                element.innerHTML = width * 1  + '%';
+                element.innerHTML = width * 1 * 100 / 80  + '%';
             }
           }
         },
