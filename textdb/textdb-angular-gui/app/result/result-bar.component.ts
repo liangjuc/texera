@@ -15,7 +15,7 @@ declare var PrettyJSON: any;
 export class ResultBarComponent {
   result: any;
   attribute: string[] = [];
-  previousResultHandleTop: number = -10;
+  previousResultHandleTop: number = -5;
   checkErrorOrDetail: number = 0;
 
 
@@ -90,7 +90,7 @@ export class ResultBarComponent {
       "display":"block",
       "height" : "300px",
     });
-    jQuery('#ngrip').css({"top":"-10px"});
+    jQuery('#ngrip').css({"top":"-5px"});
     jQuery("#flow-chart-container").css({"height":"calc(100% - 340px)"});
 
     this.redrawDraggable();
@@ -101,7 +101,7 @@ export class ResultBarComponent {
       "display":"none",
       "height" : "0px",
     });
-    jQuery('#ngrip').css({"top":"-10px"});
+    jQuery('#ngrip').css({"top":"-5px"});
     jQuery("#flow-chart-container").css({"height":"calc(100% - 40px)"});
     this.redrawDraggable();
   }
@@ -136,16 +136,16 @@ export class ResultBarComponent {
         // calculate the position
         var endPosition = previousHeight + 10 + ui.position.top;
         // if endPosition exceeds the maximum
-        if (endPosition < -310){
-          ui.position.top = -310;
+        if (endPosition < -305){
+          ui.position.top = -305;
           jQuery("#result-table-bar").css({
             "display":"block",
             "height" : "300px",
           });
           jQuery("#flow-chart-container").css({"height":"calc(100% - 340px)"});
-        } else if (endPosition > -10){
+        } else if (endPosition > -5){
           // if endPosition is lower than the minimum
-          ui.position.top = -10;
+          ui.position.top = -5;
           jQuery("#result-table-bar").css({
             "display":"none",
             "height" : "0px",
@@ -175,16 +175,16 @@ export class ResultBarComponent {
         var newResultBarHeight = parseInt(jQuery('#result-table-bar').css('height'), 10);
         // if at minimum
         if (newResultBarHeight === 0){
-          previousHeight = -10;
+          previousHeight = -5;
         } else if (newResultBarHeight === 300){
-          previousHeight = -310
+          previousHeight = -305
         } else {
           // previous height is used for calculating the movement of the result bar and flowchart
           previousHeight = previousHeight + 10 + parseInt(jQuery('#ngrip').css('top'), 10);
         }
 
         // make sure drag button is directly above the result bar
-        jQuery('#ngrip').css({"top":"-10px"});
+        jQuery('#ngrip').css({"top":"-5px"});
 
         // make the drag button visible again
         jQuery("#ngrip").css({
