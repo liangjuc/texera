@@ -151,8 +151,12 @@ body {
 .dropdown {
 	position: relative;
 	float: left;
+	padding-left: 0px;
 }
 
+.group-icon{
+	padding-left: 12px;
+}
 
 .dropdown-content {
 	margin-top: 7px;
