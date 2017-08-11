@@ -9,7 +9,7 @@ import { NavigationBarComponent }   from './navigation/navigation-bar.component'
 import { OperatorBarComponent }   from './operatorbar/operator-bar.component';
 import { SideBarComponent }   from './sidebar/side-bar.component';
 
-
+import { OperatorInfoComponent } from './operatorInfo/operatorInfo.component';
 import { ResultBarComponent } from './result/result-bar.component';
 
 
@@ -28,7 +28,8 @@ import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
     NavigationBarComponent,
     OperatorBarComponent,
     SideBarComponent,
-    ResultBarComponent
+    ResultBarComponent,
+    OperatorInfoComponent
 	],
   bootstrap:    [ AppComponent ]
 })

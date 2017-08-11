@@ -204,7 +204,7 @@ $(function () {
               var operatorID = $this.closest('.flowchart-operator').data('operator_id');
               console.log("ProgessBar BUtton is clicked!");
               self.changeProgressButton(operatorID);
-            })
+            });
 
         },
 
@@ -518,7 +518,6 @@ $(function () {
             $operator_title.appendTo($operator);
 
             var $operator_inputs_outputs = $('<div class="flowchart-operator-inputs-outputs"></div>');
-
             $operator_inputs_outputs.appendTo($operator);
 
             var $operator_inputs = $('<div class="flowchart-operator-inputs"></div>');
@@ -527,7 +526,7 @@ $(function () {
             var $operator_outputs = $('<div class="flowchart-operator-outputs"></div>');
             $operator_outputs.appendTo($operator_inputs_outputs);
 
-//
+//          empty div used for displaying the progressBar and progressButton
 
             var $emptyDiv = $('<div id="empty"></div>');
             $emptyDiv.appendTo($operator);

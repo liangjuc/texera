@@ -19,6 +19,7 @@ declare var jQuery: any;
         <side-bar-container class="container fill"></side-bar-container>
 		    <flowchart-container class="container fill" #theFlowchart></flowchart-container>
         <result-container #theResultBar></result-container>
+        <operator-info></operator-info>
 		</div>
 	`,
     providers: [MockDataService, CurrentDataService],
