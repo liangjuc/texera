@@ -80,6 +80,9 @@ export class TheFlowchartComponent {
 
   initialize(data: any) {
     var current = this;
+    jQuery('.flowchart-operator').click(function(){
+      console.log("flowchart operator title is clicked in flowchart component yeyeyeye");
+    });
 
     // unselect operator when user click other div
     jQuery('html').mousedown(function(e) {

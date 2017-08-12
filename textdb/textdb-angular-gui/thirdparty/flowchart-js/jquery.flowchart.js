@@ -206,6 +206,13 @@ $(function () {
               self.changeProgressButton(operatorID);
             });
 
+            this.objs.layers.operators.on('click','.operator-info-icon',function(e){
+              var $this = $(this);
+              var operatorID = $this.closest('.flowchart-operator').data('operator_id');
+              console.log("THe nearest id = " + operatorID);
+              // alert("OperatorID = " + operatorID);
+            });
+
         },
 
         changeProgressButton: function(operatorID){
@@ -515,7 +522,18 @@ $(function () {
 
             var $operator_title = $('<div class="flowchart-operator-title"></div>');
             $operator_title.html(infos.title);
+
+
             $operator_title.appendTo($operator);
+
+            // info icon
+            var $operator_info = $('<div class="operator-info-div"></div>');
+
+            var $operator_info_icon = $('<i class="fa fa-info-circle operator-info-icon" aria-hidden="true"></i>');
+
+            $operator_info_icon.appendTo($operator_info);
+            $operator_info.appendTo($operator);
+            //
 
             var $operator_inputs_outputs = $('<div class="flowchart-operator-inputs-outputs"></div>');
             $operator_inputs_outputs.appendTo($operator);
@@ -530,7 +548,6 @@ $(function () {
 
             var $emptyDiv = $('<div id="empty"></div>');
             $emptyDiv.appendTo($operator);
-
 //
 
 
@@ -547,6 +564,7 @@ $(function () {
             var fullElement = {
                 operator: $operator,
                 title: $operator_title,
+                operator_info : $operator_info,
                 input_output: $operator_inputs_outputs,
                 emptyDiv: $emptyDiv,
                 connectorSets: connectorSets,
@@ -562,6 +580,10 @@ $(function () {
             fullElement.title.css({
               "background" : operatorData.properties.color,
             });
+
+            fullElement.operator_info.css({
+              "background" : operatorData.properties.color,
+            })
 
             function addConnector(connectorKey, connectorInfos, $operator_container, connectorType) {
                 var $operator_connector_set = $('<div class="flowchart-operator-connector-set"></div>');
@@ -721,7 +743,7 @@ $(function () {
                 var pointerY;
                 fullElement.operator.draggable({
                     containment: operatorData.internal.properties.uncontained ? false : this.element,
-                    handle: '.flowchart-operator-title',
+                    handle: '.flowchart-operator-title, .operator-info-div',
                     start: function (e, ui) {
                         if (self.lastOutputConnectorClicked != null) {
                             e.preventDefault();

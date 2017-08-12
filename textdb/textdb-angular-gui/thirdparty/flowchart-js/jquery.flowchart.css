@@ -128,7 +128,7 @@
 
 
 .flowchart-operator .flowchart-operator-title {
-    width: 100%;
+    width: 80%;
     padding: 5px;
     font-weight: bold;
     box-sizing: border-box;
@@ -139,11 +139,31 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     cursor: move;
-    text-align: center;
+    float: left;
+    /*text-align: center;*/
 }
 
 /* henry stuff*/
 
+.operator-info-div {
+  width: 20%;
+  padding: 5px;
+  height: auto;
+  position: absolute;
+  right: 0px;
+  cursor: move;
+  box-sizing: border-box;
+  border-bottom: 1px solid #DDDDDD;
+}
+
+.operator-info-icon{
+  cursor: pointer;
+  color: white;
+}
+
+.operator-info-icon:hover {
+  color: #d9d9d9;
+}
 /* henry stuff*/
 
 
