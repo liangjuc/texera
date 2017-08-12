@@ -209,8 +209,13 @@ $(function () {
             this.objs.layers.operators.on('click','.operator-info-icon',function(e){
               var $this = $(this);
               var operatorID = $this.closest('.flowchart-operator').data('operator_id');
-              console.log("THe nearest id = " + operatorID);
-              // alert("OperatorID = " + operatorID);
+              var currentOperatorData = self.getOperatorData(operatorID);
+              swal({
+                title: currentOperatorData.properties.title,
+                text: "Some kind of <b>operator</b> description here",
+                imageUrl: currentOperatorData.properties.image,
+                html: true,
+              });
             });
 
         },
@@ -523,6 +528,8 @@ $(function () {
             var $operator_title = $('<div class="flowchart-operator-title"></div>');
             $operator_title.html(infos.title);
 
+            // console.log("HIHIHIHIH");
+            // console.log($operator_title.html());
 
             $operator_title.appendTo($operator);
 

@@ -621,7 +621,6 @@ let result = {
     },
     image : '../thirdparty/images/view-result.png',
     color : '#d2a679',
-    description : 'sushi',
   }
 }
 
