@@ -215,6 +215,7 @@ $(function () {
                 text: "Some kind of <b>operator</b> description here",
                 imageUrl: currentOperatorData.properties.image,
                 html: true,
+                allowOutsideClick: true,
               });
             });
 
