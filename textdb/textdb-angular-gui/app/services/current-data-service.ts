@@ -15,6 +15,7 @@ const uploadDictionaryUrl = "http://localhost:8080/api/upload/dictionary";
 const getDictionariesUrl = "http://localhost:8080/api/resources/dictionaries";
 const getDictionaryContentUrl = "http://localhost:8080/api/resources/dictionary/?name=";
 
+
 const defaultData = {
     top: 20,
     left: 20,

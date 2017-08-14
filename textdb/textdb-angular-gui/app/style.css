@@ -149,6 +149,18 @@ body {
 	background: #d9d9d9;
 }
 
+.excelDownloadButton {
+	position: absolute;
+	z-index: 1;
+	background-color: green;
+	right: 20px;
+	bottom: 0px;
+	width: 260px;
+	font-size: 24px;
+	color: white;
+	font-weight: bold;
+}
+
 .dropdown {
 	position: relative;
 	float: left;

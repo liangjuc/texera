@@ -15,6 +15,7 @@ const INCREMENT = 0.1;
 			<div id="the-flowchart"></div>
       <button class="zoomInButton" (click)="zoomInDiv()"> + </button>
       <button class="zoomOutButton" (click)="zoomOutDiv()"> - </button>
+      <button class="excelDownloadButton" (click)="testing()">Download As Excel</button>
 		</div>
 	`,
   styleUrls: ['../style.css'],
@@ -25,12 +26,27 @@ export class TheFlowchartComponent {
   TheOperatorNumNow: number;
   TheFlowChartWidth : number;
   TheFlowChartHeight : number;
+  currentResultID: string = "";
+
   constructor(private currentDataService: CurrentDataService) {
     currentDataService.newAddition$.subscribe(
       data => {
         this.TheOperatorNumNow = data.operatorNum;
       }
     );
+    currentDataService.checkPressed$.subscribe(
+      data => {
+        // stop the loading animation of the run button
+        // check if the result is valid
+        if (data.code === 0) {
+          this.currentResultID = data.resultID;
+        }
+      }
+    );
+  }
+
+  testing() {
+    console.log("excel button clicked!");
   }
 
   zoomInDiv(){
