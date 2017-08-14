@@ -9,11 +9,13 @@ import any = jasmine.any;
 
 declare var jQuery: any;
 
-const textdbUrl = 'http://localhost:8080/api/newqueryplan/execute';
-const metadataUrl = 'http://localhost:8080/api/resources/metadata';
-const uploadDictionaryUrl = "http://localhost:8080/api/upload/dictionary";
-const getDictionariesUrl = "http://localhost:8080/api/resources/dictionaries";
-const getDictionaryContentUrl = "http://localhost:8080/api/resources/dictionary/?name=";
+const apiUrl = "http://localhost:8080/api";
+const textdbUrl = apiUrl + '/newqueryplan/execute';
+const metadataUrl = apiUrl + '/resources/metadata';
+const uploadDictionaryUrl = apiUrl + "/upload/dictionary";
+const getDictionariesUrl = apiUrl + "/resources/dictionaries";
+const getDictionaryContentUrl = apiUrl + "/resources/dictionary?name=";
+const downloadExcelUrl = apiUrl + "/download/result?resultID=";
 
 
 const defaultData = {
@@ -184,4 +186,17 @@ export class CurrentDataService {
                 }
             );
     }
+    downloadExcel(resultID: string): void {
+        if (resultID === "") {
+            console.log("resultID is empty")
+        } else {
+            console.log("proceed to http request")
+            let downloadUrl: string = downloadExcelUrl + resultID;
+            console.log(downloadUrl);
+            this.http.get(downloadUrl).toPromise().then(function(data) {
+                window.location.href = downloadUrl;
+            });
+        }
+    }
+
 }

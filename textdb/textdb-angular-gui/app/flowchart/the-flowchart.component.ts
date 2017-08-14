@@ -38,7 +38,10 @@ export class TheFlowchartComponent {
       data => {
         // stop the loading animation of the run button
         // check if the result is valid
+        console.log("In flowchart");
+        console.log(data);
         if (data.code === 0) {
+          console.log("data.resultID = " + data.resultID);
           this.currentResultID = data.resultID;
         }
       }
@@ -47,6 +50,7 @@ export class TheFlowchartComponent {
 
   testing() {
     console.log("excel button clicked!");
+    this.currentDataService.downloadExcel(this.currentResultID);
   }
 
   zoomInDiv(){
