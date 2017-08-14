@@ -51,6 +51,9 @@ $(function () {
             },
             onAfterChange: function (changeType) {
 
+            },
+            onPauseClicked: function (operatorId) {
+                return true;
             }
         },
         data: null,
@@ -153,7 +156,6 @@ $(function () {
             });
 
             this.objs.layers.operators.on('click', '.flowchart-operator-connector', function () {
-              console.log("CONNECTOR iS CLICKED");
                 var $this = $(this);
                 if (self.options.canUserEditLinks) {
                     self._connectorClicked($this.closest('.flowchart-operator').data('operator_id'), $this.data('connector'), $this.data('sub_connector'), $this.closest('.flowchart-operator-connector-set').data('connector_type'));
@@ -161,7 +163,10 @@ $(function () {
             });
 
 // Henry
-            this.objs.layers.operators.on('mousedown', '.flowchart-operator-connector', function(){
+            this.objs.layers.operators.on('mousedown', '.flowchart-operator-connector', function(e){
+              if (e.which === 3) {
+                return
+              }
               var $this = $(this);
               if (self.options.canUserEditLinks) {
                   self._connectorClicked($this.closest('.flowchart-operator').data('operator_id'), $this.data('connector'), $this.data('sub_connector'), $this.closest('.flowchart-operator-connector-set').data('connector_type'));
@@ -204,6 +209,7 @@ $(function () {
               var operatorID = $this.closest('.flowchart-operator').data('operator_id');
               console.log("ProgessBar BUtton is clicked!");
               self.changeProgressButton(operatorID);
+
             });
 
             this.objs.layers.operators.on('click','.operator-info-icon',function(e){
@@ -218,10 +224,12 @@ $(function () {
                 allowOutsideClick: true,
               });
             });
-
         },
 
         changeProgressButton: function(operatorID){
+          if (!this.options.onPauseClicked(operatorID)){
+            return;
+          }
           var element = document.getElementById("myProgressButton" + operatorID);
           console.log(this.progressButtonStatus);
           if (this.progressButtonStatus[operatorID] === "running"){

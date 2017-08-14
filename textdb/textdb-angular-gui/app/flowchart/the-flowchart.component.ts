@@ -116,6 +116,12 @@ export class TheFlowchartComponent {
         return true;
       },
       onOperatorUnselect: function(operatorId) {
+        console.log("Called On operator Unselect");
+        return true;
+      },
+      onPauseClicked : function (operatorId) {
+        console.log("On pause is clicked!!!");
+        console.log("The OperatorID = " + operatorId);
         return true;
       }
     });
