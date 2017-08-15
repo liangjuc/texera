@@ -4,7 +4,7 @@
     <b>Result Window</b>
   </div>
   <div id="result-table-bar">
-    <table class="table table-hover" data-toggle="table">
+    <table id="result-table" class="table table-hover" data-toggle="table">
       <thead>
         <!-- top row showing names/types of columns -->
         <tr class="result-attribute-title">
@@ -14,11 +14,9 @@
       <tbody>
         <!-- each row -->
         <tr class="resultRow" *ngFor="let eachResult of result" (click)="displayRowDetail(eachResult)">
-        <!-- <tr class="resultRow" *ngFor="let eachResult of result" > -->
           <td *ngFor="let eachAttr of attribute">
-            <!-- <span *ngIf="checkIfObject(eachResult[eachAttr])"> <a (click)="displayRowDetail(eachResult[eachAttr])">{{shortenString(eachResult[eachAttr])}}</a></span>
-            <span *ngIf="!checkIfObject(eachResult[eachAttr])">{{shortenString(eachResult[eachAttr])}}</span> -->
-            <span>{{shortenString(eachResult[eachAttr])}}</span>
+            <span *ngIf="checkIfObject(eachResult[eachAttr])"><a>{{shortenString(eachResult[eachAttr])}}</a></span>
+            <span *ngIf="!checkIfObject(eachResult[eachAttr])">{{shortenString(eachResult[eachAttr])}}</span>
           </td>
         </tr>
       </tbody>

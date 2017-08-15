@@ -107,7 +107,7 @@ export class ResultBarComponent {
   }
 
   redrawDraggable(){
-    this.previousResultHandleTop = -parseInt(jQuery('#result-table-bar').css('height'), 10) - 10;
+    this.previousResultHandleTop = -parseInt(jQuery('#result-table-bar').css('height'), 10) - 5;
     jQuery("#ngrip").draggable( "destroy" );
     this.initializeResizing(this.previousResultHandleTop);
   }
@@ -134,7 +134,7 @@ export class ResultBarComponent {
       containment: "window",
       drag: function( event, ui ) {
         // calculate the position
-        var endPosition = previousHeight + 10 + ui.position.top;
+        var endPosition = previousHeight + 5 + ui.position.top;
         // if endPosition exceeds the maximum
         if (endPosition < -305){
           ui.position.top = -305;
@@ -152,7 +152,7 @@ export class ResultBarComponent {
           });
           jQuery("#flow-chart-container").css({"height":"calc(100% - 40px)"});
         } else {
-          var new_height = -endPosition - 10; // include the drag button
+          var new_height = -endPosition - 5; // include the drag button
           var new_height2 = new_height + 40; // include the drag button and the title bar
 
           // redraw 2 fields to resize
@@ -180,7 +180,7 @@ export class ResultBarComponent {
           previousHeight = -305
         } else {
           // previous height is used for calculating the movement of the result bar and flowchart
-          previousHeight = previousHeight + 10 + parseInt(jQuery('#ngrip').css('top'), 10);
+          previousHeight = previousHeight + 5 + parseInt(jQuery('#ngrip').css('top'), 10);
         }
 
         // make sure drag button is directly above the result bar

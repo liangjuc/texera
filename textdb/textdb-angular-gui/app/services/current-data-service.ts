@@ -7,13 +7,20 @@ import { Data } from './data';
 import { TableMetadata } from "./table-metadata";
 import any = jasmine.any;
 
-declare var jQuery: any;
 
-const textdbUrl = 'http://localhost:8080/api/newqueryplan/execute';
-const metadataUrl = 'http://localhost:8080/api/resources/metadata';
-const uploadDictionaryUrl = "http://localhost:8080/api/upload/dictionary";
-const getDictionariesUrl = "http://localhost:8080/api/resources/dictionaries";
-const getDictionaryContentUrl = "http://localhost:8080/api/resources/dictionary/?name=";
+declare var jQuery: any;
+declare var XLSX: any;
+declare var saveAs: any;
+
+
+const apiUrl = "http://localhost:8080/api";
+const textdbUrl = apiUrl + '/newqueryplan/execute';
+const metadataUrl = apiUrl + '/resources/metadata';
+const uploadDictionaryUrl = apiUrl + "/upload/dictionary";
+const getDictionariesUrl = apiUrl + "/resources/dictionaries";
+const getDictionaryContentUrl = apiUrl + "/resources/dictionary?name=";
+const downloadExcelUrl = apiUrl + "/download/result?resultID=";
+
 
 const defaultData = {
     top: 20,
@@ -183,4 +190,45 @@ export class CurrentDataService {
                 }
             );
     }
+
+    downloadExcel(result: string): void {
+
+
+        // create a workbook from the HTML_table object
+
+        // var worksheet = XLSX.utils.table_to_book(document.getElementById('result-table'));
+        // console.log(worksheet)
+
+        // create a workbook using the JSON Results
+
+        var wb = { SheetNames:[], Sheets:{} };
+        var ws = XLSX.utils.json_to_sheet(result);
+        var ws_name = "Sheet1";
+        wb.SheetNames.push(ws_name);
+        wb.Sheets[ws_name] = ws;
+
+
+        /* bookType can be any supported output type (xlsx in this case) */
+        var wopts = { bookType:'xlsx', bookSST:false, type:'binary' };
+
+
+        // convert to an excel file (in types specified above)
+
+        var wbout = XLSX.write(wb,wopts);
+
+        function s2ab(s) {
+          var buf = new ArrayBuffer(s.length);
+          var view = new Uint8Array(buf);
+          for (var i=0; i!=s.length; ++i){
+            view[i] = s.charCodeAt(i) & 0xFF;
+          }
+          return buf;
+        }
+
+        // browser generates binary blob and forces a "download" to client
+        // generate a file called "TextDB_Result.xlsx"
+        saveAs(new Blob([s2ab(wbout)],{type:"application/octet-stream"}), "TextDB_Result.xlsx");
+
+    }
+
 }

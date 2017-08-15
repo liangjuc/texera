@@ -15,6 +15,7 @@ body {
 	margin: 0px;
 	padding: 0px;
 	padding-right: 0px;
+	height: 50px;
 }
 
 .navbar-brand{
@@ -148,11 +149,32 @@ body {
 	background: #d9d9d9;
 }
 
+.excelDownloadButton {
+	position: absolute;
+	z-index: 1;
+	background-color: #39ac39;
+	opacity: 0.5;
+	right: 20px;
+	bottom: 0px;
+	width: 260px;
+	font-size: 24px;
+	color: white;
+	font-weight: bold;
+}
+
+.excelDownloadButton:hover{
+	background-color: #339933;
+}
+
 .dropdown {
 	position: relative;
 	float: left;
+	padding-left: 0px;
 }
 
+.group-icon{
+	padding-left: 12px;
+}
 
 .dropdown-content {
 	margin-top: 7px;
@@ -211,6 +233,7 @@ table {
 td, th {
 		font-size: 16px;
 		border: 1.5px solid #dddddd;
+		border-left: 0px;
 		text-align: left;
 		padding: 8px;
 }
@@ -268,4 +291,5 @@ tr:nth-child(even) {
     position:relative;
 		margin-left: 255px;
 		width: calc(100% - 255px);
+		z-index: 100;
 }

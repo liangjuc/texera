@@ -213,7 +213,7 @@ let regexSplit = {
         "splitOption": "oneToMany"
     },
     image : '../thirdparty/images/regex.png',
-    color : '#ffff4d',
+    color : '#e6e600',
   }
 }
 
@@ -239,7 +239,7 @@ let nlpSplit = {
         "splitOption": "oneToMany",
     },
     image : '../thirdparty/images/sentencesplit.png',
-    color : '#ffff4d',
+    color : '#e6e600',
   }
 }
 

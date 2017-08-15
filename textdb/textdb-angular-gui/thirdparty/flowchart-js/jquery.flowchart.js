@@ -51,6 +51,9 @@ $(function () {
             },
             onAfterChange: function (changeType) {
 
+            },
+            onPauseClicked: function (operatorId) {
+                return true;
             }
         },
         data: null,
@@ -153,7 +156,6 @@ $(function () {
             });
 
             this.objs.layers.operators.on('click', '.flowchart-operator-connector', function () {
-              console.log("CONNECTOR iS CLICKED");
                 var $this = $(this);
                 if (self.options.canUserEditLinks) {
                     self._connectorClicked($this.closest('.flowchart-operator').data('operator_id'), $this.data('connector'), $this.data('sub_connector'), $this.closest('.flowchart-operator-connector-set').data('connector_type'));
@@ -161,7 +163,10 @@ $(function () {
             });
 
 // Henry
-            this.objs.layers.operators.on('mousedown', '.flowchart-operator-connector', function(){
+            this.objs.layers.operators.on('mousedown', '.flowchart-operator-connector', function(e){
+              if (e.which === 3) {
+                return
+              }
               var $this = $(this);
               if (self.options.canUserEditLinks) {
                   self._connectorClicked($this.closest('.flowchart-operator').data('operator_id'), $this.data('connector'), $this.data('sub_connector'), $this.closest('.flowchart-operator-connector-set').data('connector_type'));
@@ -204,11 +209,27 @@ $(function () {
               var operatorID = $this.closest('.flowchart-operator').data('operator_id');
               console.log("ProgessBar BUtton is clicked!");
               self.changeProgressButton(operatorID);
-            })
 
+            });
+
+            this.objs.layers.operators.on('click','.operator-info-icon',function(e){
+              var $this = $(this);
+              var operatorID = $this.closest('.flowchart-operator').data('operator_id');
+              var currentOperatorData = self.getOperatorData(operatorID);
+              swal({
+                title: currentOperatorData.properties.title,
+                text: "Some kind of <b>operator</b> description here",
+                imageUrl: currentOperatorData.properties.image,
+                html: true,
+                allowOutsideClick: true,
+              });
+            });
         },
 
         changeProgressButton: function(operatorID){
+          if (!this.options.onPauseClicked(operatorID)){
+            return;
+          }
           var element = document.getElementById("myProgressButton" + operatorID);
           console.log(this.progressButtonStatus);
           if (this.progressButtonStatus[operatorID] === "running"){
@@ -515,10 +536,22 @@ $(function () {
 
             var $operator_title = $('<div class="flowchart-operator-title"></div>');
             $operator_title.html(infos.title);
+
+            // console.log("HIHIHIHIH");
+            // console.log($operator_title.html());
+
             $operator_title.appendTo($operator);
 
-            var $operator_inputs_outputs = $('<div class="flowchart-operator-inputs-outputs"></div>');
+            // info icon
+            var $operator_info = $('<div class="operator-info-div"></div>');
 
+            var $operator_info_icon = $('<i class="fa fa-info-circle operator-info-icon" aria-hidden="true"></i>');
+
+            $operator_info_icon.appendTo($operator_info);
+            $operator_info.appendTo($operator);
+            //
+
+            var $operator_inputs_outputs = $('<div class="flowchart-operator-inputs-outputs"></div>');
             $operator_inputs_outputs.appendTo($operator);
 
             var $operator_inputs = $('<div class="flowchart-operator-inputs"></div>');
@@ -527,11 +560,10 @@ $(function () {
             var $operator_outputs = $('<div class="flowchart-operator-outputs"></div>');
             $operator_outputs.appendTo($operator_inputs_outputs);
 
-//
+//          empty div used for displaying the progressBar and progressButton
 
             var $emptyDiv = $('<div id="empty"></div>');
             $emptyDiv.appendTo($operator);
-
 //
 
 
@@ -548,6 +580,7 @@ $(function () {
             var fullElement = {
                 operator: $operator,
                 title: $operator_title,
+                operator_info : $operator_info,
                 input_output: $operator_inputs_outputs,
                 emptyDiv: $emptyDiv,
                 connectorSets: connectorSets,
@@ -563,6 +596,10 @@ $(function () {
             fullElement.title.css({
               "background" : operatorData.properties.color,
             });
+
+            fullElement.operator_info.css({
+              "background" : operatorData.properties.color,
+            })
 
             function addConnector(connectorKey, connectorInfos, $operator_container, connectorType) {
                 var $operator_connector_set = $('<div class="flowchart-operator-connector-set"></div>');
@@ -722,7 +759,7 @@ $(function () {
                 var pointerY;
                 fullElement.operator.draggable({
                     containment: operatorData.internal.properties.uncontained ? false : this.element,
-                    handle: '.flowchart-operator-title',
+                    handle: '.flowchart-operator-title, .operator-info-div',
                     start: function (e, ui) {
                         if (self.lastOutputConnectorClicked != null) {
                             e.preventDefault();

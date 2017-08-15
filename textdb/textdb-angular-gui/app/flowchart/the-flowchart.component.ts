@@ -15,6 +15,7 @@ const INCREMENT = 0.1;
 			<div id="the-flowchart"></div>
       <button class="zoomInButton" (click)="zoomInDiv()"> + </button>
       <button class="zoomOutButton" (click)="zoomOutDiv()"> - </button>
+      <button class="excelDownloadButton" (click)="testing()" disabled>Download As Excel</button>
 		</div>
 	`,
   styleUrls: ['../style.css'],
@@ -25,12 +26,33 @@ export class TheFlowchartComponent {
   TheOperatorNumNow: number;
   TheFlowChartWidth : number;
   TheFlowChartHeight : number;
+
+
+  currentResult: any;
+
   constructor(private currentDataService: CurrentDataService) {
     currentDataService.newAddition$.subscribe(
       data => {
         this.TheOperatorNumNow = data.operatorNum;
       }
     );
+    currentDataService.checkPressed$.subscribe(
+      // used for download as excel button
+      data => {
+        if (data.code === 0) {
+          this.currentResult = JSON.parse(data.message);
+          jQuery('.excelDownloadButton').prop("disabled",false);
+          jQuery('.excelDownloadButton').css({"opacity":"1"});
+        } else {
+          jQuery('.excelDownloadButton').prop("disabled",true);
+          jQuery('.excelDownloadButton').css({"opacity":"0.5"});
+        }
+      }
+    );
+  }
+
+  testing() {
+    this.currentDataService.downloadExcel(this.currentResult);
   }
 
   zoomInDiv(){
@@ -116,6 +138,12 @@ export class TheFlowchartComponent {
         return true;
       },
       onOperatorUnselect: function(operatorId) {
+        // console.log("Called On operator Unselect");
+        return true;
+      },
+      onPauseClicked : function (operatorId) {
+        // console.log("On pause is clicked!!!");
+        console.log("The OperatorID = " + operatorId);
         return true;
       }
     });
