@@ -152,13 +152,18 @@ body {
 .excelDownloadButton {
 	position: absolute;
 	z-index: 1;
-	background-color: green;
+	background-color: #39ac39;
+	opacity: 0.5;
 	right: 20px;
 	bottom: 0px;
 	width: 260px;
 	font-size: 24px;
 	color: white;
 	font-weight: bold;
+}
+
+.excelDownloadButton:hover{
+	background-color: #339933;
 }
 
 .dropdown {
