@@ -154,9 +154,9 @@ body {
 	z-index: 1;
 	background-color: #39ac39;
 	opacity: 0.5;
-	right: 20px;
+	right: 10px;
 	bottom: 0px;
-	width: 260px;
+	width: 280px;
 	font-size: 24px;
 	color: white;
 	font-weight: bold;
@@ -164,6 +164,10 @@ body {
 
 .excelDownloadButton:hover{
 	background-color: #339933;
+}
+
+.excelIcon{
+	padding-right: 9px;
 }
 
 .dropdown {
