@@ -143,7 +143,11 @@ export class TheFlowchartComponent {
       },
       onPauseClicked : function (operatorId) {
         // console.log("On pause is clicked!!!");
-        console.log("The OperatorID = " + operatorId);
+        return true;
+      },
+      onRightClickedDelete : function (operatorId) {
+        current.currentDataService.clearData();
+        current.currentDataService.setAllOperatorData(jQuery('#the-flowchart').flowchart('getData'));
         return true;
       }
     });

@@ -54,6 +54,9 @@ $(function () {
             },
             onPauseClicked: function (operatorId) {
                 return true;
+            },
+            onRightClickedDelete: function (operatorId) {
+              return true;
             }
         },
         data: null,
@@ -71,6 +74,7 @@ $(function () {
 
 
         progressButtonStatus : {},
+        rightClickedOperatorID : 0,
 
         // the constructor
         _create: function () {
@@ -145,6 +149,7 @@ $(function () {
             });
 //
             this.element.contextmenu(function(e){
+              // if right click outside the operators, hide the custom right click menu
               self.hideRightClickMenu();
             })
 //
@@ -155,20 +160,22 @@ $(function () {
 //
             this.objs.layers.operators.on('contextmenu','.flowchart-operator',function(e){
               var $this = $(this);
+              // prevent default right click menu
               e.preventDefault();
-              console.log(e.which);
-              console.log(e.clientX);
-              console.log(e.clientY);
-              console.log(e.pageX);
-              console.log(e.pageY);
+              // get position
               var x = e.clientX;
               var y = e.clientY;
               var operatorID = $this.closest('.flowchart-operator').data('operator_id');
+              // use for the menu options
+              self.rightClickedOperatorID = operatorID;
               self.displayRightClickMenu(x,y,operatorID);
+              // prevent default right click menu
               return false;
             });
 //
             this.objs.layers.operators.on('click', '.flowchart-operator', function (e) {
+              // hide the right click menu
+              self.hideRightClickMenu();
                 if ($(e.target).closest('.flowchart-operator-connector').length == 0) {
                     self.selectOperator($(this).data('operator_id'));
                 }
@@ -181,8 +188,8 @@ $(function () {
                 }
             });
 
-// Henry
             this.objs.layers.operators.on('mousedown', '.flowchart-operator-connector', function(e){
+              // if right click, then stop
               if (e.which === 3) {
                 return
               }
@@ -198,7 +205,6 @@ $(function () {
                   self._connectorClicked($this.closest('.flowchart-operator').data('operator_id'), $this.data('connector'), $this.data('sub_connector'), $this.closest('.flowchart-operator-connector-set').data('connector_type'));
               }
             })
-/// HENRY
             this.objs.layers.links.on('mousedown touchstart', '.flowchart-link', function (e) {
                 e.stopImmediatePropagation();
             });
@@ -234,22 +240,48 @@ $(function () {
             this.objs.layers.operators.on('click','.operator-info-icon',function(e){
               var $this = $(this);
               var operatorID = $this.closest('.flowchart-operator').data('operator_id');
-              var currentOperatorData = self.getOperatorData(operatorID);
-              swal({
-                title: currentOperatorData.properties.title,
-                text: "Some kind of <b>operator</b> description here",
-                imageUrl: currentOperatorData.properties.image,
-                html: true,
-                allowOutsideClick: true,
-              });
+              // show detail of the operator clicked
+              self.showDetail(operatorID);
             });
+
+            this.objs.layers.operators.on('click contextmenu','.menu-detail',function(e){
+              var $this = $(this);
+              // use private variable instead of getting it manually (have issue with .closest())
+              e.preventDefault();
+              var operatorID = self.rightClickedOperatorID;
+              self.showDetail(operatorID);
+              self.hideRightClickMenu();
+              e.stopImmediatePropagation();
+              self._unsetTemporaryLink();
+              return false;
+            });
+
+            this.objs.layers.operators.on('click contextmenu','.menu-delete',function(e){
+              // use private variable instead of getting it manually (have issue with .closest())
+
+              var operatorID = self.rightClickedOperatorID;
+              if (!self.options.onRightClickedDelete(operatorID)){
+                return;
+              }
+              self.deleteOperator(operatorID); // delete the operator
+              self._unsetTemporaryLink(); // delete temporaryLink
+              self.hideRightClickMenu(); // hide the right click menu manually since we prevent the default flowchart-operator action
+              e.stopImmediatePropagation(); // prevent the .flowchart-operator click action
+            })
+        },
+
+        showDetail: function(operatorID){
+          var currentOperatorData = this.getOperatorData(operatorID);
+          swal({
+            title: currentOperatorData.properties.title,
+            text: "Some kind of <b>operator</b> description here",
+            imageUrl: currentOperatorData.properties.image,
+            html: true,
+            allowOutsideClick: true,
+          });
         },
 
         displayRightClickMenu: function(x,y,operatorID){
-          console.log("displayRightClickMenu() called!");
-          console.log("x = " + x);
-          console.log("y = " + y);
-          console.log("operatorID = " + operatorID);
           jQuery("#menu").css({
             "display" : "block",
             "z-index" : "100",
@@ -280,8 +312,6 @@ $(function () {
         },
 
         setData: function (data) {
-          console.log("setData function is called in the code");
-
             this._clearOperatorsLayer();
             this.data.operatorTypes = {};
             if (typeof data.operatorTypes != 'undefined') {
@@ -698,8 +728,6 @@ $(function () {
         },
 
         addOperator: function (operatorData) {
-          console.log("addOperator function is called in the code");
-
             while (typeof this.data.operators[this.operatorNum] != 'undefined') {
                 this.operatorNum++;
             }
@@ -709,8 +737,6 @@ $(function () {
         },
 
         createOperator: function (operatorId, operatorData) {
-
-            console.log("createOperator function is called in the code");
             operatorData.internal = {};
             this._refreshInternalProperties(operatorData);
 
@@ -764,21 +790,16 @@ $(function () {
             });
             $progressBar.appendTo($myBar);
 
-            //
+
+            // right click menu
 
             var $menu = $('<div id="menu"</div>');
-            var $item1 = $('<a>Hello World </a>');
-            $item1.css({
-              "display" : "block",
-              "width" : "250px",
-              "position" : "relative",
-            });
+            var $item1 = $('<a class="menu-item menu-detail"><i class="fa fa-info-circle menu-icon" aria-hidden="true"></i>Show Detail</a>');
+            var $item2 = $('<a class="menu-item menu-delete"><i class="fa fa-times menu-icon" aria-hidden="true"></i>Delete</a>');
+
             $item1.appendTo($menu);
-            $menu.css({
-              "display" : "none",
-              "background-color" : "red",
-              "position": "fixed",
-            })
+            $item2.appendTo($menu);
+
             $menu.appendTo(fullElement.emptyDiv);
 
             this.data.operators[operatorId] = operatorData;
@@ -1176,8 +1197,6 @@ $(function () {
         },
 
         setOperatorData: function (operatorId, operatorData) {
-          console.log("setOperatorData function is called in the code");
-
             var infos = this.getOperatorCompleteData(operatorData);
             for (var linkId in this.data.links) {
                 if (this.data.links.hasOwnProperty(linkId)) {
