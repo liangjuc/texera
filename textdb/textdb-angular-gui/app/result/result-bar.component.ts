@@ -48,6 +48,11 @@ export class ResultBarComponent {
           for (var each in newThing.operators){
             jQuery("#the-flowchart").flowchart("getHenryData",each);
           }
+          jQuery(".result-bar-title").css({"background-color" : "#4d79ff"});
+          jQuery(".result-bar-title").hover(
+            function() {jQuery(".result-bar-title").css({"background-color" : "#1a53ff"})},
+            function() {jQuery(".result-bar-title").css({"background-color" : "#4d79ff"})});
+          jQuery( ".result-bar-title" ).html( "<b>Result Window</b>");
         } else {
           // pop the modal when not valid
             this.checkErrorOrDetail = 0;
@@ -56,6 +61,14 @@ export class ResultBarComponent {
               data: {"message": data.message}
             });
             this.ModalOpen();
+            this.closeResultBar();
+            jQuery(".result-bar-title").css({
+              "background-color" : "#ff3333"
+            });
+            jQuery(".result-bar-title").hover(
+              function() {jQuery(".result-bar-title").css({"background-color" : "#ff0000"})},
+              function() {jQuery(".result-bar-title").css({"background-color" : "#ff3333"})});
+            jQuery(".result-bar-title").html( "<b>Error</b>");
         }
       }
     );
