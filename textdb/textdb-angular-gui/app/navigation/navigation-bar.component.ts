@@ -43,6 +43,6 @@ export class NavigationBarComponent {
   }
 
   try() {
-    jQuery("#the-flowchart").flowchart("getHenryData",this.operatorId);
+    // jQuery("#the-flowchart").flowchart("getHenryData",this.operatorId);
   }
 }

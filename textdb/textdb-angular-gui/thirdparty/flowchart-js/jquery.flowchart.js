@@ -143,12 +143,31 @@ $(function () {
                 var offset = $this.offset();
                 self._click((e.pageX - offset.left) / self.positionRatio, (e.pageY - offset.top) / self.positionRatio, e);
             });
-
-
-            this.objs.layers.operators.on('pointerdown mousedown touchstart', '.flowchart-operator', function (e) {
+//
+            this.element.contextmenu(function(e){
+              self.hideRightClickMenu();
+            })
+//
+            this.objs.layers.operators.on('pointerdown touchstart', '.flowchart-operator', function (e) {
                 e.stopImmediatePropagation();
             });
 
+//
+            this.objs.layers.operators.on('contextmenu','.flowchart-operator',function(e){
+              var $this = $(this);
+              e.preventDefault();
+              console.log(e.which);
+              console.log(e.clientX);
+              console.log(e.clientY);
+              console.log(e.pageX);
+              console.log(e.pageY);
+              var x = e.clientX;
+              var y = e.clientY;
+              var operatorID = $this.closest('.flowchart-operator').data('operator_id');
+              self.displayRightClickMenu(x,y,operatorID);
+              return false;
+            });
+//
             this.objs.layers.operators.on('click', '.flowchart-operator', function (e) {
                 if ($(e.target).closest('.flowchart-operator-connector').length == 0) {
                     self.selectOperator($(this).data('operator_id'));
@@ -224,6 +243,25 @@ $(function () {
                 allowOutsideClick: true,
               });
             });
+        },
+
+        displayRightClickMenu: function(x,y,operatorID){
+          console.log("displayRightClickMenu() called!");
+          console.log("x = " + x);
+          console.log("y = " + y);
+          console.log("operatorID = " + operatorID);
+          jQuery("#menu").css({
+            "display" : "block",
+            "z-index" : "100",
+            "top" : y + "px",
+            "left" : x + "px",
+          });
+        },
+
+        hideRightClickMenu: function(){
+          jQuery("#menu").css({
+            "display" : "none",
+          });
         },
 
         changeProgressButton: function(operatorID){
@@ -569,7 +607,6 @@ $(function () {
 
 
 
-
             var self = this;
 
             var connectorArrows = {};
@@ -729,6 +766,21 @@ $(function () {
 
             //
 
+            var $menu = $('<div id="menu"</div>');
+            var $item1 = $('<a>Hello World </a>');
+            $item1.css({
+              "display" : "block",
+              "width" : "250px",
+              "position" : "relative",
+            });
+            $item1.appendTo($menu);
+            $menu.css({
+              "display" : "none",
+              "background-color" : "red",
+              "position": "fixed",
+            })
+            $menu.appendTo(fullElement.emptyDiv);
+
             this.data.operators[operatorId] = operatorData;
             this.data.operators[operatorId].internal.els = fullElement;
 
@@ -857,6 +909,7 @@ $(function () {
 
             if ($target.closest('.flowchart-operator').length == 0) {
                 this.unselectOperator();
+                this.hideRightClickMenu();
             }
 
             if ($target.closest('.flowchart-link').length == 0) {
