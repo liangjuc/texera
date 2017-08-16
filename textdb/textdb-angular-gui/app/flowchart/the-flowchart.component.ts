@@ -15,7 +15,7 @@ const INCREMENT = 0.1;
 			<div id="the-flowchart"></div>
       <button class="zoomInButton" (click)="zoomInDiv()"> + </button>
       <button class="zoomOutButton" (click)="zoomOutDiv()"> - </button>
-      <button class="excelDownloadButton" (click)="testing()" disabled><i class="fa fa-file-excel-o excelIcon" aria-hidden="true"></i>Download As Excel</button>
+      <button class="excelDownloadButton" (click)="downloadExcel()" disabled><i class="fa fa-file-excel-o excelIcon" aria-hidden="true"></i>Download As Excel</button>
 		</div>
 	`,
   styleUrls: ['../style.css'],
@@ -51,7 +51,7 @@ export class TheFlowchartComponent {
     );
   }
 
-  testing() {
+  downloadExcel() {
     this.currentDataService.downloadExcel(this.currentResult);
   }
 
@@ -141,10 +141,12 @@ export class TheFlowchartComponent {
         // console.log("Called On operator Unselect");
         return true;
       },
+      // called when pause button on each operator is clicked
       onPauseClicked : function (operatorId) {
         // console.log("On pause is clicked!!!");
         return true;
       },
+      // called when the delete button on the right click menu is clicked
       onRightClickedDelete : function (operatorId) {
         current.currentDataService.clearData();
         current.currentDataService.setAllOperatorData(jQuery('#the-flowchart').flowchart('getData'));
