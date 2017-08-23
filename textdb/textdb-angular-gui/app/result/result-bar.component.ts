@@ -5,6 +5,7 @@ import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 declare var jQuery: any;
 declare var Backbone: any;
 declare var PrettyJSON: any;
+var previousOpenHeight: number = 300;
 
 @Component({
     moduleId: module.id,
@@ -16,8 +17,8 @@ export class ResultBarComponent {
   result: any;
   attribute: string[] = [];
   previousResultHandleTop: number = -5;
+  openedHeight: number = 300;
   checkErrorOrDetail: number = 0;
-
 
   @ViewChild('ResultModal')
   modal: ModalComponent;
@@ -28,7 +29,6 @@ export class ResultBarComponent {
   ModalClose() {
     this.modal.close();
   }
-
   constructor (private currentDataService: CurrentDataService){
     currentDataService.checkPressed$.subscribe(
       data => {
@@ -82,12 +82,9 @@ export class ResultBarComponent {
       return longText.substring(0,25) + " ...";
     }
   }
-
   checkIfObject(eachAttribute: string){
     return typeof eachAttribute === "object";
   }
-
-
   resultBarClicked(){
     // check if the result bar is opened or closed
     var currentResultBarStatus = jQuery('#result-table-bar').css('display');
@@ -101,11 +98,11 @@ export class ResultBarComponent {
   openResultBar(){
     jQuery("#result-table-bar").css({
       "display":"block",
-      "height" : "300px",
+      "height" : previousOpenHeight + "px",
     });
+    var new_container_height = previousOpenHeight + 40;
     jQuery('#ngrip').css({"top":"-5px"});
-    jQuery("#flow-chart-container").css({"height":"calc(100% - 340px)"});
-
+    jQuery("#flow-chart-container").css({"height":"calc(100% - " + new_container_height + "px)"});
     this.redrawDraggable();
   }
 
@@ -122,7 +119,7 @@ export class ResultBarComponent {
   redrawDraggable(){
     this.previousResultHandleTop = -parseInt(jQuery('#result-table-bar').css('height'), 10) - 5;
     jQuery("#ngrip").draggable( "destroy" );
-    this.initializeResizing(this.previousResultHandleTop);
+    this.initializeResizing(this.previousResultHandleTop, this.openedHeight);
   }
 
 
@@ -133,15 +130,14 @@ export class ResultBarComponent {
       data: singleResult
     });
     this.ModalOpen();
-
   }
 
   // initialized the default draggable / resizable result bar
   initializing(){
-    this.initializeResizing(this.previousResultHandleTop);
+    this.initializeResizing(this.previousResultHandleTop, this.openedHeight);
   }
 
-  initializeResizing(previousHeight: number){
+  initializeResizing(previousHeight: number, openHeight: number){
     jQuery("#ngrip").draggable({
       axis:"y",
       containment: "window",
@@ -189,13 +185,15 @@ export class ResultBarComponent {
         // if at minimum
         if (newResultBarHeight === 0){
           previousHeight = -5;
+          previousOpenHeight = 300; //restore default
         } else if (newResultBarHeight === 300){
-          previousHeight = -305
+          previousHeight = -305;
+          previousOpenHeight = newResultBarHeight;
         } else {
           // previous height is used for calculating the movement of the result bar and flowchart
           previousHeight = previousHeight + 5 + parseInt(jQuery('#ngrip').css('top'), 10);
+          previousOpenHeight = newResultBarHeight;
         }
-
         // make sure drag button is directly above the result bar
         jQuery('#ngrip').css({"top":"-5px"});
 

@@ -76,6 +76,7 @@ $(function () {
         progressButtonStatus : {},
         rightClickedOperatorID : 0,
 
+        haveZoomed: 0,
         // the constructor
         _create: function () {
             if (typeof document.__flowchartNumber == 'undefined') {
@@ -162,13 +163,71 @@ $(function () {
               var $this = $(this);
               // prevent default right click menu
               e.preventDefault();
+              // if check on menu border, return immediately
+              var checkOnMenu = $("#menu");
+              if (checkOnMenu.is(e.target)){
+                self.hideRightClickMenu();
+                return false;
+              }
               // get position
               var x = e.clientX;
               var y = e.clientY;
+
               var operatorID = $this.closest('.flowchart-operator').data('operator_id');
-              // use for the menu options
+              var currentOperatorData = self.getOperatorData(operatorID);
+
               self.rightClickedOperatorID = operatorID;
-              self.displayRightClickMenu(x,y,operatorID);
+              if (self.haveZoomed === 0){
+                // faster scenario
+                self.displayRightClickMenu(x,y,operatorID);
+              } else {
+                // manually calculate the position
+                var checkOnClickIsIconDiv = $(".operator-info-div");
+                var checkOnClickIsIcon = $(".operator-info-icon");
+                var checkOnClickIsOperatorInput = $(".flowchart-operator-inputs");
+                var checkOnClickIsOperatorOutput = $(".flowchart-operator-outputs");
+                var checkOnClickOperatorConnector = $(".flowchart-operator-connector");
+                var checkOnClickOperatorConnectorLabel = $(".flowchart-operator-connector-label");
+                var checkOnClickOperatorConnectorArrow = $(".flowchart-operator-connector-arrow");
+                var checkOnClickOperatorConnectorSet = $(".flowchart-operator-connector-set");
+                var checkOnMyProgressBar = $('.myProgress');
+                var checkOnMyProgressIcon = $('.progress-icon');
+                var checkOnMyProgressButton = $('.progressButton');
+
+                var titleHeight = parseInt($(".flowchart-operator-title").css('height'), 10);
+
+                if (checkOnClickIsIconDiv.is(e.target) || checkOnClickIsIcon.is(e.target)){
+                  self.displayRightClickMenu(currentOperatorData.left + e.offsetX + 0.8 * 140,  currentOperatorData.top + e.offsetY ,operatorID);
+                } else if (checkOnClickIsOperatorOutput.is(e.target)) {
+                  self.displayRightClickMenu(currentOperatorData.left + e.offsetX + 0.5 * 140,  currentOperatorData.top + e.offsetY + titleHeight ,operatorID);
+                } else if (checkOnClickIsOperatorInput.is(e.target)) {
+                  self.displayRightClickMenu(currentOperatorData.left + e.offsetX,  currentOperatorData.top + e.offsetY + titleHeight ,operatorID);
+                } else if (checkOnClickOperatorConnector.is(e.target) || checkOnClickOperatorConnectorLabel.is(e.target)) {
+                  if (checkOnClickIsOperatorOutput.has(e.target).length > 0){
+                    self.displayRightClickMenu(currentOperatorData.left + e.offsetX + 0.5 * 140,  currentOperatorData.top + e.offsetY + titleHeight + 20 ,operatorID);
+                  } else {
+                    self.displayRightClickMenu(currentOperatorData.left + e.offsetX,  currentOperatorData.top + e.offsetY + titleHeight + 20 ,operatorID);
+                  }
+                } else if (checkOnClickOperatorConnectorSet.is(e.target)) {
+                  if (checkOnClickIsOperatorOutput.has(e.target).length > 0){
+                    self.displayRightClickMenu(currentOperatorData.left + e.offsetX + 0.5 * 140,  currentOperatorData.top + e.offsetY + titleHeight ,operatorID);
+                  } else {
+                    self.displayRightClickMenu(currentOperatorData.left + e.offsetX,  currentOperatorData.top + e.offsetY + titleHeight,operatorID);
+                  }
+                } else if (checkOnClickOperatorConnectorArrow.is(e.target)) {
+                  if (checkOnClickIsOperatorOutput.has(e.target).length > 0){
+                    self.displayRightClickMenu(currentOperatorData.left + e.offsetX + 140,  currentOperatorData.top + e.offsetY + titleHeight  + 20 ,operatorID);
+                  } else {
+                    self.displayRightClickMenu(currentOperatorData.left + e.offsetX + 1,  currentOperatorData.top + e.offsetY + titleHeight + 20 ,operatorID);
+                  }
+                } else if (checkOnMyProgressIcon.is(e.target) || checkOnMyProgressButton.is(e.target)) {
+                  self.displayRightClickMenu(currentOperatorData.left + e.offsetX,  currentOperatorData.top + e.offsetY + 127 + titleHeight ,operatorID);
+                } else if (checkOnMyProgressBar.is(e.target)) {
+                  self.displayRightClickMenu(currentOperatorData.left + e.offsetX + 0.2 * 140,  currentOperatorData.top + e.offsetY + 125 + titleHeight ,operatorID);
+                } else {
+                  self.displayRightClickMenu(currentOperatorData.left + e.offsetX,  currentOperatorData.top + e.offsetY ,operatorID);
+                }
+              }
               // prevent default right click menu
               return false;
             });
@@ -181,12 +240,16 @@ $(function () {
                 }
             });
 
-            this.objs.layers.operators.on('click', '.flowchart-operator-connector', function () {
-                var $this = $(this);
-                if (self.options.canUserEditLinks) {
-                    self._connectorClicked($this.closest('.flowchart-operator').data('operator_id'), $this.data('connector'), $this.data('sub_connector'), $this.closest('.flowchart-operator-connector-set').data('connector_type'));
-                }
+            this.objs.layers.operators.on('mousedown','.flowchart-operator-title',function(e){
+              self.hideRightClickMenu();
             });
+
+            // this.objs.layers.operators.on('click', '.flowchart-operator-connector', function () {
+            //     var $this = $(this);
+            //     if (self.options.canUserEditLinks) {
+            //         self._connectorClicked($this.closest('.flowchart-operator').data('operator_id'), $this.data('connector'), $this.data('sub_connector'), $this.closest('.flowchart-operator-connector-set').data('connector_type'));
+            //     }
+            // });
 
             this.objs.layers.operators.on('mousedown', '.flowchart-operator-connector', function(e){
               // if right click, then stop
@@ -199,7 +262,10 @@ $(function () {
               }
             })
 
-            this.objs.layers.operators.on('mouseup', '.flowchart-operator-connector', function(){
+            this.objs.layers.operators.on('mouseup', '.flowchart-operator-connector', function(e){
+              if (e.which === 3) {
+                return
+              }
               var $this = $(this);
               if (self.options.canUserEditLinks) {
                   self._connectorClicked($this.closest('.flowchart-operator').data('operator_id'), $this.data('connector'), $this.data('sub_connector'), $this.closest('.flowchart-operator-connector-set').data('connector_type'));
@@ -281,6 +347,10 @@ $(function () {
           });
         },
 
+        zoomCalled: function(){
+          this.haveZoomed = 1;
+        },
+
         displayRightClickMenu: function(x,y,operatorID){
           jQuery("#menu").css({
             "display" : "block",
@@ -303,10 +373,10 @@ $(function () {
           var element = document.getElementById("myProgressButton" + operatorID);
           console.log(this.progressButtonStatus);
           if (this.progressButtonStatus[operatorID] === "running"){
-            element.innerHTML = '<i class="fa fa-play-circle" aria-hidden="true"></i>';
+            element.innerHTML = '<i class="fa fa-play-circle progress-icon" aria-hidden="true"></i>';
             this.progressButtonStatus[operatorID]= "stopped";
           } else {
-            element.innerHTML = '<i class="fa fa-pause-circle" aria-hidden="true"></i>';
+            element.innerHTML = '<i class="fa fa-pause-circle progress-icon" aria-hidden="true"></i>';
             this.progressButtonStatus[operatorID]= "running";
           }
         },
@@ -769,7 +839,7 @@ $(function () {
             });
             $myBar.appendTo(fullElement.emptyDiv);
 
-            var $progressButton = $('<span class="progressButton" id="myProgressButton' + operatorId.toString() + '"><i class="fa fa-pause-circle" aria-hidden="true"></i></span>');
+            var $progressButton = $('<span class="progressButton" id="myProgressButton' + operatorId.toString() + '"><i class="fa fa-pause-circle progress-icon" aria-hidden="true"></i></span>');
             $progressButton.css({
               "width" : "20%",
               "color" : "red",
@@ -780,7 +850,7 @@ $(function () {
             });
             $progressButton.appendTo($myBar);
 
-            var $progressBar = $('<span id="myProgress' + operatorId.toString() + '">0%</span>');
+            var $progressBar = $('<span class="myProgress" id="myProgress' + operatorId.toString() + '">0%</span>');
             $progressBar.css({
               "width" : "80%",
               "background-color" : "#4CAF50",
@@ -801,6 +871,7 @@ $(function () {
             $item2.appendTo($menu);
 
             $menu.appendTo(fullElement.emptyDiv);
+            //
 
             this.data.operators[operatorId] = operatorData;
             this.data.operators[operatorId].internal.els = fullElement;

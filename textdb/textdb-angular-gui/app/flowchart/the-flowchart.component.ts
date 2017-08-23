@@ -56,6 +56,11 @@ export class TheFlowchartComponent {
   }
 
   zoomInDiv(){
+    jQuery("#menu").css({
+      "display" : "none",
+    });
+    jQuery('#the-flowchart').flowchart('zoomCalled');
+
     var matrix = jQuery('#the-flowchart').panzoom("getMatrix");
     var ZoomRatio = parseFloat(matrix[0]);
     if (ZoomRatio < MAX_SCALE){
@@ -78,6 +83,11 @@ export class TheFlowchartComponent {
   }
 
   zoomOutDiv(){
+    jQuery("#menu").css({
+      "display" : "none",
+    });
+    jQuery('#the-flowchart').flowchart('zoomCalled');
+
     var matrix = jQuery('#the-flowchart').panzoom("getMatrix");
     var ZoomRatio = parseFloat(matrix[0]);
     if (ZoomRatio >= MIN_SCALE + INCREMENT){
@@ -176,6 +186,8 @@ export class TheFlowchartComponent {
     }
     var currentZoom = 2;
     container.on('mousewheel.focal', function(e) {
+      jQuery('#the-flowchart').flowchart('zoomCalled');
+
       e.preventDefault();
       var delta = (e.delta || e.originalEvent.wheelDelta) || e.originalEvent.detail;
       var zoomOut = delta;
@@ -200,7 +212,9 @@ export class TheFlowchartComponent {
         "height" : new_height + "px",
         "top" : -top_side_add + "px",
       });
-
+      jQuery("#menu").css({
+        "display" : "none",
+      });
     });
     // panzoom end
   }

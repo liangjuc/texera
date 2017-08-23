@@ -226,7 +226,8 @@ body {
 
 
 /*table style*/
-table {
+
+#result-table {
 		width: calc(100%);
 		height: calc(100%);
 		font-family: arial, sans-serif;
@@ -234,7 +235,7 @@ table {
 		display: inline-block;
 }
 
-td, th {
+#result-table td, #result-table th {
 		font-size: 16px;
 		border: 1.5px solid #dddddd;
 		border-left: 0px;
@@ -242,13 +243,14 @@ td, th {
 		padding: 8px;
 }
 
-th {
-	top: 0px;
+
+
+.resultRow:nth-child(even) {
+		background-color: #dddddd;
 }
 
-
-tr:nth-child(even) {
-		background-color: #dddddd;
+.resultRow:hover{
+	background-color: #fff5cc;
 }
 
 .result-attribute-title{
