@@ -17,6 +17,7 @@ import edu.uci.ics.textdb.exp.keywordmatcher.KeywordSourcePredicate;
 import edu.uci.ics.textdb.exp.nlp.entity.NlpEntityPredicate;
 import edu.uci.ics.textdb.exp.nlp.sentiment.EmojiSentimentPredicate;
 import edu.uci.ics.textdb.exp.nlp.sentiment.NlpSentimentPredicate;
+import edu.uci.ics.textdb.exp.nlp.sentiment.NltkSentimentOperatorPredicate;
 import edu.uci.ics.textdb.exp.nlp.splitter.NlpSplitPredicate;
 import edu.uci.ics.textdb.exp.projection.ProjectionPredicate;
 import edu.uci.ics.textdb.exp.regexmatcher.RegexPredicate;
@@ -28,6 +29,7 @@ import edu.uci.ics.textdb.exp.sink.mysql.MysqlSinkPredicate;
 import edu.uci.ics.textdb.exp.sink.tuple.TupleSinkPredicate;
 import edu.uci.ics.textdb.exp.source.file.FileSourcePredicate;
 import edu.uci.ics.textdb.exp.source.scan.ScanSourcePredicate;
+import edu.uci.ics.textdb.exp.twitterfeed.TwitterFeedSourcePredicate;
 import edu.uci.ics.textdb.exp.wordcount.WordCountIndexSourcePredicate;
 import edu.uci.ics.textdb.exp.wordcount.WordCountOperatorPredicate;
 
@@ -55,6 +57,7 @@ public class OperatorArityConstants {
 
         fixedInputArityMap.put(NlpEntityPredicate.class, 1);
         fixedInputArityMap.put(NlpSentimentPredicate.class, 1);
+        fixedInputArityMap.put(NltkSentimentOperatorPredicate.class, 1);
         fixedInputArityMap.put(EmojiSentimentPredicate.class, 1);
         fixedInputArityMap.put(ProjectionPredicate.class, 1);
         fixedInputArityMap.put(RegexSplitPredicate.class, 1);
@@ -66,11 +69,12 @@ public class OperatorArityConstants {
 
         fixedInputArityMap.put(ScanSourcePredicate.class, 0);
         fixedInputArityMap.put(FileSourcePredicate.class, 0);
+        fixedInputArityMap.put(TwitterFeedSourcePredicate.class, 0);
         
         fixedInputArityMap.put(TupleSinkPredicate.class, 1);
         fixedInputArityMap.put(ExcelSinkPredicate.class, 1);
         fixedInputArityMap.put(MysqlSinkPredicate.class, 1);
-
+        
     }
     
     public static Map<Class<? extends PredicateBase>, Integer> fixedOutputArityMap = new HashMap<>();
@@ -89,6 +93,7 @@ public class OperatorArityConstants {
 
         fixedOutputArityMap.put(NlpEntityPredicate.class, 1);
         fixedOutputArityMap.put(NlpSentimentPredicate.class, 1);
+        fixedOutputArityMap.put(NltkSentimentOperatorPredicate.class, 1);
         fixedOutputArityMap.put(EmojiSentimentPredicate.class, 1);
         fixedOutputArityMap.put(ProjectionPredicate.class, 1);
         fixedOutputArityMap.put(RegexSplitPredicate.class, 1);
@@ -100,11 +105,12 @@ public class OperatorArityConstants {
 
         fixedOutputArityMap.put(ScanSourcePredicate.class, 1);
         fixedOutputArityMap.put(FileSourcePredicate.class, 1);
+        fixedOutputArityMap.put(TwitterFeedSourcePredicate.class, 1);
         
         fixedOutputArityMap.put(TupleSinkPredicate.class, 0);
         fixedOutputArityMap.put(ExcelSinkPredicate.class, 0);
         fixedOutputArityMap.put(MysqlSinkPredicate.class, 0);
-
+        
     }
     
     /**
