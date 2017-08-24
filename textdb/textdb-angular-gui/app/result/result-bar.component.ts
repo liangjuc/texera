@@ -17,7 +17,6 @@ export class ResultBarComponent {
   result: any;
   attribute: string[] = [];
   previousResultHandleTop: number = -5;
-  openedHeight: number = 300;
   checkErrorOrDetail: number = 0;
 
   @ViewChild('ResultModal')
@@ -119,7 +118,7 @@ export class ResultBarComponent {
   redrawDraggable(){
     this.previousResultHandleTop = -parseInt(jQuery('#result-table-bar').css('height'), 10) - 5;
     jQuery("#ngrip").draggable( "destroy" );
-    this.initializeResizing(this.previousResultHandleTop, this.openedHeight);
+    this.initializeResizing(this.previousResultHandleTop);
   }
 
 
@@ -134,10 +133,10 @@ export class ResultBarComponent {
 
   // initialized the default draggable / resizable result bar
   initializing(){
-    this.initializeResizing(this.previousResultHandleTop, this.openedHeight);
+    this.initializeResizing(this.previousResultHandleTop);
   }
 
-  initializeResizing(previousHeight: number, openHeight: number){
+  initializeResizing(previousHeight: number){
     jQuery("#ngrip").draggable({
       axis:"y",
       containment: "window",
