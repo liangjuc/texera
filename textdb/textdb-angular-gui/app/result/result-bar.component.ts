@@ -171,18 +171,13 @@ export class ResultBarComponent {
           });
         }
       },
-      start: function( event, ui ) {
-        // hide the drag button when begin dragging (fix some error)
-        jQuery("#ngrip").css({
-          "display" : "none"
-        });
 
-      },
       stop: function( event, ui ) {
         // get the current result bar height
         var newResultBarHeight = parseInt(jQuery('#result-table-bar').css('height'), 10);
+        var ResultBarDisplay = jQuery('#result-table-bar').css('display');
         // if at minimum
-        if (newResultBarHeight === 0){
+        if (newResultBarHeight === 0 || ResultBarDisplay === "none"){
           previousHeight = -5;
           previousOpenHeight = 300; //restore default
         } else if (newResultBarHeight === 300){
@@ -196,10 +191,6 @@ export class ResultBarComponent {
         // make sure drag button is directly above the result bar
         jQuery('#ngrip').css({"top":"-5px"});
 
-        // make the drag button visible again
-        jQuery("#ngrip").css({
-          "display" : "block"
-        });
       }
     });
 
