@@ -59,11 +59,10 @@ export class TheFlowchartComponent {
     jQuery("#menu").css({
       "display" : "none",
     });
-    jQuery('#the-flowchart').flowchart('zoomCalled');
-
     var matrix = jQuery('#the-flowchart').panzoom("getMatrix");
     var ZoomRatio = parseFloat(matrix[0]);
     if (ZoomRatio < MAX_SCALE){
+      jQuery('#the-flowchart').flowchart('zoomCalled');
       ZoomRatio += INCREMENT;
       jQuery('#the-flowchart').flowchart('setPositionRatio', ZoomRatio);
       jQuery('#the-flowchart').panzoom('zoom', ZoomRatio, {
@@ -86,11 +85,10 @@ export class TheFlowchartComponent {
     jQuery("#menu").css({
       "display" : "none",
     });
-    jQuery('#the-flowchart').flowchart('zoomCalled');
-
     var matrix = jQuery('#the-flowchart').panzoom("getMatrix");
     var ZoomRatio = parseFloat(matrix[0]);
     if (ZoomRatio >= MIN_SCALE + INCREMENT){
+      jQuery('#the-flowchart').flowchart('zoomCalled');
       ZoomRatio -= INCREMENT;
       jQuery('#the-flowchart').flowchart('setPositionRatio', ZoomRatio);
       jQuery('#the-flowchart').panzoom('zoom', ZoomRatio, {
@@ -118,6 +116,11 @@ export class TheFlowchartComponent {
       var container = jQuery(".form-control");
       if (container.is(e.target)) {
         jQuery("#the-flowchart").flowchart("unselectOperator");
+      }
+      // hide the right click menu when click other modules
+      var flowchart_container = jQuery("#the-flowchart");
+      if (flowchart_container.has(e.target).length <= 0){
+        jQuery("#the-flowchart").flowchart("hideRightClickMenu");
       }
     });
 

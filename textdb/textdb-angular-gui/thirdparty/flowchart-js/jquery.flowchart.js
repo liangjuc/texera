@@ -182,6 +182,7 @@ $(function () {
                 self.displayRightClickMenu(x,y,operatorID);
               } else {
                 // manually calculate the position
+
                 var checkOnClickIsIconDiv = $(".operator-info-div");
                 var checkOnClickIsIcon = $(".operator-info-icon");
                 var checkOnClickIsOperatorInput = $(".flowchart-operator-inputs");
