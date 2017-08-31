@@ -196,12 +196,14 @@ export class TheFlowchartComponent {
       var zoomOut = delta;
       // var zoomOut = delta ? delta < 0 : e.originalEvent.deltaY > 0;
       currentZoom = Math.max(0, Math.min(possibleZooms.length - 1, (currentZoom + (zoomOut / 40 - 1))));
-      jQuery('#the-flowchart').flowchart('setPositionRatio', possibleZooms[currentZoom]);
-      jQuery('#the-flowchart').panzoom('zoom', possibleZooms[currentZoom], {
+      // make sure it is an integer
+      var CurrentZoomRound = Math.round(currentZoom);
+      jQuery('#the-flowchart').flowchart('setPositionRatio', possibleZooms[CurrentZoomRound]);
+      jQuery('#the-flowchart').panzoom('zoom', possibleZooms[CurrentZoomRound], {
         animate: false,
         focal: e
       });
-      var ZoomRatio = possibleZooms[currentZoom];
+      var ZoomRatio = possibleZooms[CurrentZoomRound];
       // enlarge the div ratio so there's more space for the operators
       var new_width = InitialWidth / ZoomRatio;
       var left_side_add = (new_width - InitialWidth) / 2 ;
