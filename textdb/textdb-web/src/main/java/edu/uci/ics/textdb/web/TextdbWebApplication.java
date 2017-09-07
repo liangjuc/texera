@@ -87,7 +87,8 @@ public class TextdbWebApplication extends Application<TextdbWebConfiguration> {
 
     public static void main(String args[]) throws Exception {
     		RelationManager.getRelationManager().deleteTable("twitter_lastweek");
-    	
+    		System.out.println("twitter_lastweek" + " removed");
+    		
         System.out.println("Writing promed Index");
         SampleExtraction.writeSampleIndex();
         System.out.println("Finished Writing promed Index");
