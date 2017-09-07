@@ -6,6 +6,7 @@ import com.github.dirkraft.dropwizard.fileassets.FileAssetsBundle;
 
 import edu.uci.ics.textdb.perftest.sample.SampleExtraction;
 import edu.uci.ics.textdb.perftest.twitter.TwitterSample;
+import edu.uci.ics.textdb.storage.RelationManager;
 import edu.uci.ics.textdb.web.healthcheck.SampleHealthCheck;
 import edu.uci.ics.textdb.web.resource.DownloadFileResource;
 import edu.uci.ics.textdb.web.resource.FileUploadResource;
@@ -85,6 +86,8 @@ public class TextdbWebApplication extends Application<TextdbWebConfiguration> {
     }
 
     public static void main(String args[]) throws Exception {
+    		RelationManager.getRelationManager().deleteTable("twitter_lastweek");
+    	
         System.out.println("Writing promed Index");
         SampleExtraction.writeSampleIndex();
         System.out.println("Finished Writing promed Index");
