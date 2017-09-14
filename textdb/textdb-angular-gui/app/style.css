@@ -369,3 +369,7 @@ body {
 	padding-right: 6px;
 	font-size: 14px;
 }
+
+#editor_holder h3 {
+	display: none;
+}

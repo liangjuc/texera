@@ -9,6 +9,8 @@ declare var Backbone: any;
 
 declare var PrettyJSON: any;
 
+declare let JSONEditor: any;
+
 @Component({
     moduleId: module.id,
     selector: 'side-bar-container',
@@ -17,6 +19,42 @@ declare var PrettyJSON: any;
 })
 
 export class SideBarComponent {
+
+  MySchema1: any = {
+    type: "object",
+    title : "Person",
+    id: "person",
+    properties: {
+      name: {
+        type: "string",
+        minLength: 4
+      },
+      age: {
+        type: "integer",
+        default: 21,
+        minimum: 18,
+        maximum: 99,
+        options : {
+          hidden : true,
+        }
+      },
+      gender: {
+        type: "string",
+        enum: [
+          "male",
+          "female"
+        ]
+      }
+    },
+  }
+
+  MyTesting1 : any = {
+    name : "Henry",
+    age : 19,
+    gender : "male",
+  }
+
+
     data: any;
     attributes: string[] = [];
 
@@ -81,6 +119,36 @@ export class SideBarComponent {
     fileChange(event) {
       let fileList: FileList = event.target.files;
       this.currentDataService.uploadDictionary(fileList[0]);
+    }
+
+
+    ngAfterViewInit(){
+      // testing schema
+      // var element = document.getElementById('editor_holder');
+      // var editor = new JSONEditor(element,{
+      //     // The schema for the editor
+      //     schema: this.MySchema1,
+      //     startval: this.MyTesting1,
+      //     theme: "bootstrap3",
+      //     display_required_only	: true,
+      //     disable_collapse : true,
+      //     disable_edit_json : true,
+      //     disable_properties : true,
+      // });
+
+      var editor = new JSONEditor(document.getElementById('editor_holder'),{
+        theme: "bootstrap3",
+        disable_collapse : true,
+        disable_edit_json : true,
+        disable_properties : true,
+        display_required_only : true,
+        schema: this.MySchema1,
+        startval: this.MyTesting1,
+      });
+
+      var value = editor.getValue();
+      console.log(value);
+
     }
 
     constructor(private currentDataService: CurrentDataService) {

@@ -3,6 +3,10 @@
     <div>
         <h3 *ngIf="attributes.length === 0" class="sidebar-brand">Edit Operator</h3>
         <h3 *ngIf="attributes.length !== 0" class="sidebar-brand">{{operator}}</h3>
+
+        <div id="editor_holder">
+        </div>
+
         <form [hidden]="attributes.length === 0" #editOperatorForm="ngForm">
 
             <div class="form-group" *ngFor="let attribute of attributes">
