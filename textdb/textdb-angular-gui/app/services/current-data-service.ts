@@ -49,6 +49,9 @@ export class CurrentDataService {
     private dictionaryContent = new Subject<any>();
     dictionaryContent$ = this.dictionaryContent.asObservable();
 
+    private getJson = new Subject<any>();
+    getJson$ = this.getJson.asObservable();
+
     constructor(private http: Http) { }
 
     setAllOperatorData(operatorData : any): void {
@@ -186,6 +189,19 @@ export class CurrentDataService {
                     console.log("Error at getDictionaries() in current-data-service.ts \n Error: "+err);
                 }
             );
+    }
+
+    getJsonContent(): void {
+      let headers = new Headers({ 'Content-Type': 'json' });
+      this.http.get('http://localhost:3000/app/services/example.json', {headers : headers})
+        .subscribe(
+            data => {
+              console.log(data.json());
+            },
+            err => {
+              console.log("Error at getJsonContent() in current-data-servce.ts \n Error: " + err);
+            }
+        );
     }
 
     downloadExcel(resultID: string): void {

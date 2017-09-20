@@ -11,6 +11,8 @@ declare var PrettyJSON: any;
 
 declare let JSONEditor: any;
 
+declare let require: any;
+
 @Component({
     moduleId: module.id,
     selector: 'side-bar-container',
@@ -20,6 +22,12 @@ declare let JSONEditor: any;
 
 export class SideBarComponent {
 
+
+  MyTesting1 : any = {
+    name : "Henry",
+    age : 19,
+    gender : "male",
+  }
   MySchema1: any = {
     type: "object",
     title : "Person",
@@ -47,13 +55,6 @@ export class SideBarComponent {
       }
     },
   }
-
-  MyTesting1 : any = {
-    name : "Henry",
-    age : 19,
-    gender : "male",
-  }
-
 
     data: any;
     attributes: string[] = [];
@@ -121,39 +122,25 @@ export class SideBarComponent {
       this.currentDataService.uploadDictionary(fileList[0]);
     }
 
-
-    ngAfterViewInit(){
-      // testing schema
-      // var element = document.getElementById('editor_holder');
-      // var editor = new JSONEditor(element,{
-      //     // The schema for the editor
-      //     schema: this.MySchema1,
-      //     startval: this.MyTesting1,
-      //     theme: "bootstrap3",
-      //     display_required_only	: true,
-      //     disable_collapse : true,
-      //     disable_edit_json : true,
-      //     disable_properties : true,
-      // });
-
-      var editor = new JSONEditor(document.getElementById('editor_holder'),{
-        theme: "bootstrap3",
-        disable_collapse : true,
-        disable_edit_json : true,
-        disable_properties : true,
-        display_required_only : true,
-        schema: this.MySchema1,
-        startval: this.MyTesting1,
-      });
-
-      var value = editor.getValue();
-      console.log(value);
-
-    }
-
     constructor(private currentDataService: CurrentDataService) {
         currentDataService.newAddition$.subscribe(
             data => {
+
+                var editor = new JSONEditor(document.getElementById('editor_holder'),{
+                  theme: "bootstrap3",
+                  ajax: true,
+                  disable_collapse : true,
+                  disable_edit_json : true,
+                  disable_properties : true,
+                  display_required_only : true,
+                  schema: this.MySchema1,
+                  startval: this.MyTesting1,
+                });
+
+                var value = editor.getValue();
+                console.log(value);
+
+
                 this.data = data.operatorData;
                 this.operatorId = data.operatorNum;
                 this.operatorTitle = data.operatorData.properties.title;
