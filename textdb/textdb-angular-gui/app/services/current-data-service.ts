@@ -193,7 +193,7 @@ export class CurrentDataService {
 
     getJsonContent(): void {
       let headers = new Headers({ 'Content-Type': 'json' });
-      this.http.get('http://localhost:3000/app/services/example.json', {headers : headers})
+      this.http.get('http://localhost:3000/app/services/example2.json', {headers : headers})
         .subscribe(
             data => {
               console.log(data.json());

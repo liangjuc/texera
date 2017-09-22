@@ -23,38 +23,12 @@ declare let require: any;
 export class SideBarComponent {
 
 
-  MyTesting1 : any = {
-    name : "Henry",
-    age : 19,
-    gender : "male",
-  }
-  MySchema1: any = {
-    type: "object",
-    title : "Person",
-    id: "person",
-    properties: {
-      name: {
-        type: "string",
-        minLength: 4
-      },
-      age: {
-        type: "integer",
-        default: 21,
-        minimum: 18,
-        maximum: 99,
-        options : {
-          hidden : true,
-        }
-      },
-      gender: {
-        type: "string",
-        enum: [
-          "male",
-          "female"
-        ]
-      }
-    },
-  }
+    MyTesting1 : any = {
+      name : "Henry",
+      age : 19,
+      gender : "male",
+      properties : "HELLL WORLDDDDDDD"
+    }
 
     data: any;
     attributes: string[] = [];
@@ -168,6 +142,8 @@ export class SideBarComponent {
 
         currentDataService.getJson$.subscribe(
           data => {
+            console.log("IN sidebar");
+            console.log(data);
             var editor = new JSONEditor(document.getElementById('editor_holder'),{
               theme: "bootstrap3",
               disable_collapse : true,
@@ -177,6 +153,8 @@ export class SideBarComponent {
               schema: data,
               startval: this.MyTesting1,
             });
+            // startval: this.MyTesting1,
+
 
             var value = editor.getValue();
             console.log(value);

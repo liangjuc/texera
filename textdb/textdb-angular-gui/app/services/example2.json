@@ -1,0 +1,31 @@
+{
+  "type": "object",
+  "title" : "Person",
+  "id": "person",
+  "properties": {
+    "properties" : {
+      "type" : "string",
+      "default" : "Hello WOrld!"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 4
+    },
+    "age": {
+      "type": "integer",
+      "default": 21,
+      "minimum": 18,
+      "maximum": 99,
+      "options" : {
+        "hidden" : true
+      }
+    },
+    "gender": {
+      "type": "string",
+      "enum": [
+        "male",
+        "female"
+      ]
+    }
+  }
+}

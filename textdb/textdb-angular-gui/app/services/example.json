@@ -23,6 +23,5 @@
         "female"
       ]
     }
-  },
-  "required" : ["name","gender"]
+  }
 }
