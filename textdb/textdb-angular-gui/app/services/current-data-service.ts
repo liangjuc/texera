@@ -197,6 +197,8 @@ export class CurrentDataService {
         .subscribe(
             data => {
               console.log(data.json());
+              let json_data = data.json();
+              this.getJson.next(json_data);
             },
             err => {
               console.log("Error at getJsonContent() in current-data-servce.ts \n Error: " + err);

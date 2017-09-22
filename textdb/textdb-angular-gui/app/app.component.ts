@@ -31,7 +31,7 @@ export class AppComponent {
         currentDataService.getMetadata();
         currentDataService.getDictionaries();
 
-        
+
         currentDataService.getJsonContent();
     }
 

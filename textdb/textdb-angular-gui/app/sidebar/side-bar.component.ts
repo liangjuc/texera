@@ -126,20 +126,6 @@ export class SideBarComponent {
         currentDataService.newAddition$.subscribe(
             data => {
 
-                var editor = new JSONEditor(document.getElementById('editor_holder'),{
-                  theme: "bootstrap3",
-                  ajax: true,
-                  disable_collapse : true,
-                  disable_edit_json : true,
-                  disable_properties : true,
-                  display_required_only : true,
-                  schema: this.MySchema1,
-                  startval: this.MyTesting1,
-                });
-
-                var value = editor.getValue();
-                console.log(value);
-
 
                 this.data = data.operatorData;
                 this.operatorId = data.operatorNum;
@@ -179,6 +165,23 @@ export class SideBarComponent {
                 }
 
             });
+
+        currentDataService.getJson$.subscribe(
+          data => {
+            var editor = new JSONEditor(document.getElementById('editor_holder'),{
+              theme: "bootstrap3",
+              disable_collapse : true,
+              disable_edit_json : true,
+              disable_properties : true,
+              display_required_only : true,
+              schema: data,
+              startval: this.MyTesting1,
+            });
+
+            var value = editor.getValue();
+            console.log(value);
+          }
+        );
 
         currentDataService.metadataRetrieved$.subscribe(
             data => {
