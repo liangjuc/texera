@@ -8,6 +8,7 @@ declare var jQuery: any;
 declare var Backbone: any;
 
 declare var PrettyJSON: any;
+declare let JSONEditor: any;
 
 @Component({
     moduleId: module.id,
@@ -166,6 +167,23 @@ export class SideBarComponent {
                 this.onFormChange("dictionary");
             }
         );
+
+        currentDataService.getJsonSchema$.subscribe(
+          data => {
+            console.log("in sidebar now");
+            console.log(data);
+            var editor = new JSONEditor(document.getElementById("editor_holder"),{
+              theme : "bootstrap3",
+              schema : data,
+              disable_edit_json : true,
+              disable_properties: true,
+              disable_collapse : true,
+            });
+
+            var schema_value = editor.getValue();
+            console.log(schema_value);
+          }
+        )
 
     }
 

@@ -1,0 +1,75 @@
+{
+  "type" : "object",
+  "title" : "keywordMatcher",
+  "properties" : {
+    "properties" : {
+      "type" : "object",
+      "properties" : {
+        "title" : {
+          "type" : "string"
+        },
+        "inputs" : {
+          "type" : "object",
+          "properties" : {
+            "input_1" : {
+              "type" : "object",
+              "properties" : {
+                "label" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        },
+        "outputs" : {
+          "type" : "object",
+          "properties" : {
+            "output_1" : {
+              "type" : "object",
+              "properties" : {
+                "label" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        },
+        "attributes" : {
+          "type" : "object",
+          "properties" : {
+            "operatorType" : {
+              "type" : "string"
+            },
+            "attributes" : {
+              "type" : "string",
+              "enum" : [
+                "value1"
+              ]
+            },
+            "query" : {
+              "type" : "string"
+            },
+            "luceneAnalyzer" : {
+              "type" : "string"
+            },
+            "matchingType" : {
+              "type" : "string"
+            },
+            "spanListName" : {
+              "type" : "string"
+            }
+          }
+        },
+        "image" : {
+          "type" : "string"
+        },
+        "color" : {
+          "type" : "string"
+        },
+        "description" : {
+          "type" : "string"
+        }
+      }
+    }
+  }
+}

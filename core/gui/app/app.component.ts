@@ -30,6 +30,8 @@ export class AppComponent {
     constructor(private currentDataService: CurrentDataService, private mockDataService: MockDataService) {
         currentDataService.getMetadata();
         currentDataService.getDictionaries();
+
+        currentDataService.getOperatorSchema();
     }
 
     @ViewChild('theFlowchart') theFlowchart: TheFlowchartComponent;

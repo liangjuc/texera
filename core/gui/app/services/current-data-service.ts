@@ -50,6 +50,9 @@ export class CurrentDataService {
     private dictionaryContent = new Subject<any>();
     dictionaryContent$ = this.dictionaryContent.asObservable();
 
+    private getJsonSchema = new Subject<any>();
+    getJsonSchema$ = this.getJsonSchema.asObservable();
+
     constructor(private http: Http) { }
 
     setAllOperatorData(operatorData : any): void {
@@ -187,6 +190,21 @@ export class CurrentDataService {
                     console.log("Error at getDictionaries() in current-data-service.ts \n Error: "+err);
                 }
             );
+    }
+
+    getOperatorSchema() : void {
+      let headers = new Headers({"Content-Type": "text/json"});
+      this.http.get(operatorMetadataUrl, {headers : headers})
+        .subscribe(
+          data => {
+            let result = data.json()
+            console.log(result);
+            this.getJsonSchema.next(result[13]);
+          },
+          err => {
+            console.log("Error at getOperatorSchema() in current-data-service.ts \n Error: "+err);
+          }
+        );
     }
 
     downloadExcel(resultID: string): void {
