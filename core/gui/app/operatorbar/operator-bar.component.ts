@@ -149,6 +149,8 @@ export class OperatorBarComponent {
       }
     }
 
+    attributes["operatorType"] = schema.operatorType;
+
     var operator = {
       "top" : 20,
       "left" : 20,
