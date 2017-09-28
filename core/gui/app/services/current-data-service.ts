@@ -53,6 +53,10 @@ export class CurrentDataService {
     private getJsonSchema = new Subject<any>();
     getJsonSchema$ = this.getJsonSchema.asObservable();
 
+    private testing = new Subject<any>();
+    testing$ = this.testing.asObservable();
+
+
     constructor(private http: Http) { }
 
     setAllOperatorData(operatorData : any): void {
@@ -62,11 +66,14 @@ export class CurrentDataService {
     selectData(operatorNum : number): void {
       var data_now = jQuery("#the-flowchart").flowchart("getOperatorData",operatorNum);
       this.newAddition.next({operatorNum: operatorNum, operatorData: data_now});
+      this.testing.next({operatorNum: operatorNum, operatorData: data_now});
       this.setAllOperatorData(jQuery("#the-flowchart").flowchart("getData"));
     }
 
     clearData() : void {
       this.newAddition.next({operatorNum : null, operatorData: defaultData});
+      this.testing.next({operatorNum : null, operatorData: defaultData});
+
     }
 
     processData(): void {
@@ -199,7 +206,7 @@ export class CurrentDataService {
           data => {
             let result = data.json()
             console.log(result);
-            this.getJsonSchema.next(result[13]);
+            this.getJsonSchema.next(result);
           },
           err => {
             console.log("Error at getOperatorSchema() in current-data-service.ts \n Error: "+err);

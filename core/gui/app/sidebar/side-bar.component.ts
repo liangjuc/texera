@@ -21,6 +21,10 @@ export class SideBarComponent {
     data: any;
     attributes: string[] = [];
 
+    OperatorSchemaData: any[] = [];
+    JsonSchemaEditor: any;
+    currentSchema: any;
+
     operatorId: number;
     operatorTitle: string;
 
@@ -170,20 +174,69 @@ export class SideBarComponent {
 
         currentDataService.getJsonSchema$.subscribe(
           data => {
-            console.log("in sidebar now");
-            console.log(data);
-            var editor = new JSONEditor(document.getElementById("editor_holder"),{
+            this.OperatorSchemaData = data;
+          },
+          error => {
+            console.log(error);
+          }
+        );
+
+
+        currentDataService.testing$.subscribe(
+          data => {
+            this.currentSchema = {};
+
+            // clearData or there is existing
+            if (data.operatorData.properties.title === "Operator"){
+              this.JsonSchemaEditor.destroy();
+              return;
+            }
+            if (this.JsonSchemaEditor){
+              this.JsonSchemaEditor.destroy();
+            }
+
+            // get the schema of current selected operator
+            for (let eachSchema of this.OperatorSchemaData){
+              if (eachSchema.userFriendlyName === data.operatorData.properties.title) {
+                this.currentSchema = eachSchema;
+                break;
+              }
+            }
+            console.log("Current = ");
+            console.log(this.currentSchema);
+
+            // generate the schema format
+            var operator_attributes = {
+              "type" : "object",
+              "properties" : this.currentSchema.properties,
+              "required" : this.currentSchema.required
+            }
+
+            // this hides the non-required fields, some fields are still not added
+            // to the required field, so comment this out first
+            // for (var eachProperty in this.currentSchema.properties){
+            //   if (jQuery.inArray(eachProperty,this.currentSchema.required) === -1){
+            //     this.currentSchema.properties[eachProperty]["options"] = {
+            //       "hidden" : true
+            //     };
+            //   }
+            // }
+
+            //create the table according to the schema provided
+            this.JsonSchemaEditor = new JSONEditor(document.getElementById("editor_holder"),{
               theme : "bootstrap3",
-              schema : data,
+              schema : operator_attributes,
               disable_edit_json : true,
               disable_properties: true,
               disable_collapse : true,
             });
 
-            var schema_value = editor.getValue();
+            // this is the value of the schema
+            var schema_value = this.JsonSchemaEditor.getValue();
             console.log(schema_value);
           }
-        )
+        );
+
 
     }
 
@@ -288,42 +341,42 @@ export class SideBarComponent {
 
 
 
-    twitterQueryManuallyAdded(event: string) {
-        if (event.length === 0) {
-            this.twitterQuery = [];
-        } else {
-            this.twitterQuery = event.split(",");
-        }
-        this.data.properties.attributes.keywordList = this.twitterQuery;
-        this.onFormChange("keywordList");
-    }
-
-    twitterLanguageManuallyAdded(shortenFormLanguage: string){
-      var languageCheckBox = jQuery("#" + shortenFormLanguage);
-      if (languageCheckBox[0].checked){
-        this.twitterLanguage.push(shortenFormLanguage);
+  twitterQueryManuallyAdded(event: string) {
+      if (event.length === 0) {
+          this.twitterQuery = [];
       } else {
-        var index = this.twitterLanguage.indexOf(shortenFormLanguage);
-          // remove 1 element starting from that index
-        this.twitterLanguage.splice(index, 1);
+          this.twitterQuery = event.split(",");
       }
-      console.log(this.twitterLanguage);
-      this.data.properties.attributes.languageList = this.twitterLanguage;
-      this.onFormChange("languageList");
-    }
+      this.data.properties.attributes.keywordList = this.twitterQuery;
+      this.onFormChange("keywordList");
+  }
 
-    languageTextClicked(language: string){
-      var shortenFormLanguage = this.twitterLanguageMapping[language];
-      var languageCheckBox = jQuery("#" + shortenFormLanguage);
-      // check if the checkbox for particular language is checked
-      if (languageCheckBox[0].checked){
-        // if is checked now, uncheck it
-        languageCheckBox[0].checked = false;
-      } else {
-        // if not checked, check it
-        languageCheckBox[0].checked = true;
-      }
-      this.twitterLanguageManuallyAdded(shortenFormLanguage);
+  twitterLanguageManuallyAdded(shortenFormLanguage: string){
+    var languageCheckBox = jQuery("#" + shortenFormLanguage);
+    if (languageCheckBox[0].checked){
+      this.twitterLanguage.push(shortenFormLanguage);
+    } else {
+      var index = this.twitterLanguage.indexOf(shortenFormLanguage);
+        // remove 1 element starting from that index
+      this.twitterLanguage.splice(index, 1);
     }
+    console.log(this.twitterLanguage);
+    this.data.properties.attributes.languageList = this.twitterLanguage;
+    this.onFormChange("languageList");
+  }
+
+  languageTextClicked(language: string){
+    var shortenFormLanguage = this.twitterLanguageMapping[language];
+    var languageCheckBox = jQuery("#" + shortenFormLanguage);
+    // check if the checkbox for particular language is checked
+    if (languageCheckBox[0].checked){
+      // if is checked now, uncheck it
+      languageCheckBox[0].checked = false;
+    } else {
+      // if not checked, check it
+      languageCheckBox[0].checked = true;
+    }
+    this.twitterLanguageManuallyAdded(shortenFormLanguage);
+  }
 
 }

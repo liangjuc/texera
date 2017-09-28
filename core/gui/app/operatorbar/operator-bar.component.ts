@@ -14,8 +14,26 @@ declare var jQuery: any;
 export class OperatorBarComponent {
 
   theDropDownNow : string;
+  OperatorSchemaData : any[] = [];
 
-  constructor(private mockDataService: MockDataService, private currentDataService: CurrentDataService) { }
+  sourceOperators: any[] = [];
+
+
+  constructor(private mockDataService: MockDataService, private currentDataService: CurrentDataService) {
+
+    currentDataService.getJsonSchema$.subscribe(
+      data => {
+        this.OperatorSchemaData = data;
+        console.log('In operatorbar now!!');
+        console.log(this.OperatorSchemaData);
+
+      },
+      error => {
+        console.log(error);
+      }
+    );
+
+  }
 
   initialize() {
     var container = jQuery('#the-flowchart').parent();
@@ -54,24 +72,16 @@ export class OperatorBarComponent {
 
   initializeHoverDetail(){
 
-    var findOperatorData = function(opeartorName: string, opeatorList: [any]): any {
-      for (let operator of opeatorList) {
-        if (operator.jsonData.properties.title === opeartorName){
-          return operator.jsonData.properties.description;
+    var findSchemaDescription = function(operatorName: string, schemaList: any[]): any {
+      for (let schema of schemaList){
+        if (schema.userFriendlyName === operatorName){
+          return schema.operatorDescription;
         }
       }
       return "Default Content";
     }
-    let operatorList;
-    this.mockDataService.getOperatorList().then(
-      data => {
-        operatorList = data;
-      },
-      error => {
-        console.log(error);
-      }
-    );
 
+    var current = this;
     var currentDetailProcess;
 
     jQuery('.draggable_operator').hover(
@@ -84,7 +94,7 @@ export class OperatorBarComponent {
             "top" : top - height - margin * 2,
           });
           jQuery('#operator-detail-name').html(name);
-          var newDefinition = findOperatorData(name,operatorList);
+          var newDefinition = findSchemaDescription(name,current.OperatorSchemaData);
           jQuery('#operator-detail-content').html(newDefinition);
         }
         var targetOperator = jQuery(e.target);
@@ -116,26 +126,61 @@ export class OperatorBarComponent {
     );
   }
 
-  initializeOperators(container: any) {
-
-    var findOperatorData = function(opeartorId: number, opeatorList: [any]): any {
-      for (let operator of opeatorList) {
-        if (operator.id === opeartorId) {
-          return operator.jsonData;
-        }
+  createOperator(schema: any) {
+    var inputs = {};
+    var outputs = {};
+    var attributes = {};
+    for (var i = 0; i < schema.inputNumber; ++i ) {
+      inputs["input_" + (i+1)] = {
+        "label" : "",
       }
-      return null;
+    }
+    for (var i = 0; i < schema.outputNumber; ++i ) {
+      outputs["output_" + (i+1)] = {
+        "label" : "",
+      }
     }
 
-    let operatorList;
-    this.mockDataService.getOperatorList().then(
-      data => {
-        operatorList = data;
-      },
-      error => {
-        console.log(error);
+    for (let eachProperty in schema.properties){
+      if (schema.properties[eachProperty]["default"] != undefined){
+        attributes[eachProperty] = schema.properties[eachProperty]["default"];
+      } else {
+        attributes[eachProperty] = "";
       }
-    );
+    }
+
+    var operator = {
+      "top" : 20,
+      "left" : 20,
+      "properties" : {
+        "title" : schema.userFriendlyName,
+        "inputs" : inputs,
+        "outputs" : outputs,
+        "descriptions" : schema.operatorDescription,
+        "attributes" : attributes,
+        // dummy data here
+        // ||
+        // v
+        "image" : '../thirdparty/images/sql.jpg',
+        "color" : '#ff8080'
+      }
+    }
+    return operator;
+  }
+
+  findSchema(operatorName: string, schemaList: any[]){
+    for (let schema of schemaList){
+      if (schema.userFriendlyName === operatorName){
+        return this.createOperator(schema);
+      }
+    }
+    return null;
+  }
+
+  initializeOperators(container: any) {
+
+    var current = this;
+
 
     var draggableOperators = jQuery('.draggable_operator');
     draggableOperators.draggable({
@@ -147,17 +192,17 @@ export class OperatorBarComponent {
 
       helper: function(e) {
         var dragged = jQuery(this);
-        var operatorId = parseInt(dragged.data('matcher-type'));
-        var operatorData = findOperatorData(operatorId, operatorList);
-
+        var draggedName = dragged.html()
+        var operatorData = current.findSchema(draggedName,current.OperatorSchemaData);
         return jQuery('#the-flowchart').flowchart('getOperatorElement', operatorData);
       },
 
       stop: function(e, ui) {
         var dragged = jQuery(this);
+        var draggedName = dragged.html()
+        var operatorData = current.findSchema(draggedName,current.OperatorSchemaData);
 
-        var operatorId = parseInt(dragged.data('matcher-type'));
-        var operatorData = findOperatorData(operatorId, operatorList);
+
 
         var newData = {
           top: 0,

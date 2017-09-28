@@ -42,6 +42,7 @@ export class AppComponent {
         var current = this;
 
         jQuery(document).ready(function() {
+          
             current.theFlowchart.initialize({});
             current.theOperatorBar.initialize();
             current.theResultBar.initializing();
